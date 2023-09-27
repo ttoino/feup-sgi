@@ -26,32 +26,32 @@ class MyAxis extends THREE.Object3D {
         this.zzColor = zzColor || 0x0000ff
 
         // a cone geometry for the xx axis
-        const xx = new THREE.ConeGeometry( this.baseRadius, this.size, 32 ); 
-        const xxMaterial = new THREE.MeshBasicMaterial( {color: this.xxColor} );
-        const xxMesh = new THREE.Mesh(xx, xxMaterial ); 
-        xxMesh.position.set(this.size/2,0,0);
+        const xx = new THREE.ConeGeometry(this.baseRadius, this.size, 32);
+        const xxMaterial = new THREE.MeshBasicMaterial({ color: this.xxColor });
+        const xxMesh = new THREE.Mesh(xx, xxMaterial);
+        xxMesh.position.set(this.size / 2, 0, 0);
         xxMesh.rotation.z = -Math.PI / 2;
-        this.add( xxMesh );
+        this.add(xxMesh);
 
         // a cone geometry for the yy axis
-        const yy = new THREE.ConeGeometry( this.baseRadius, this.size, 32 ); 
-        const yyMaterial = new THREE.MeshBasicMaterial( {color: this.yyColor} );
-        const yyMesh = new THREE.Mesh(yy, yyMaterial ); 
-        yyMesh.position.set(0, this.size/2,0);
-        this.add( yyMesh );
+        const yy = new THREE.ConeGeometry(this.baseRadius, this.size, 32);
+        const yyMaterial = new THREE.MeshBasicMaterial({ color: this.yyColor });
+        const yyMesh = new THREE.Mesh(yy, yyMaterial);
+        yyMesh.position.set(0, this.size / 2, 0);
+        this.add(yyMesh);
 
         // a cone geometry for the zz axis
-        const zz = new THREE.ConeGeometry( this.baseRadius, this.size, 32 ); 
-        const zzMaterial = new THREE.MeshBasicMaterial( {color: this.zzColor} );
-        const zzMesh = new THREE.Mesh(zz, zzMaterial ); 
-        zzMesh.position.set(0,0,this.size/2);
+        const zz = new THREE.ConeGeometry(this.baseRadius, this.size, 32);
+        const zzMaterial = new THREE.MeshBasicMaterial({ color: this.zzColor });
+        const zzMesh = new THREE.Mesh(zz, zzMaterial);
+        zzMesh.position.set(0, 0, this.size / 2);
         zzMesh.rotation.x = Math.PI / 2;
-        this.add( zzMesh ); 
+        this.add(zzMesh);
 
         // an axis helper
-        const axesHelper = new THREE.AxesHelper( 5 );
-        axesHelper.setColors ( new THREE.Color( this.xxColor ),  new THREE.Color( this.yyColor ),  new THREE.Color( this.zzColor ))
-        this.add( axesHelper );
+        const axesHelper = new THREE.AxesHelper(5);
+        axesHelper.setColors(new THREE.Color(this.xxColor), new THREE.Color(this.yyColor), new THREE.Color(this.zzColor))
+        this.add(axesHelper);
     }
 }
 
