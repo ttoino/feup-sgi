@@ -12,9 +12,8 @@ body {
 #camera { 
     position: absolute; 
     left: 100px; 
-    top: 20px; 
-    width: 100px; 
-    height: 100px; 
+    right: 300px;
+    top: 20px;
     color: lightgreen; 
     font-family: 'Courier New', Courier, monospace;
     font-size: 20px; 
