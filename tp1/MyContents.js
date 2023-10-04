@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MyAxis } from './MyAxis.js';
-
+import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
+import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js'
 /**
  *  This class contains the contents of out application
  */
@@ -11,6 +12,7 @@ class MyContents {
        @param {MyApp} app The application object
     */
     constructor(app) {
+
         this.app = app
         this.axis = null
 
@@ -38,13 +40,15 @@ class MyContents {
         this.spotLightPenumbra = 0;
         this.spotLightDecay = 0;
         this.spotLightTargetY = 0;
+
+        RectAreaLightUniformsLib.init();
     }
 
     /**
      * builds the box mesh with material assigned
      */
     buildBox() {
-        let boxMaterial = new THREE.MeshPhongMaterial({
+        let boxMaterial = new THREE.MeshPhysicalMaterial({
             color: "#ffff77",
             specular: "#000000", emissive: "#000000", shininess: 90
         })
@@ -96,6 +100,16 @@ class MyContents {
 
         this.spotLightHelper = new THREE.SpotLightHelper(this.spotLight);
         this.app.scene.add(this.spotLightHelper);
+
+        this.rectLight = new THREE.RectAreaLight('yellow',  15, 20, 10);
+        this.rectLight.position.set(2, 5, 1);
+        this.rectLight.lookAt(0, 0, 0);
+
+        this.app.scene.add(this.spotLight);
+
+        const rectHelper = new RectAreaLightHelper(this.rectLight);
+
+        this.app.scene.add(rectHelper);
 
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x555555, 4);

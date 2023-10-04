@@ -67,7 +67,7 @@ class MyGuiInterface {
         }, 'white').onChange((value) => { this.contents.updateSpotlightColor(value); });
         spotLightFolder.add(this.contents, 'spotLightIntensity', 0, 100).name('spotlight intensity');
         spotLightFolder.add(this.contents, 'spotLightDistance', 0, 100).name('spotlight distance');
-        spotLightFolder.add(this.contents, 'spotLightAngle', 0, Math.PI).name('spotlight angle');
+        spotLightFolder.add(this.contents, 'spotLightAngle', 0, Math.PI/2).name('spotlight angle');
         spotLightFolder.add(this.contents, 'spotLightPenumbra', 0, 1).name('spotlight penumbra');
         spotLightFolder.add(this.contents, 'spotLightDecay', 0, 1).name('spotlight decay');
         spotLightFolder.add(this.contents, 'spotLightTargetY', -10, 10).name('spotlight target');
