@@ -129,6 +129,10 @@ class MyContents {
             emissive: "orange",
             shininess: 0,
         });
+
+        this.lineMaterial = new THREE.LineBasicMaterial({
+            color: "#000000",
+        });
     }
 
     /**
@@ -284,6 +288,105 @@ class MyContents {
         let flameLight = new THREE.PointLight("orange", 0.05, 0);
         flameLight.position.set(0, 0.98, 0);
         this.app.scene.add(flameLight);
+
+        const carocha1 = new THREE.CubicBezierCurve3(
+            new THREE.Vector3(-.8, 2-.8, 2.49),
+            new THREE.Vector3(-.8, 2-.8+(0.552284749831*.8), 2.49),
+            new THREE.Vector3(0-(.8*0.552284749831), 2, 2.49),
+            new THREE.Vector3(0, 2, 2.49),
+        );
+        this.app.scene.add(
+            new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    carocha1.getPoints(50)
+                ),
+                this.lineMaterial
+            )
+        );
+        const carocha2 = new THREE.CubicBezierCurve3(
+            new THREE.Vector3(0, 2, 2.49),
+            new THREE.Vector3(0+(.4*0.552284749831), 2, 2.49),
+            new THREE.Vector3(.4, 2-.4+(0.552284749831*.4), 2.49),
+            new THREE.Vector3(.4, 2-.4, 2.49),
+        );
+        this.app.scene.add(
+            new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    carocha2.getPoints(50)
+                ),
+                this.lineMaterial
+            )
+        );
+        const carocha3 = new THREE.CubicBezierCurve3(
+            new THREE.Vector3(.4, 2-.4, 2.49),
+            new THREE.Vector3(.4+(0.552284749831*.4), 2-.4, 2.49),
+            new THREE.Vector3(.8, 2-.8+(0.552284749831*.4), 2.49),
+            new THREE.Vector3(.8, 2-.8, 2.49),
+        );
+        this.app.scene.add(
+            new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    carocha3.getPoints(50)
+                ),
+                this.lineMaterial
+            )
+        );
+        const carocha4 = new THREE.CubicBezierCurve3(
+            new THREE.Vector3(.8, 2-.8, 2.49),
+            new THREE.Vector3(.8, 2-.8+(0.552284749831*.3), 2.49),
+            new THREE.Vector3(.5+(0.552284749831*.3), 2-.5, 2.49),
+            new THREE.Vector3(.5, 2-.5, 2.49),
+        );
+        this.app.scene.add(
+            new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    carocha4.getPoints(50)
+                ),
+                this.lineMaterial
+            )
+        );
+        const carocha5 = new THREE.CubicBezierCurve3(
+            new THREE.Vector3(.5, 2-.5, 2.49),
+            new THREE.Vector3(.5-(0.552284749831*.3), 2-.5, 2.49),
+            new THREE.Vector3(.2, 2-.8+(0.552284749831*.3), 2.49),
+            new THREE.Vector3(.2, 2-.8, 2.49),
+        );
+        this.app.scene.add(
+            new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    carocha5.getPoints(50)
+                ),
+                this.lineMaterial
+            )
+        );
+        const carocha6 = new THREE.CubicBezierCurve3(
+            new THREE.Vector3(-.8, 2-.8, 2.49),
+            new THREE.Vector3(-.8, 2-.8+(0.552284749831*.3), 2.49),
+            new THREE.Vector3(-.5-(0.552284749831*.3), 2-.5, 2.49),
+            new THREE.Vector3(-.5, 2-.5, 2.49),
+        );
+        this.app.scene.add(
+            new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    carocha6.getPoints(50)
+                ),
+                this.lineMaterial
+            )
+        );
+        const carocha7 = new THREE.CubicBezierCurve3(
+            new THREE.Vector3(-.5, 2-.5, 2.49),
+            new THREE.Vector3(-.5+(0.552284749831*.3), 2-.5, 2.49),
+            new THREE.Vector3(-.2, 2-.8+(0.552284749831*.3), 2.49),
+            new THREE.Vector3(-.2, 2-.8, 2.49),
+        );
+        this.app.scene.add(
+            new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    carocha7.getPoints(50)
+                ),
+                this.lineMaterial
+            )
+        );
     }
 
     update() {}
