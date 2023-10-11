@@ -498,9 +498,7 @@ class MyContents {
         this.flashLightBody = new THREE.Mesh(this.flashLightBodyGeometry, this.plateMaterial);
 
         this.flashLightHeadGeometry = new THREE.CylinderGeometry(0.025, 0.04, flashLightHeadHeight, 32, 1, true, 0, 2 * Math.PI);
-        const flashLightHeadMaterial = this.plateMaterial.clone();
-        flashLightHeadMaterial.side = THREE.DoubleSide;
-        this.flashLightHead = new THREE.Mesh(this.flashLightHeadGeometry, flashLightHeadMaterial);
+        this.flashLightHead = new THREE.Mesh(this.flashLightHeadGeometry, this.plateMaterial);
         this.flashLightHead.translateY((flashLightBodyHeight + flashLightHeadHeight) / 2)
         this.flashLightHead.rotateX(Math.PI);
 
@@ -509,14 +507,20 @@ class MyContents {
             this.flashLightHead,
         ]
 
+        /** @type {THREE.BufferGeometry} */
         const flashLightGeometry = BufferGeometryUtils.mergeGeometries(meshes.map((m) => {
             m.updateMatrixWorld();
 
             return m.geometry.clone().applyMatrix4(m.matrixWorld);
         }), true);
-        const flashLight = new THREE.Mesh(flashLightGeometry, this.plateMaterial);
+        // flashLightGeometry.userData.materials = meshes.map(m => m.material)
 
-        flashLight.translateY(1.5);
+        const flashLightMaterial = this.plateMaterial.clone();
+        flashLightMaterial.side = THREE.DoubleSide;
+
+        const flashLight = new THREE.Mesh(flashLightGeometry, flashLightMaterial);
+
+        flashLight.position.y = 1.5;
 
         this.app.scene.add(flashLight);
 
