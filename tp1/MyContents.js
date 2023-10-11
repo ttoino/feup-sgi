@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 
 /**
  *  This class contains the contents of out application
@@ -132,6 +133,40 @@ class MyContents {
 
         this.lineMaterial = new THREE.LineBasicMaterial({
             color: "#000000",
+        });
+
+        this.frameTexture = new THREE.TextureLoader().load(
+            "textures/Wood_027_basecolor.jpg"
+        );
+        this.frameTexture.wrapS = THREE.RepeatWrapping;
+        this.frameTexture.wrapT = THREE.RepeatWrapping;
+        this.frameTexture.repeat.set(4, 4);
+        this.frameNormalMap = new THREE.TextureLoader().load(
+            "textures/Wood_027_normal.jpg"
+        );
+        this.frameNormalMap.wrapS = THREE.RepeatWrapping;
+        this.frameNormalMap.wrapT = THREE.RepeatWrapping;
+        this.frameNormalMap.repeat.set(4, 4);
+        this.frameMaterial = new THREE.MeshPhongMaterial({
+            // color: "darkgray",
+            map: this.frameTexture,
+            normalMap: this.frameNormalMap,
+            specular: "#ffffff",
+            shininess: 5,
+        });
+
+        this.toinoTexture = new THREE.TextureLoader().load("images/toino.jpg");
+        this.toinoMaterial = new THREE.MeshPhongMaterial({
+            map: this.toinoTexture,
+            specular: "#ffffff",
+            shininess: 5,
+        });
+
+        this.perasTexture = new THREE.TextureLoader().load("images/peras.png");
+        this.perasMaterial = new THREE.MeshPhongMaterial({
+            map: this.perasTexture,
+            specular: "#ffffff",
+            shininess: 5,
         });
     }
 
@@ -290,9 +325,9 @@ class MyContents {
         this.app.scene.add(flameLight);
 
         const carocha1 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(-.8, 2-.8, 2.49),
-            new THREE.Vector3(-.8, 2-.8+(0.552284749831*.8), 2.49),
-            new THREE.Vector3(0-(.8*0.552284749831), 2, 2.49),
+            new THREE.Vector3(-.8, 2 - .8, 2.49),
+            new THREE.Vector3(-.8, 2 - .8 + (0.552284749831 * .8), 2.49),
+            new THREE.Vector3(0 - (.8 * 0.552284749831), 2, 2.49),
             new THREE.Vector3(0, 2, 2.49),
         );
         this.app.scene.add(
@@ -305,9 +340,9 @@ class MyContents {
         );
         const carocha2 = new THREE.CubicBezierCurve3(
             new THREE.Vector3(0, 2, 2.49),
-            new THREE.Vector3(0+(.4*0.552284749831), 2, 2.49),
-            new THREE.Vector3(.4, 2-.4+(0.552284749831*.4), 2.49),
-            new THREE.Vector3(.4, 2-.4, 2.49),
+            new THREE.Vector3(0 + (.4 * 0.552284749831), 2, 2.49),
+            new THREE.Vector3(.4, 2 - .4 + (0.552284749831 * .4), 2.49),
+            new THREE.Vector3(.4, 2 - .4, 2.49),
         );
         this.app.scene.add(
             new THREE.Line(
@@ -318,10 +353,10 @@ class MyContents {
             )
         );
         const carocha3 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(.4, 2-.4, 2.49),
-            new THREE.Vector3(.4+(0.552284749831*.4), 2-.4, 2.49),
-            new THREE.Vector3(.8, 2-.8+(0.552284749831*.4), 2.49),
-            new THREE.Vector3(.8, 2-.8, 2.49),
+            new THREE.Vector3(.4, 2 - .4, 2.49),
+            new THREE.Vector3(.4 + (0.552284749831 * .4), 2 - .4, 2.49),
+            new THREE.Vector3(.8, 2 - .8 + (0.552284749831 * .4), 2.49),
+            new THREE.Vector3(.8, 2 - .8, 2.49),
         );
         this.app.scene.add(
             new THREE.Line(
@@ -332,10 +367,10 @@ class MyContents {
             )
         );
         const carocha4 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(.8, 2-.8, 2.49),
-            new THREE.Vector3(.8, 2-.8+(0.552284749831*.3), 2.49),
-            new THREE.Vector3(.5+(0.552284749831*.3), 2-.5, 2.49),
-            new THREE.Vector3(.5, 2-.5, 2.49),
+            new THREE.Vector3(.8, 2 - .8, 2.49),
+            new THREE.Vector3(.8, 2 - .8 + (0.552284749831 * .3), 2.49),
+            new THREE.Vector3(.5 + (0.552284749831 * .3), 2 - .5, 2.49),
+            new THREE.Vector3(.5, 2 - .5, 2.49),
         );
         this.app.scene.add(
             new THREE.Line(
@@ -346,10 +381,10 @@ class MyContents {
             )
         );
         const carocha5 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(.5, 2-.5, 2.49),
-            new THREE.Vector3(.5-(0.552284749831*.3), 2-.5, 2.49),
-            new THREE.Vector3(.2, 2-.8+(0.552284749831*.3), 2.49),
-            new THREE.Vector3(.2, 2-.8, 2.49),
+            new THREE.Vector3(.5, 2 - .5, 2.49),
+            new THREE.Vector3(.5 - (0.552284749831 * .3), 2 - .5, 2.49),
+            new THREE.Vector3(.2, 2 - .8 + (0.552284749831 * .3), 2.49),
+            new THREE.Vector3(.2, 2 - .8, 2.49),
         );
         this.app.scene.add(
             new THREE.Line(
@@ -360,10 +395,10 @@ class MyContents {
             )
         );
         const carocha6 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(-.8, 2-.8, 2.49),
-            new THREE.Vector3(-.8, 2-.8+(0.552284749831*.3), 2.49),
-            new THREE.Vector3(-.5-(0.552284749831*.3), 2-.5, 2.49),
-            new THREE.Vector3(-.5, 2-.5, 2.49),
+            new THREE.Vector3(-.8, 2 - .8, 2.49),
+            new THREE.Vector3(-.8, 2 - .8 + (0.552284749831 * .3), 2.49),
+            new THREE.Vector3(-.5 - (0.552284749831 * .3), 2 - .5, 2.49),
+            new THREE.Vector3(-.5, 2 - .5, 2.49),
         );
         this.app.scene.add(
             new THREE.Line(
@@ -374,10 +409,10 @@ class MyContents {
             )
         );
         const carocha7 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(-.5, 2-.5, 2.49),
-            new THREE.Vector3(-.5+(0.552284749831*.3), 2-.5, 2.49),
-            new THREE.Vector3(-.2, 2-.8+(0.552284749831*.3), 2.49),
-            new THREE.Vector3(-.2, 2-.8, 2.49),
+            new THREE.Vector3(-.5, 2 - .5, 2.49),
+            new THREE.Vector3(-.5 + (0.552284749831 * .3), 2 - .5, 2.49),
+            new THREE.Vector3(-.2, 2 - .8 + (0.552284749831 * .3), 2.49),
+            new THREE.Vector3(-.2, 2 - .8, 2.49),
         );
         this.app.scene.add(
             new THREE.Line(
@@ -387,9 +422,73 @@ class MyContents {
                 this.lineMaterial
             )
         );
+
+        const frameGeometry = new THREE.TorusGeometry(0.30, 0.03, 4, 4);
+
+        const frame1 = new THREE.Mesh(frameGeometry, this.frameMaterial);
+
+        frame1.rotation.z = Math.PI / 4;
+        frame1.position.y = 1.5;
+        frame1.position.x = -0.5;
+        frame1.position.z = -2.5;
+
+        this.app.scene.add(frame1);
+
+        const frame2 = new THREE.Mesh(frameGeometry, this.frameMaterial);
+
+        frame2.rotation.z = Math.PI / 4;
+        frame2.position.y = 1.5;
+        frame2.position.x = 0.5;
+        frame2.position.z = -2.5;
+
+        this.app.scene.add(frame2);
+
+        let picture = new THREE.PlaneGeometry(0.40, 0.40);
+
+        let toinoPicture = new THREE.Mesh(picture, this.toinoMaterial);
+        toinoPicture.position.y = 1.5;
+        toinoPicture.position.x = -0.5;
+        toinoPicture.position.z = -2.49;
+        this.app.scene.add(toinoPicture);
+
+        let perasPicture = new THREE.Mesh(picture, this.perasMaterial);
+        perasPicture.position.y = 1.5;
+        perasPicture.position.x = 0.5;
+        perasPicture.position.z = -2.49;
+        this.app.scene.add(perasPicture);
+
+        const flashLightBodyHeight = 0.15;
+        const flashLightHeadHeight = 0.05;
+
+        this.flashLightBodyGeometry = new THREE.CylinderGeometry(0.025, 0.025, flashLightBodyHeight, 32, 1, false, 0, 2 * Math.PI);
+        this.flashLightBody = new THREE.Mesh(this.flashLightBodyGeometry, this.plateMaterial);
+
+        this.flashLightHeadGeometry = new THREE.CylinderGeometry(0.025, 0.04, flashLightHeadHeight, 32, 1, true, 0, 2 * Math.PI);
+        const flashLightHeadMaterial = this.plateMaterial.clone();
+        flashLightHeadMaterial.side = THREE.DoubleSide;
+        this.flashLightHead = new THREE.Mesh(this.flashLightHeadGeometry, flashLightHeadMaterial);
+        this.flashLightHead.translateY((flashLightBodyHeight + flashLightHeadHeight) / 2)
+        this.flashLightHead.rotateX(Math.PI);
+
+        const meshes = [
+            this.flashLightBody,
+            this.flashLightHead,
+        ]
+
+        const flashLightGeometry = BufferGeometryUtils.mergeGeometries(meshes.map((m) => {
+            m.updateMatrixWorld();
+
+            return m.geometry.clone().applyMatrix4(m.matrixWorld);
+        }), true);
+        const flashLight = new THREE.Mesh(flashLightGeometry, this.plateMaterial);
+
+        flashLight.translateY(1.5);
+
+        this.app.scene.add(flashLight);
+
     }
 
-    update() {}
+    update() { }
 }
 
 export { MyContents };
