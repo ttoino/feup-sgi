@@ -169,7 +169,7 @@ class MyContents {
             shininess: 5,
         });
 
-        this.shadowMapSize = 4096
+        this.shadowMapSize = 512;
     }
 
     /**
@@ -491,6 +491,8 @@ class MyContents {
         perasPicture.position.z = -2.49;
         this.app.scene.add(perasPicture);
 
+        // FLASHLIGHT
+
         const flashLightBodyHeight = 0.15;
         const flashLightHeadHeight = 0.05;
 
@@ -499,8 +501,7 @@ class MyContents {
 
         this.flashLightHeadGeometry = new THREE.CylinderGeometry(0.025, 0.04, flashLightHeadHeight, 32, 1, true, 0, 2 * Math.PI);
         this.flashLightHead = new THREE.Mesh(this.flashLightHeadGeometry, this.plateMaterial);
-        this.flashLightHead.translateY((flashLightBodyHeight + flashLightHeadHeight) / 2)
-        this.flashLightHead.rotateX(Math.PI);
+        this.flashLightHead.translateY(-(flashLightBodyHeight + flashLightHeadHeight) / 2)
 
         const meshes = [
             this.flashLightBody,
@@ -520,7 +521,27 @@ class MyContents {
 
         const flashLight = new THREE.Mesh(flashLightGeometry, flashLightMaterial);
 
-        flashLight.position.y = 1.5;
+        const flashLightLightSource = new THREE.SpotLight("white", 0.5, 5, Math.PI / 7, 0.2, 1);
+
+        flashLightLightSource.castShadow = true;
+        flashLightLightSource.shadow.mapSize.width = this.shadowMapSize;
+        flashLightLightSource.shadow.mapSize.height = this.shadowMapSize;
+        flashLightLightSource.position.y = -flashLightBodyHeight / 2;
+        flashLightLightSource.target.position.x = 0;
+        flashLightLightSource.target.position.y = 1;
+        flashLightLightSource.target.position.z = 0;
+
+
+        const flashLightLightSourceHelper = new THREE.SpotLightHelper(flashLightLightSource, 0.5);
+
+        flashLight.add(flashLightLightSource);
+
+        flashLight.position.y = 1;
+        flashLight.position.z = 1;
+        flashLight.rotation.x = Math.PI / 2;
+
+
+        // this.app.scene.add(flashLightLightSourceHelper);
 
         this.app.scene.add(flashLight);
 
