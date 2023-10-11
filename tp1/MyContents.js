@@ -168,6 +168,8 @@ class MyContents {
             specular: "#ffffff",
             shininess: 5,
         });
+
+        this.shadowMapSize = 4096
     }
 
     /**
@@ -185,6 +187,9 @@ class MyContents {
         // add a point light on top of the model
         const pointLight = new THREE.PointLight(0xffffff, 1, 0, 1);
         pointLight.position.set(0, 2.75, 0);
+        pointLight.castShadow = true;
+        pointLight.shadow.mapSize.width = this.shadowMapSize;
+        pointLight.shadow.mapSize.height = this.shadowMapSize;
         this.app.scene.add(pointLight);
 
         // add a point light helper for the previous point light
@@ -203,6 +208,7 @@ class MyContents {
         this.floorMesh = new THREE.Mesh(floor, this.floorMaterial);
         this.floorMesh.rotation.x = -Math.PI / 2;
         this.floorMesh.position.y = -0;
+        this.floorMesh.receiveShadow = true;
         this.app.scene.add(this.floorMesh);
 
         let wall = new THREE.PlaneGeometry(5, 3);
@@ -210,35 +216,42 @@ class MyContents {
         this.wallMesh1 = new THREE.Mesh(wall, this.wallMaterial);
         this.wallMesh1.position.y = 1.5;
         this.wallMesh1.position.z = -2.5;
+        this.wallMesh1.receiveShadow = true;
         this.app.scene.add(this.wallMesh1);
 
         this.wallMesh2 = new THREE.Mesh(wall, this.wallMaterial);
         this.wallMesh2.rotation.y = Math.PI;
         this.wallMesh2.position.y = 1.5;
         this.wallMesh2.position.z = 2.5;
+        this.wallMesh2.receiveShadow = true;
         this.app.scene.add(this.wallMesh2);
 
         this.wallMesh3 = new THREE.Mesh(wall, this.wallMaterial);
         this.wallMesh3.rotation.y = Math.PI / 2;
         this.wallMesh3.position.x = -2.5;
         this.wallMesh3.position.y = 1.5;
+        this.wallMesh3.receiveShadow = true;
         this.app.scene.add(this.wallMesh3);
 
         this.wallMesh4 = new THREE.Mesh(wall, this.wallMaterial);
         this.wallMesh4.rotation.y = -Math.PI / 2;
         this.wallMesh4.position.x = 2.5;
         this.wallMesh4.position.y = 1.5;
+        this.wallMesh4.receiveShadow = true;
         this.app.scene.add(this.wallMesh4);
 
         let ceiling = new THREE.PlaneGeometry(5, 5);
         this.ceilingMesh = new THREE.Mesh(ceiling, this.wallMaterial);
         this.ceilingMesh.rotation.x = Math.PI / 2;
         this.ceilingMesh.position.y = 3;
+        this.ceilingMesh.receiveShadow = true;
         this.app.scene.add(this.ceilingMesh);
 
         let table = new THREE.BoxGeometry(1, 0.1, 2);
         this.tableMesh = new THREE.Mesh(table, this.tableMaterial);
         this.tableMesh.position.y = 0.8;
+        this.tableMesh.receiveShadow = true;
+        this.tableMesh.castShadow = true;
         this.app.scene.add(this.tableMesh);
 
         let tableLeg = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 32);
@@ -247,24 +260,32 @@ class MyContents {
         this.tableLegMesh1.position.y = 0.4;
         this.tableLegMesh1.position.x = 0.45;
         this.tableLegMesh1.position.z = 0.95;
+        this.tableLegMesh1.receiveShadow = true;
+        this.tableLegMesh1.castShadow = true;
         this.app.scene.add(this.tableLegMesh1);
 
         this.tableLegMesh2 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
         this.tableLegMesh2.position.y = 0.4;
         this.tableLegMesh2.position.x = -0.45;
         this.tableLegMesh2.position.z = 0.95;
+        this.tableLegMesh2.receiveShadow = true;
+        this.tableLegMesh2.castShadow = true;
         this.app.scene.add(this.tableLegMesh2);
 
         this.tableLegMesh3 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
         this.tableLegMesh3.position.y = 0.4;
         this.tableLegMesh3.position.x = 0.45;
         this.tableLegMesh3.position.z = -0.95;
+        this.tableLegMesh3.receiveShadow = true;
+        this.tableLegMesh3.castShadow = true;
         this.app.scene.add(this.tableLegMesh3);
 
         this.tableLegMesh4 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
         this.tableLegMesh4.position.y = 0.4;
         this.tableLegMesh4.position.x = -0.45;
         this.tableLegMesh4.position.z = -0.95;
+        this.tableLegMesh4.receiveShadow = true;
+        this.tableLegMesh4.castShadow = true;
         this.app.scene.add(this.tableLegMesh4);
 
         let plate = new THREE.CylinderGeometry(0.16, 0.14, 0.02, 32);
@@ -272,6 +293,8 @@ class MyContents {
         this.plateMesh.position.y = 0.85;
         this.plateMesh.position.x = 0;
         this.plateMesh.position.z = 0;
+        this.plateMesh.receiveShadow = true;
+        this.plateMesh.castShadow = true;
         this.app.scene.add(this.plateMesh);
 
         let cake = new THREE.CylinderGeometry(
@@ -288,6 +311,8 @@ class MyContents {
         this.cakeMesh.position.y = 0.9;
         this.cakeMesh.position.x = 0;
         this.cakeMesh.position.z = 0;
+        this.cakeMesh.receiveShadow = true;
+        this.cakeMesh.castShadow = true;
         this.app.scene.add(this.cakeMesh);
 
         let cakeSlice = new THREE.PlaneGeometry(0.1, 0.1);
@@ -297,6 +322,8 @@ class MyContents {
         this.cakeSliceMesh1.position.y = 0.9;
         this.cakeSliceMesh1.position.x = 0;
         this.cakeSliceMesh1.position.z = 0.05;
+        this.cakeSliceMesh1.receiveShadow = true;
+        this.cakeSliceMesh1.castShadow = true;
         this.app.scene.add(this.cakeSliceMesh1);
 
         this.cakeSliceMesh2 = new THREE.Mesh(cakeSlice, this.cakeMaterial);
@@ -304,6 +331,8 @@ class MyContents {
         this.cakeSliceMesh2.position.y = 0.9;
         this.cakeSliceMesh2.position.x = -Math.sin(Math.PI / 6) * 0.05;
         this.cakeSliceMesh2.position.z = Math.cos(Math.PI / 6) * 0.05;
+        this.cakeSliceMesh2.receiveShadow = true;
+        this.cakeSliceMesh2.castShadow = true;
         this.app.scene.add(this.cakeSliceMesh2);
 
         let candle = new THREE.CylinderGeometry(0.005, 0.005, 0.05, 8);
@@ -311,6 +340,8 @@ class MyContents {
         this.candleMesh.position.y = 0.95;
         this.candleMesh.position.x = 0;
         this.candleMesh.position.z = 0;
+        this.candleMesh.receiveShadow = true;
+        this.candleMesh.castShadow = true;
         this.app.scene.add(this.candleMesh);
 
         let flame = new THREE.ConeGeometry(0.005, 0.01, 8);
@@ -322,6 +353,9 @@ class MyContents {
 
         let flameLight = new THREE.PointLight("orange", 0.05, 0);
         flameLight.position.set(0, 0.98, 0);
+        flameLight.castShadow = true;
+        flameLight.shadow.mapSize.width = this.shadowMapSize;
+        flameLight.shadow.mapSize.height = this.shadowMapSize;
         this.app.scene.add(flameLight);
 
         const carocha1 = new THREE.CubicBezierCurve3(
