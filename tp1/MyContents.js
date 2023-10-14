@@ -514,14 +514,13 @@ class MyContents {
 
             return m.geometry.clone().applyMatrix4(m.matrixWorld);
         }), true);
-        // flashLightGeometry.userData.materials = meshes.map(m => m.material)
 
         const flashLightMaterial = this.plateMaterial.clone();
         flashLightMaterial.side = THREE.DoubleSide;
 
         const flashLight = new THREE.Mesh(flashLightGeometry, flashLightMaterial);
 
-        const flashLightLightSource = new THREE.SpotLight("white", 0.5, 5, Math.PI / 7, 0.2, 1);
+        const flashLightLightSource = new THREE.SpotLight("white", 2.5, 5, Math.PI / 7, 0.2, 1);
 
         flashLightLightSource.castShadow = true;
         flashLightLightSource.shadow.mapSize.width = this.shadowMapSize;
@@ -531,20 +530,19 @@ class MyContents {
         flashLightLightSource.target.position.y = 1;
         flashLightLightSource.target.position.z = 0;
 
-
-        const flashLightLightSourceHelper = new THREE.SpotLightHelper(flashLightLightSource, 0.5);
+        // For SOME reason this needs to be instantiated
+        const h = new THREE.SpotLightHelper(flashLightLightSource, 0.5);
 
         flashLight.add(flashLightLightSource);
 
-        flashLight.position.y = 1;
-        flashLight.position.z = 1;
-        flashLight.rotation.x = Math.PI / 2;
-
-
-        // this.app.scene.add(flashLightLightSourceHelper);
+        flashLight.position.y = 0.88;
+        flashLight.position.z = 0.6;
+        flashLight.position.x = 0.2;
+        flashLight.rotation.x = Math.PI / 2 + 0.055;
+        flashLight.rotation.z = -0.3;
 
         this.app.scene.add(flashLight);
-
+        //this.app.scene.add(h);
     }
 
     update() { }
