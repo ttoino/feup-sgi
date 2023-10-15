@@ -169,6 +169,13 @@ class MyContents {
             shininess: 5,
         });
 
+        this.windowsTexture = new THREE.TextureLoader().load("images/windows_wpp.jpg");
+        this.windowsMaterial = new THREE.MeshPhongMaterial({
+            map: this.windowsTexture,
+            specular: "#ffffff",
+            shininess: 5,
+        });
+
         this.shadowMapSize = 512;
     }
 
@@ -204,89 +211,96 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight("#ffffff", 0.1);
         this.app.scene.add(ambientLight);
 
-        let floor = new THREE.PlaneGeometry(5, 5);
-        this.floorMesh = new THREE.Mesh(floor, this.floorMaterial);
-        this.floorMesh.rotation.x = -Math.PI / 2;
-        this.floorMesh.position.y = -0;
-        this.floorMesh.receiveShadow = true;
-        this.app.scene.add(this.floorMesh);
+        {
+            // room
 
-        let wall = new THREE.PlaneGeometry(5, 3);
+            let floor = new THREE.PlaneGeometry(5, 5);
+            this.floorMesh = new THREE.Mesh(floor, this.floorMaterial);
+            this.floorMesh.rotation.x = -Math.PI / 2;
+            this.floorMesh.position.y = -0;
+            this.floorMesh.receiveShadow = true;
+            this.app.scene.add(this.floorMesh);
 
-        this.wallMesh1 = new THREE.Mesh(wall, this.wallMaterial);
-        this.wallMesh1.position.y = 1.5;
-        this.wallMesh1.position.z = -2.5;
-        this.wallMesh1.receiveShadow = true;
-        this.app.scene.add(this.wallMesh1);
+            let wall = new THREE.PlaneGeometry(5, 3);
 
-        this.wallMesh2 = new THREE.Mesh(wall, this.wallMaterial);
-        this.wallMesh2.rotation.y = Math.PI;
-        this.wallMesh2.position.y = 1.5;
-        this.wallMesh2.position.z = 2.5;
-        this.wallMesh2.receiveShadow = true;
-        this.app.scene.add(this.wallMesh2);
+            this.wallMesh1 = new THREE.Mesh(wall, this.wallMaterial);
+            this.wallMesh1.position.y = 1.5;
+            this.wallMesh1.position.z = -2.5;
+            this.wallMesh1.receiveShadow = true;
+            this.app.scene.add(this.wallMesh1);
 
-        this.wallMesh3 = new THREE.Mesh(wall, this.wallMaterial);
-        this.wallMesh3.rotation.y = Math.PI / 2;
-        this.wallMesh3.position.x = -2.5;
-        this.wallMesh3.position.y = 1.5;
-        this.wallMesh3.receiveShadow = true;
-        this.app.scene.add(this.wallMesh3);
+            this.wallMesh2 = new THREE.Mesh(wall, this.wallMaterial);
+            this.wallMesh2.rotation.y = Math.PI;
+            this.wallMesh2.position.y = 1.5;
+            this.wallMesh2.position.z = 2.5;
+            this.wallMesh2.receiveShadow = true;
+            this.app.scene.add(this.wallMesh2);
 
-        this.wallMesh4 = new THREE.Mesh(wall, this.wallMaterial);
-        this.wallMesh4.rotation.y = -Math.PI / 2;
-        this.wallMesh4.position.x = 2.5;
-        this.wallMesh4.position.y = 1.5;
-        this.wallMesh4.receiveShadow = true;
-        this.app.scene.add(this.wallMesh4);
+            this.wallMesh3 = new THREE.Mesh(wall, this.wallMaterial);
+            this.wallMesh3.rotation.y = Math.PI / 2;
+            this.wallMesh3.position.x = -2.5;
+            this.wallMesh3.position.y = 1.5;
+            this.wallMesh3.receiveShadow = true;
+            this.app.scene.add(this.wallMesh3);
 
-        let ceiling = new THREE.PlaneGeometry(5, 5);
-        this.ceilingMesh = new THREE.Mesh(ceiling, this.wallMaterial);
-        this.ceilingMesh.rotation.x = Math.PI / 2;
-        this.ceilingMesh.position.y = 3;
-        this.ceilingMesh.receiveShadow = true;
-        this.app.scene.add(this.ceilingMesh);
+            this.wallMesh4 = new THREE.Mesh(wall, this.wallMaterial);
+            this.wallMesh4.rotation.y = -Math.PI / 2;
+            this.wallMesh4.position.x = 2.5;
+            this.wallMesh4.position.y = 1.5;
+            this.wallMesh4.receiveShadow = true;
+            this.app.scene.add(this.wallMesh4);
 
-        let table = new THREE.BoxGeometry(1, 0.1, 2);
-        this.tableMesh = new THREE.Mesh(table, this.tableMaterial);
-        this.tableMesh.position.y = 0.8;
-        this.tableMesh.receiveShadow = true;
-        this.tableMesh.castShadow = true;
-        this.app.scene.add(this.tableMesh);
+            let ceiling = new THREE.PlaneGeometry(5, 5);
+            this.ceilingMesh = new THREE.Mesh(ceiling, this.wallMaterial);
+            this.ceilingMesh.rotation.x = Math.PI / 2;
+            this.ceilingMesh.position.y = 3;
+            this.ceilingMesh.receiveShadow = true;
+            this.app.scene.add(this.ceilingMesh);
+        }
 
-        let tableLeg = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 32);
+        {
+            // table
+            let table = new THREE.BoxGeometry(1, 0.1, 2);
+            this.tableMesh = new THREE.Mesh(table, this.tableMaterial);
+            this.tableMesh.position.y = 0.8;
+            this.tableMesh.receiveShadow = true;
+            this.tableMesh.castShadow = true;
+            this.app.scene.add(this.tableMesh);
 
-        this.tableLegMesh1 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
-        this.tableLegMesh1.position.y = 0.4;
-        this.tableLegMesh1.position.x = 0.45;
-        this.tableLegMesh1.position.z = 0.95;
-        this.tableLegMesh1.receiveShadow = true;
-        this.tableLegMesh1.castShadow = true;
-        this.app.scene.add(this.tableLegMesh1);
+            let tableLeg = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 32);
 
-        this.tableLegMesh2 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
-        this.tableLegMesh2.position.y = 0.4;
-        this.tableLegMesh2.position.x = -0.45;
-        this.tableLegMesh2.position.z = 0.95;
-        this.tableLegMesh2.receiveShadow = true;
-        this.tableLegMesh2.castShadow = true;
-        this.app.scene.add(this.tableLegMesh2);
+            this.tableLegMesh1 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
+            this.tableLegMesh1.position.y = 0.4;
+            this.tableLegMesh1.position.x = 0.45;
+            this.tableLegMesh1.position.z = 0.95;
+            this.tableLegMesh1.receiveShadow = true;
+            this.tableLegMesh1.castShadow = true;
+            this.app.scene.add(this.tableLegMesh1);
 
-        this.tableLegMesh3 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
-        this.tableLegMesh3.position.y = 0.4;
-        this.tableLegMesh3.position.x = 0.45;
-        this.tableLegMesh3.position.z = -0.95;
-        this.tableLegMesh3.receiveShadow = true;
-        this.tableLegMesh3.castShadow = true;
-        this.app.scene.add(this.tableLegMesh3);
+            this.tableLegMesh2 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
+            this.tableLegMesh2.position.y = 0.4;
+            this.tableLegMesh2.position.x = -0.45;
+            this.tableLegMesh2.position.z = 0.95;
+            this.tableLegMesh2.receiveShadow = true;
+            this.tableLegMesh2.castShadow = true;
+            this.app.scene.add(this.tableLegMesh2);
 
-        this.tableLegMesh4 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
-        this.tableLegMesh4.position.y = 0.4;
-        this.tableLegMesh4.position.x = -0.45;
-        this.tableLegMesh4.position.z = -0.95;
-        this.tableLegMesh4.receiveShadow = true;
-        this.tableLegMesh4.castShadow = true;
-        this.app.scene.add(this.tableLegMesh4);
+            this.tableLegMesh3 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
+            this.tableLegMesh3.position.y = 0.4;
+            this.tableLegMesh3.position.x = 0.45;
+            this.tableLegMesh3.position.z = -0.95;
+            this.tableLegMesh3.receiveShadow = true;
+            this.tableLegMesh3.castShadow = true;
+            this.app.scene.add(this.tableLegMesh3);
+
+            this.tableLegMesh4 = new THREE.Mesh(tableLeg, this.tableLegMaterial);
+            this.tableLegMesh4.position.y = 0.4;
+            this.tableLegMesh4.position.x = -0.45;
+            this.tableLegMesh4.position.z = -0.95;
+            this.tableLegMesh4.receiveShadow = true;
+            this.tableLegMesh4.castShadow = true;
+            this.app.scene.add(this.tableLegMesh4);
+        }
 
         let plate = new THREE.CylinderGeometry(0.16, 0.14, 0.02, 32);
         this.plateMesh = new THREE.Mesh(plate, this.plateMaterial);
@@ -297,252 +311,348 @@ class MyContents {
         this.plateMesh.castShadow = true;
         this.app.scene.add(this.plateMesh);
 
-        let cake = new THREE.CylinderGeometry(
-            0.1,
-            0.1,
-            0.1,
-            64,
-            1,
-            false,
-            0,
-            (Math.PI * 11) / 6
-        );
-        this.cakeMesh = new THREE.Mesh(cake, this.cakeMaterial);
-        this.cakeMesh.position.y = 0.9;
-        this.cakeMesh.position.x = 0;
-        this.cakeMesh.position.z = 0;
-        this.cakeMesh.receiveShadow = true;
-        this.cakeMesh.castShadow = true;
-        this.app.scene.add(this.cakeMesh);
+        {
+            // cake
+            let cake = new THREE.CylinderGeometry(
+                0.1,
+                0.1,
+                0.1,
+                64,
+                1,
+                false,
+                0,
+                (Math.PI * 11) / 6
+            );
+            this.cakeMesh = new THREE.Mesh(cake, this.cakeMaterial);
+            this.cakeMesh.position.y = 0.9;
+            this.cakeMesh.position.x = 0;
+            this.cakeMesh.position.z = 0;
+            this.cakeMesh.receiveShadow = true;
+            this.cakeMesh.castShadow = true;
+            this.app.scene.add(this.cakeMesh);
 
-        let cakeSlice = new THREE.PlaneGeometry(0.1, 0.1);
+            let cakeSlice = new THREE.PlaneGeometry(0.1, 0.1);
 
-        this.cakeSliceMesh1 = new THREE.Mesh(cakeSlice, this.cakeMaterial);
-        this.cakeSliceMesh1.rotation.y = -Math.PI / 2;
-        this.cakeSliceMesh1.position.y = 0.9;
-        this.cakeSliceMesh1.position.x = 0;
-        this.cakeSliceMesh1.position.z = 0.05;
-        this.cakeSliceMesh1.receiveShadow = true;
-        this.cakeSliceMesh1.castShadow = true;
-        this.app.scene.add(this.cakeSliceMesh1);
+            this.cakeSliceMesh1 = new THREE.Mesh(cakeSlice, this.cakeMaterial);
+            this.cakeSliceMesh1.rotation.y = -Math.PI / 2;
+            this.cakeSliceMesh1.position.y = 0.9;
+            this.cakeSliceMesh1.position.x = 0;
+            this.cakeSliceMesh1.position.z = 0.05;
+            this.cakeSliceMesh1.receiveShadow = true;
+            this.cakeSliceMesh1.castShadow = true;
+            this.app.scene.add(this.cakeSliceMesh1);
 
-        this.cakeSliceMesh2 = new THREE.Mesh(cakeSlice, this.cakeMaterial);
-        this.cakeSliceMesh2.rotation.y = (2 * Math.PI) / 6;
-        this.cakeSliceMesh2.position.y = 0.9;
-        this.cakeSliceMesh2.position.x = -Math.sin(Math.PI / 6) * 0.05;
-        this.cakeSliceMesh2.position.z = Math.cos(Math.PI / 6) * 0.05;
-        this.cakeSliceMesh2.receiveShadow = true;
-        this.cakeSliceMesh2.castShadow = true;
-        this.app.scene.add(this.cakeSliceMesh2);
+            this.cakeSliceMesh2 = new THREE.Mesh(cakeSlice, this.cakeMaterial);
+            this.cakeSliceMesh2.rotation.y = (2 * Math.PI) / 6;
+            this.cakeSliceMesh2.position.y = 0.9;
+            this.cakeSliceMesh2.position.x = -Math.sin(Math.PI / 6) * 0.05;
+            this.cakeSliceMesh2.position.z = Math.cos(Math.PI / 6) * 0.05;
+            this.cakeSliceMesh2.receiveShadow = true;
+            this.cakeSliceMesh2.castShadow = true;
+            this.app.scene.add(this.cakeSliceMesh2);
 
-        let candle = new THREE.CylinderGeometry(0.005, 0.005, 0.05, 8);
-        this.candleMesh = new THREE.Mesh(candle, this.candleMaterial);
-        this.candleMesh.position.y = 0.95;
-        this.candleMesh.position.x = 0;
-        this.candleMesh.position.z = 0;
-        this.candleMesh.receiveShadow = true;
-        this.candleMesh.castShadow = true;
-        this.app.scene.add(this.candleMesh);
+            let candle = new THREE.CylinderGeometry(0.005, 0.005, 0.05, 8);
+            this.candleMesh = new THREE.Mesh(candle, this.candleMaterial);
+            this.candleMesh.position.y = 0.95;
+            this.candleMesh.position.x = 0;
+            this.candleMesh.position.z = 0;
+            this.candleMesh.receiveShadow = true;
+            this.candleMesh.castShadow = true;
+            this.app.scene.add(this.candleMesh);
 
-        let flame = new THREE.ConeGeometry(0.005, 0.01, 8);
-        this.flameMesh = new THREE.Mesh(flame, this.flameMaterial);
-        this.flameMesh.position.y = 0.98;
-        this.flameMesh.position.x = 0;
-        this.flameMesh.position.z = 0;
-        this.app.scene.add(this.flameMesh);
+            let flame = new THREE.ConeGeometry(0.005, 0.01, 8);
+            this.flameMesh = new THREE.Mesh(flame, this.flameMaterial);
+            this.flameMesh.position.y = 0.98;
+            this.flameMesh.position.x = 0;
+            this.flameMesh.position.z = 0;
+            this.app.scene.add(this.flameMesh);
 
-        let flameLight = new THREE.PointLight("orange", 0.05, 0);
-        flameLight.position.set(0, 0.98, 0);
-        flameLight.castShadow = true;
-        flameLight.shadow.mapSize.width = this.shadowMapSize;
-        flameLight.shadow.mapSize.height = this.shadowMapSize;
-        this.app.scene.add(flameLight);
+            let flameLight = new THREE.PointLight("orange", 0.05, 0);
+            flameLight.position.set(0, 0.98, 0);
+            flameLight.castShadow = true;
+            flameLight.shadow.mapSize.width = this.shadowMapSize;
+            flameLight.shadow.mapSize.height = this.shadowMapSize;
+            this.app.scene.add(flameLight);
+        }
 
-        const carocha1 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(-.8, 2 - .8, 2.49),
-            new THREE.Vector3(-.8, 2 - .8 + (0.552284749831 * .8), 2.49),
-            new THREE.Vector3(0 - (.8 * 0.552284749831), 2, 2.49),
-            new THREE.Vector3(0, 2, 2.49),
-        );
-        this.app.scene.add(
-            new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(
-                    carocha1.getPoints(50)
-                ),
-                this.lineMaterial
-            )
-        );
-        const carocha2 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(0, 2, 2.49),
-            new THREE.Vector3(0 + (.4 * 0.552284749831), 2, 2.49),
-            new THREE.Vector3(.4, 2 - .4 + (0.552284749831 * .4), 2.49),
-            new THREE.Vector3(.4, 2 - .4, 2.49),
-        );
-        this.app.scene.add(
-            new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(
-                    carocha2.getPoints(50)
-                ),
-                this.lineMaterial
-            )
-        );
-        const carocha3 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(.4, 2 - .4, 2.49),
-            new THREE.Vector3(.4 + (0.552284749831 * .4), 2 - .4, 2.49),
-            new THREE.Vector3(.8, 2 - .8 + (0.552284749831 * .4), 2.49),
-            new THREE.Vector3(.8, 2 - .8, 2.49),
-        );
-        this.app.scene.add(
-            new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(
-                    carocha3.getPoints(50)
-                ),
-                this.lineMaterial
-            )
-        );
-        const carocha4 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(.8, 2 - .8, 2.49),
-            new THREE.Vector3(.8, 2 - .8 + (0.552284749831 * .3), 2.49),
-            new THREE.Vector3(.5 + (0.552284749831 * .3), 2 - .5, 2.49),
-            new THREE.Vector3(.5, 2 - .5, 2.49),
-        );
-        this.app.scene.add(
-            new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(
-                    carocha4.getPoints(50)
-                ),
-                this.lineMaterial
-            )
-        );
-        const carocha5 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(.5, 2 - .5, 2.49),
-            new THREE.Vector3(.5 - (0.552284749831 * .3), 2 - .5, 2.49),
-            new THREE.Vector3(.2, 2 - .8 + (0.552284749831 * .3), 2.49),
-            new THREE.Vector3(.2, 2 - .8, 2.49),
-        );
-        this.app.scene.add(
-            new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(
-                    carocha5.getPoints(50)
-                ),
-                this.lineMaterial
-            )
-        );
-        const carocha6 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(-.8, 2 - .8, 2.49),
-            new THREE.Vector3(-.8, 2 - .8 + (0.552284749831 * .3), 2.49),
-            new THREE.Vector3(-.5 - (0.552284749831 * .3), 2 - .5, 2.49),
-            new THREE.Vector3(-.5, 2 - .5, 2.49),
-        );
-        this.app.scene.add(
-            new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(
-                    carocha6.getPoints(50)
-                ),
-                this.lineMaterial
-            )
-        );
-        const carocha7 = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(-.5, 2 - .5, 2.49),
-            new THREE.Vector3(-.5 + (0.552284749831 * .3), 2 - .5, 2.49),
-            new THREE.Vector3(-.2, 2 - .8 + (0.552284749831 * .3), 2.49),
-            new THREE.Vector3(-.2, 2 - .8, 2.49),
-        );
-        this.app.scene.add(
-            new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(
-                    carocha7.getPoints(50)
-                ),
-                this.lineMaterial
-            )
-        );
+        {
+            // CAROCHA
+            const carocha1 = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(-.8, 2 - .8, 2.49),
+                new THREE.Vector3(-.8, 2 - .8 + (0.552284749831 * .8), 2.49),
+                new THREE.Vector3(0 - (.8 * 0.552284749831), 2, 2.49),
+                new THREE.Vector3(0, 2, 2.49),
+            );
+            this.app.scene.add(
+                new THREE.Line(
+                    new THREE.BufferGeometry().setFromPoints(
+                        carocha1.getPoints(50)
+                    ),
+                    this.lineMaterial
+                )
+            );
+            const carocha2 = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(0, 2, 2.49),
+                new THREE.Vector3(0 + (.4 * 0.552284749831), 2, 2.49),
+                new THREE.Vector3(.4, 2 - .4 + (0.552284749831 * .4), 2.49),
+                new THREE.Vector3(.4, 2 - .4, 2.49),
+            );
+            this.app.scene.add(
+                new THREE.Line(
+                    new THREE.BufferGeometry().setFromPoints(
+                        carocha2.getPoints(50)
+                    ),
+                    this.lineMaterial
+                )
+            );
+            const carocha3 = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(.4, 2 - .4, 2.49),
+                new THREE.Vector3(.4 + (0.552284749831 * .4), 2 - .4, 2.49),
+                new THREE.Vector3(.8, 2 - .8 + (0.552284749831 * .4), 2.49),
+                new THREE.Vector3(.8, 2 - .8, 2.49),
+            );
+            this.app.scene.add(
+                new THREE.Line(
+                    new THREE.BufferGeometry().setFromPoints(
+                        carocha3.getPoints(50)
+                    ),
+                    this.lineMaterial
+                )
+            );
+            const carocha4 = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(.8, 2 - .8, 2.49),
+                new THREE.Vector3(.8, 2 - .8 + (0.552284749831 * .3), 2.49),
+                new THREE.Vector3(.5 + (0.552284749831 * .3), 2 - .5, 2.49),
+                new THREE.Vector3(.5, 2 - .5, 2.49),
+            );
+            this.app.scene.add(
+                new THREE.Line(
+                    new THREE.BufferGeometry().setFromPoints(
+                        carocha4.getPoints(50)
+                    ),
+                    this.lineMaterial
+                )
+            );
+            const carocha5 = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(.5, 2 - .5, 2.49),
+                new THREE.Vector3(.5 - (0.552284749831 * .3), 2 - .5, 2.49),
+                new THREE.Vector3(.2, 2 - .8 + (0.552284749831 * .3), 2.49),
+                new THREE.Vector3(.2, 2 - .8, 2.49),
+            );
+            this.app.scene.add(
+                new THREE.Line(
+                    new THREE.BufferGeometry().setFromPoints(
+                        carocha5.getPoints(50)
+                    ),
+                    this.lineMaterial
+                )
+            );
+            const carocha6 = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(-.8, 2 - .8, 2.49),
+                new THREE.Vector3(-.8, 2 - .8 + (0.552284749831 * .3), 2.49),
+                new THREE.Vector3(-.5 - (0.552284749831 * .3), 2 - .5, 2.49),
+                new THREE.Vector3(-.5, 2 - .5, 2.49),
+            );
+            this.app.scene.add(
+                new THREE.Line(
+                    new THREE.BufferGeometry().setFromPoints(
+                        carocha6.getPoints(50)
+                    ),
+                    this.lineMaterial
+                )
+            );
+            const carocha7 = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(-.5, 2 - .5, 2.49),
+                new THREE.Vector3(-.5 + (0.552284749831 * .3), 2 - .5, 2.49),
+                new THREE.Vector3(-.2, 2 - .8 + (0.552284749831 * .3), 2.49),
+                new THREE.Vector3(-.2, 2 - .8, 2.49),
+            );
+            this.app.scene.add(
+                new THREE.Line(
+                    new THREE.BufferGeometry().setFromPoints(
+                        carocha7.getPoints(50)
+                    ),
+                    this.lineMaterial
+                )
+            );
+        }
 
-        const frameGeometry = new THREE.TorusGeometry(0.30, 0.03, 4, 4);
+        {
+            const frameGeometry = new THREE.TorusGeometry(0.30, 0.03, 4, 4);
 
-        const frame1 = new THREE.Mesh(frameGeometry, this.frameMaterial);
+            const frame1 = new THREE.Mesh(frameGeometry, this.frameMaterial);
 
-        frame1.rotation.z = Math.PI / 4;
-        frame1.position.y = 1.5;
-        frame1.position.x = -0.5;
-        frame1.position.z = -2.5;
+            frame1.rotation.z = Math.PI / 4;
+            frame1.position.y = 1.5;
+            frame1.position.x = -0.5;
+            frame1.position.z = -2.5;
 
-        this.app.scene.add(frame1);
+            this.app.scene.add(frame1);
 
-        const frame2 = new THREE.Mesh(frameGeometry, this.frameMaterial);
+            const frame2 = new THREE.Mesh(frameGeometry, this.frameMaterial);
 
-        frame2.rotation.z = Math.PI / 4;
-        frame2.position.y = 1.5;
-        frame2.position.x = 0.5;
-        frame2.position.z = -2.5;
+            frame2.rotation.z = Math.PI / 4;
+            frame2.position.y = 1.5;
+            frame2.position.x = 0.5;
+            frame2.position.z = -2.5;
 
-        this.app.scene.add(frame2);
+            this.app.scene.add(frame2);
 
-        let picture = new THREE.PlaneGeometry(0.40, 0.40);
+            let picture = new THREE.PlaneGeometry(0.40, 0.40);
 
-        let toinoPicture = new THREE.Mesh(picture, this.toinoMaterial);
-        toinoPicture.position.y = 1.5;
-        toinoPicture.position.x = -0.5;
-        toinoPicture.position.z = -2.49;
-        this.app.scene.add(toinoPicture);
+            let toinoPicture = new THREE.Mesh(picture, this.toinoMaterial);
+            toinoPicture.position.y = 1.5;
+            toinoPicture.position.x = -0.5;
+            toinoPicture.position.z = -2.49;
+            this.app.scene.add(toinoPicture);
 
-        let perasPicture = new THREE.Mesh(picture, this.perasMaterial);
-        perasPicture.position.y = 1.5;
-        perasPicture.position.x = 0.5;
-        perasPicture.position.z = -2.49;
-        this.app.scene.add(perasPicture);
+            let perasPicture = new THREE.Mesh(picture, this.perasMaterial);
+            perasPicture.position.y = 1.5;
+            perasPicture.position.x = 0.5;
+            perasPicture.position.z = -2.49;
+            this.app.scene.add(perasPicture);
+        }
 
-        // FLASHLIGHT
+        {
+            // FLASHLIGHT
 
-        const flashLightBodyHeight = 0.15;
-        const flashLightHeadHeight = 0.05;
+            const flashLightBodyHeight = 0.15;
+            const flashLightHeadHeight = 0.05;
 
-        this.flashLightBodyGeometry = new THREE.CylinderGeometry(0.025, 0.025, flashLightBodyHeight, 32, 1, false, 0, 2 * Math.PI);
-        this.flashLightBody = new THREE.Mesh(this.flashLightBodyGeometry, this.plateMaterial);
+            this.flashLightBodyGeometry = new THREE.CylinderGeometry(0.025, 0.025, flashLightBodyHeight, 32, 1, false, 0, 2 * Math.PI);
+            this.flashLightBody = new THREE.Mesh(this.flashLightBodyGeometry, this.plateMaterial);
 
-        this.flashLightHeadGeometry = new THREE.CylinderGeometry(0.025, 0.04, flashLightHeadHeight, 32, 1, true, 0, 2 * Math.PI);
-        this.flashLightHead = new THREE.Mesh(this.flashLightHeadGeometry, this.plateMaterial);
-        this.flashLightHead.translateY(-(flashLightBodyHeight + flashLightHeadHeight) / 2)
+            this.flashLightHeadGeometry = new THREE.CylinderGeometry(0.025, 0.04, flashLightHeadHeight, 32, 1, true, 0, 2 * Math.PI);
+            this.flashLightHead = new THREE.Mesh(this.flashLightHeadGeometry, this.plateMaterial);
+            this.flashLightHead.translateY(-(flashLightBodyHeight + flashLightHeadHeight) / 2)
 
-        const meshes = [
-            this.flashLightBody,
-            this.flashLightHead,
-        ]
+            this.flashLightGlowGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.001, 32, 1, false, 0, 2 * Math.PI);
+            this.flashLightGlowMaterial = this.flameMaterial.clone();
+            this.flashLightGlowMaterial.emissive = new THREE.Color("#efefef");
+            this.flashLightGlowMaterial.shininess = 50;
+            this.flashLightGlow = new THREE.Mesh(this.flashLightGlowGeometry, this.flashLightGlowMaterial);
+            this.flashLightGlow.position.y = -0.1;
 
-        /** @type {THREE.BufferGeometry} */
-        const flashLightGeometry = BufferGeometryUtils.mergeGeometries(meshes.map((m) => {
-            m.updateMatrixWorld();
+            const meshes = [
+                this.flashLightBody,
+                this.flashLightHead,
+            ]
 
-            return m.geometry.clone().applyMatrix4(m.matrixWorld);
-        }), true);
+            /** @type {THREE.BufferGeometry} */
+            const flashLightGeometry = BufferGeometryUtils.mergeGeometries(meshes.map((m) => {
+                m.updateMatrixWorld();
 
-        const flashLightMaterial = this.plateMaterial.clone();
-        flashLightMaterial.side = THREE.DoubleSide;
+                return m.geometry.clone().applyMatrix4(m.matrixWorld);
+            }), true);
 
-        const flashLight = new THREE.Mesh(flashLightGeometry, flashLightMaterial);
+            const flashLightMaterial = this.plateMaterial.clone();
+            flashLightMaterial.side = THREE.DoubleSide;
 
-        const flashLightLightSource = new THREE.SpotLight("white", 2.5, 5, Math.PI / 7, 0.2, 1);
+            const flashLight = new THREE.Mesh(flashLightGeometry, flashLightMaterial);
 
-        flashLightLightSource.castShadow = true;
-        flashLightLightSource.shadow.mapSize.width = this.shadowMapSize;
-        flashLightLightSource.shadow.mapSize.height = this.shadowMapSize;
-        flashLightLightSource.position.y = -flashLightBodyHeight / 2;
-        flashLightLightSource.target.position.x = 0;
-        flashLightLightSource.target.position.y = 1;
-        flashLightLightSource.target.position.z = 0;
+            const flashLightLightSource = new THREE.SpotLight("white", 2.5, 5, Math.PI / 7, 0.2, 1);
 
-        // For SOME reason this needs to be instantiated
-        const h = new THREE.SpotLightHelper(flashLightLightSource, 0.5);
+            flashLightLightSource.castShadow = true;
+            flashLightLightSource.shadow.mapSize.width = this.shadowMapSize;
+            flashLightLightSource.shadow.mapSize.height = this.shadowMapSize;
+            flashLightLightSource.position.y = -flashLightBodyHeight / 2;
+            flashLightLightSource.target.position.x = 0;
+            flashLightLightSource.target.position.y = 1;
+            flashLightLightSource.target.position.z = 0;
 
-        flashLight.add(flashLightLightSource);
+            // For SOME reason this needs to be instantiated
+            const h = new THREE.SpotLightHelper(flashLightLightSource, 0.5);
 
-        flashLight.position.y = 0.88;
-        flashLight.position.z = 0.6;
-        flashLight.position.x = 0.2;
-        flashLight.rotation.x = Math.PI / 2 + 0.055;
-        flashLight.rotation.z = -0.3;
+            flashLight.add(flashLightLightSource);
+            flashLight.add(this.flashLightGlow);
 
-        this.app.scene.add(flashLight);
-        //this.app.scene.add(h);
+            flashLight.position.y = 0.88;
+            flashLight.position.z = 0.6;
+            flashLight.position.x = 0.2;
+            flashLight.rotation.x = Math.PI / 2 + 0.079;
+            flashLight.rotation.z = -0.3;
+
+            this.app.scene.add(flashLight);
+
+        }
+
+        {
+            // window
+
+            const displacement = 0.21;
+
+            const windowQuarterGeometry = new THREE.TorusGeometry(0.30, 0.03, 4, 4);
+            const window1 = new THREE.Mesh(windowQuarterGeometry, this.frameMaterial);
+            window1.position.x = displacement;
+            window1.position.y = displacement;
+            const window2 = new THREE.Mesh(windowQuarterGeometry, this.frameMaterial);
+            window2.position.x = displacement;
+            window2.position.y = -displacement;
+            const window3 = new THREE.Mesh(windowQuarterGeometry, this.frameMaterial);
+            window3.position.x = -displacement;
+            window3.position.y = displacement;
+            const window4 = new THREE.Mesh(windowQuarterGeometry, this.frameMaterial);
+            window4.position.x = -displacement;
+            window4.position.y = -displacement;
+
+            const windowMeshes = [
+                window1,
+                window2,
+                window3,
+                window4,
+            ];
+            for (const mesh of windowMeshes) {
+                mesh.rotation.z = Math.PI / 4;
+            }
+
+            /** @type {THREE.BufferGeometry} */
+            const windowGeometry = BufferGeometryUtils.mergeGeometries(windowMeshes.map((m) => {
+                m.updateMatrixWorld();
+
+                return m.geometry.clone().applyMatrix4(m.matrixWorld);
+            }), true);
+
+            const windowMaterial = this.frameMaterial.clone();
+            windowMaterial.side = THREE.DoubleSide;
+
+            this.windowFrame = new THREE.Mesh(windowGeometry, windowMaterial);
+
+            // windowFrame.rotation.z = Math.PI / 4;
+            this.windowFrame.position.y = 1.5;
+            this.windowFrame.position.z = 2.5;
+            this.windowFrame.position.x = -1.5;
+
+            this.sceneryGeometry = new THREE.PlaneGeometry(0.85, 0.85);
+            this.scenery = new THREE.Mesh(this.sceneryGeometry, this.windowsMaterial);
+            this.scenery.rotation.y = Math.PI;
+            this.scenery.position.z = -.01;
+
+            this.windowFrame.add(this.scenery);
+
+            this.app.scene.add(this.windowFrame);
+        }
+
+        {
+            // spring
+
+            const curve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(.05, 0, 0),
+                new THREE.Vector3(0, .0125, .05),
+                new THREE.Vector3(-.05, .025, 0),
+                new THREE.Vector3(0, .0375, -.05),
+                new THREE.Vector3(.05, .05, 0),
+            ]);
+
+            const points = curve.getPoints(50);
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+            const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+
+            // Create the final object to add to the scene
+            const curveObject = new THREE.Line(geometry, material);
+
+            this.app.scene.add(curveObject);
+        }
     }
 
     update() { }
