@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import { NURBSSurface } from 'three/addons/curves/NURBSSurface.js';
+import { ParametricGeometry } from 'three/addons/geometries/ParametricGeometry.js';
 
 /**
  *  This class contains the contents of out application
@@ -174,6 +176,14 @@ class MyContents {
             map: this.windowsTexture,
             specular: "#ffffff",
             shininess: 5,
+        });
+
+        this.newspaperTexture = new THREE.TextureLoader().load("images/newspaper.jpg");
+        this.newspaperMaterial = new THREE.MeshPhongMaterial({
+            map: this.newspaperTexture,
+            specular: "#ffffff",
+            shininess: 5,
+            side: THREE.DoubleSide
         });
 
         this.shadowMapSize = 512;
@@ -672,6 +682,7 @@ class MyContents {
             // Create the final object to add to the scene
             const curveObject = new THREE.Line(geometry, material);
 
+            curveObject.castShadow = true;
             curveObject.position.y = .85;
             curveObject.position.z = -.4;
             curveObject.position.x = -.4;
@@ -681,6 +692,84 @@ class MyContents {
 
         {
             // newspaper
+            const controlPoints = [
+                // U = 0
+                [ // V = 0..1;
+                    [-.251, -.13, 0.15, 1],
+                    [.251, -.13, 0.15, 1],
+                ],
+                [ // V = 0..1;
+                    [-.25, -.15, 0.1, 1],
+                    [.25, -.15, 0.1, 1],
+                ],
+                [ // V = 0..1;
+                    [-.25, -.25, .15, 1],
+                    [.25, -.25, .15, 1],
+                ],
+                // U = 1
+                [ // V = 0..1
+                    [-.25, -.15, .2, 1],
+                    [.25, -.15, .2, 1],
+                ],
+                [ // V = 0..1
+                    [-.251, -.11, .17, 1],
+                    [.251, -.11, .17, 1],
+                ],
+
+            ];
+
+            const knots1 = []
+            const knots2 = []
+
+            const degree1 = controlPoints.length - 1, degree2 = 1;
+            const samples1 = 30, samples2 = 10;
+
+            // build knots1 = [ 0, 0, 0, 1, 1, 1 ];
+            for (var i = 0; i <= degree1; i++) {
+                knots1.push(0)
+            }
+            for (var i = 0; i <= degree1; i++) {
+                knots1.push(1)
+            }
+
+            // build knots2 = [ 0, 0, 0, 0, 1, 1, 1, 1 ];
+            for (var i = 0; i <= degree2; i++) {
+                knots2.push(0)
+            }
+            for (var i = 0; i <= degree2; i++) {
+                knots2.push(1)
+            }
+
+            let stackedPoints = []
+
+            for (var i = 0; i < controlPoints.length; i++) {
+                let row = controlPoints[i]
+                let newRow = []
+                for (var j = 0; j < row.length; j++) {
+                    let item = row[j]
+                    newRow.push(new THREE.Vector4(item[0],
+                        item[1], item[2], item[3]));
+                }
+                stackedPoints[i] = newRow;
+            }
+
+            const nurbsSurface = new NURBSSurface(degree1, degree2, knots1, knots2, stackedPoints);
+            const newspaperGeometry = new ParametricGeometry(getSurfacePoint, samples1, samples2);
+
+            const newspaper = new THREE.Mesh(newspaperGeometry, this.newspaperMaterial);
+
+            newspaper.position.y = 1.035;
+            newspaper.position.x = 0.15;
+            newspaper.position.z = -0.75;
+            newspaper.rotation.y = Math.PI / 5;
+            newspaper.castShadow = true;
+
+            this.app.scene.add(newspaper);
+
+            function getSurfacePoint(u, v, target) {
+                return nurbsSurface.getPoint(u, v, target);
+            }
+
         }
     }
 
