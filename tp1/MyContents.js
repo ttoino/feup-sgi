@@ -635,23 +635,52 @@ class MyContents {
         {
             // spring
 
-            const curve = new THREE.CatmullRomCurve3([
-                new THREE.Vector3(.05, 0, 0),
-                new THREE.Vector3(0, .0125, .05),
-                new THREE.Vector3(-.05, .025, 0),
-                new THREE.Vector3(0, .0375, -.05),
-                new THREE.Vector3(.05, .05, 0),
-            ]);
+            const HEIGHT_STEP = 0.01250;
 
-            const points = curve.getPoints(50);
-            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const generateRevolution = (numPoints = 50, radius = 0.05, heightStep = HEIGHT_STEP, startingHeight = 0) => {
+                const points = [];
+
+                const yStep = heightStep / numPoints;
+
+                for (let i = 0; i < numPoints; i++) {
+                    const angle = (i / numPoints) * Math.PI * 2;
+
+                    points.push(new THREE.Vector3(
+                        Math.cos(angle) * radius,
+                        yStep * i + startingHeight,
+                        Math.sin(angle) * radius,
+                    ));
+                }
+
+                return points;
+            }
+
+            const points = []
+            const num_revolutions = 7;
+
+            for (let i = 0; i < num_revolutions; i++) {
+                points.push(...generateRevolution(50, 0.025, HEIGHT_STEP, i * HEIGHT_STEP));
+            }
+
+            const curve = new THREE.CatmullRomCurve3(points);
+
+            const curvePoints = curve.getPoints(50 * num_revolutions);
+            const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
 
             const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
 
             // Create the final object to add to the scene
             const curveObject = new THREE.Line(geometry, material);
 
+            curveObject.position.y = .85;
+            curveObject.position.z = -.4;
+            curveObject.position.x = -.4;
+
             this.app.scene.add(curveObject);
+        }
+
+        {
+            // newspaper
         }
     }
 
