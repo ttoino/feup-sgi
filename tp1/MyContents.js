@@ -211,6 +211,54 @@ class MyContents {
             side: THREE.DoubleSide,
             shadowSide: THREE.DoubleSide,
         });
+
+        this.flowerBodyMaterial = new THREE.LineBasicMaterial({
+            color: "#00ff33",
+        });
+
+        this.flowerLeafMaterial = new THREE.MeshPhongMaterial({
+            color: "#00ff33",
+            shininess: 100,
+            side: THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
+        });
+
+        this.flowerHeadCoreMaterial = new THREE.MeshPhongMaterial({
+            color: "#f0f0ff",
+            shininess: 10,
+            side: THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
+        });
+
+        this.flowerHeadRing1Material = new THREE.MeshPhongMaterial({
+            color: "yellow",
+            shininess: 10,
+            side: THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
+        });
+
+        this.flowerHeadRing2Material = new THREE.MeshPhongMaterial({
+            color: "#8B4000",
+            shininess: 10,
+            side: THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
+        });
+
+        this.potSoilMaterial = new THREE.MeshPhongMaterial({
+            color: "brown",
+            shininess: 10,
+            side: THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
+        });
+
+        this.soilTexture = new THREE.TextureLoader().load(
+            "textures/soil.avif"
+        );
+        this.soilMaterial = new THREE.MeshPhongMaterial({
+            map: this.soilTexture,
+            specular: "#ffffff",
+            shininess: 5,
+        });
     }
 
     /**
@@ -902,7 +950,7 @@ class MyContents {
             const h = 0.05;
             const H = 0.15;
 
-            const controlPoints = [
+            const vaseControlPoints = [
                 // U = 0
                 [
                     // V = 0..1;
@@ -926,31 +974,127 @@ class MyContents {
                 ],
             ];
 
-            const pot = this.buildNURBS(
-                controlPoints,
+            const pot1 = this.buildNURBS(
+                vaseControlPoints,
                 10,
                 10,
                 this.potMaterial
             );
-            pot.position.y = 1;
-            pot.position.x = -0.2;
-            pot.position.z = 0.4;
-            pot.castShadow = true;
-            pot.receiveShadow = true;
+            pot1.position.y = 1;
+            pot1.position.x = -0.2;
+            pot1.position.z = 0.4;
+            pot1.castShadow = true;
+            pot1.receiveShadow = true;
 
-            const pot2 = pot.clone();
+            const pot2 = pot1.clone();
             pot2.rotation.y = Math.PI / 2;
 
-            const pot3 = pot.clone();
+            const pot3 = pot1.clone();
             pot3.rotation.y = Math.PI;
 
-            const pot4 = pot.clone();
+            const pot4 = pot1.clone();
             pot4.rotation.y = -Math.PI / 2;
 
-            this.app.scene.add(pot);
-            this.app.scene.add(pot2);
-            this.app.scene.add(pot3);
-            this.app.scene.add(pot4);
+            this.pot = new THREE.Group();
+
+            this.pot.add(pot1);
+            this.pot.add(pot2);
+            this.pot.add(pot3);
+            this.pot.add(pot4);
+            this.app.scene.add(this.pot);
+
+            const flowerBodyPoints = new THREE.CubicBezierCurve3(
+                new THREE.Vector3(-0.08, .2 - 0.08, 0),
+                new THREE.Vector3(-0.08, .2 - 0.08 + 0.552284749831 * 0.08, 0),
+                new THREE.Vector3(0 - 0.08 * 0.552284749831, .2, 0),
+                new THREE.Vector3(0, .2, 0)
+            );
+            this.flowerBody = new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(
+                    flowerBodyPoints.getPoints(50)
+                ),
+                this.flowerBodyMaterial
+            )
+
+            const scale = .10;
+            const leafBaseHalfLength = 0.0
+            const leafControlPoints = [
+                // U = 0
+                [
+                    // V = 0..1;
+                    [r * scale, H * scale, -r * scale, 1],
+                    [r * scale, H * scale, -r * scale, 0.207],
+                    [r * scale, H * scale, -r * scale, 1],
+                ],
+                // U = 1
+                [
+                    // V = 0..1;
+                    [R * scale, h * scale, 0, 1],
+                    [R * scale, h * scale, -R * scale, 0.507],
+                    [0, h * scale, -R * scale, 1],
+                ],
+                // U = 2
+                [
+                    // V = 0..1;
+                    [r * scale + leafBaseHalfLength * scale, -H * scale, 0, 1],
+                    [r * scale, -H * scale, 0, 0.207],
+                    [r * scale, -H * scale, -leafBaseHalfLength * scale, 1],
+                ],
+            ];
+
+            this.leaf = this.buildNURBS(
+                leafControlPoints,
+                10,
+                10,
+                this.flowerLeafMaterial
+            );
+            this.leaf.position.y = .169;
+            this.leaf.position.x = -0.058;
+            this.leaf.position.z = this.flowerBody.position.z + 0.015;
+            this.leaf.rotation.z = Math.PI / 2;
+            this.leaf.rotation.y = -3 * Math.PI / 2;
+            this.leaf.rotation.x = -0.1 * Math.PI / 9;
+            this.flowerBody.add(this.leaf);
+
+            const headScale = 0.5;
+
+            this.flowerHeadCoreGeometry = new THREE.CylinderGeometry(headScale * 0.05, headScale * 0.05, headScale * 0.0125);
+            this.flowerHeadCore = new THREE.Mesh(this.flowerHeadCoreGeometry, this.flowerHeadCoreMaterial);
+
+            this.flowerHeadRing1Geometry = new THREE.TorusGeometry(headScale * 0.05, headScale * 0.01, 40, 40);
+            this.flowerHeadRing1 = new THREE.Mesh(this.flowerHeadRing1Geometry, this.flowerHeadRing1Material);
+            this.flowerHeadRing1.rotation.x = Math.PI / 2;
+
+            this.flowerHeadRing2Geometry = new THREE.TorusGeometry(headScale * 0.065, headScale * 0.01, 40, 40);
+            this.flowerHeadRing2 = new THREE.Mesh(this.flowerHeadRing2Geometry, this.flowerHeadRing2Material);
+            this.flowerHeadRing2.rotation.x = Math.PI / 2;
+
+            this.flowerHead = new THREE.Group();
+            this.flowerHead.add(this.flowerHeadCore);
+            this.flowerHead.add(this.flowerHeadRing1);
+            this.flowerHead.add(this.flowerHeadRing2);
+            this.flowerHead.position.y = .2;
+            this.flowerHead.rotation.z = - Math.PI / 2;
+
+            this.flower = new THREE.Group();
+            this.flower.add(this.flowerBody);
+            this.flower.add(this.flowerHead);
+
+            this.flower.castShadow = true;
+            this.flower.receiveShadow = true;
+
+            this.flower.position.y = 1;
+            this.flower.position.x = -0.1;
+            this.flower.position.z = 0.4;
+
+            this.potSoilGeometry = new THREE.CylinderGeometry(0.07, 0.09, 0.05, 32);
+            this.potSoil = new THREE.Mesh(this.potSoilGeometry, this.soilMaterial);
+            this.potSoil.position.y = 0.095;
+            this.potSoil.castShadow = true;
+            this.potSoil.receiveShadow = true;
+            pot1.add(this.potSoil);
+
+            this.app.scene.add(this.flower);
         }
 
         // lamp
