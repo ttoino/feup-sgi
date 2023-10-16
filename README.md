@@ -11,12 +11,7 @@
 
 ## Projects
 
-### [TP1 - ThreeJS Basics](tp1)
-
-- (items briefly describing main strong points)
-- Scene
-  - (Brief description of the created scene)
-  - (relative link to the scene)
+### [TP1 - ThreeJS Basics](tp1/README.md)
 
 ----
 
