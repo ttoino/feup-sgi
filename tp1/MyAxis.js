@@ -1,15 +1,14 @@
-import * as THREE from 'three';
-import { MyApp } from './MyApp.js';
+import * as THREE from "three";
+import { MyApp } from "./MyApp.js";
 
 /**
  * This class contains a 3D axis representation
  */
 class MyAxis extends THREE.Object3D {
-
     /**
-     * 
+     *
      * @param {MyApp} app the application object
-     * @param {number} size the size of each axis 
+     * @param {number} size the size of each axis
      * @param {number} baseRadius the base radius of each axis
      * @param {number} xxColor the hexadecimal representation of the xx axis color
      * @param {number} yyColor the hexadecimal representation of the xx axis color
@@ -18,12 +17,12 @@ class MyAxis extends THREE.Object3D {
     constructor(app, size, baseRadius, xxColor, yyColor, zzColor) {
         super();
         this.app = app;
-        this.type = 'Group';
+        this.type = "Group";
         this.size = size || 2;
         this.baseRadius = baseRadius || 0.05;
-        this.xxColor = xxColor || 0xff0000
-        this.yyColor = yyColor || 0x00ff00
-        this.zzColor = zzColor || 0x0000ff
+        this.xxColor = xxColor || 0xff0000;
+        this.yyColor = yyColor || 0x00ff00;
+        this.zzColor = zzColor || 0x0000ff;
 
         // a cone geometry for the xx axis
         const xx = new THREE.ConeGeometry(this.baseRadius, this.size, 32);
@@ -50,7 +49,11 @@ class MyAxis extends THREE.Object3D {
 
         // an axis helper
         const axesHelper = new THREE.AxesHelper(5);
-        axesHelper.setColors(new THREE.Color(this.xxColor), new THREE.Color(this.yyColor), new THREE.Color(this.zzColor))
+        axesHelper.setColors(
+            new THREE.Color(this.xxColor),
+            new THREE.Color(this.yyColor),
+            new THREE.Color(this.zzColor)
+        );
         this.add(axesHelper);
     }
 }

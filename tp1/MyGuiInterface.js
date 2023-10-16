@@ -38,21 +38,7 @@ class MyGuiInterface {
 
         const shadowFolder = this.datgui.addFolder("Shadows");
         shadowFolder
-            .add(this.app.renderer.shadowMap, "enabled")
-            .name("Enabled")
-            .onChange((value) => {
-                this.app.renderer.shadowMap.needsUpdate = true;
-            });
-        shadowFolder
-            .add(this.app.renderer.shadowMap, "type", {
-                BasicShadowMap: THREE.BasicShadowMap,
-                PCFShadowMap: THREE.PCFShadowMap,
-                PCFSoftShadowMap: THREE.PCFSoftShadowMap,
-                VSMShadowMap: THREE.VSMShadowMap,
-            })
-            .name("Type");
-        shadowFolder
-            .add(this.contents, "shadowMapSize", 512, 8192, 512)
+            .add(this.contents, "shadowMapSize", 0, 2048, 512)
             .name("Map size")
             .onChange((value) => {
                 this.contents.updateLights();

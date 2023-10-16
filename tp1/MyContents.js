@@ -16,7 +16,7 @@ class MyContents {
         this.app = app;
         this.axis = null;
 
-        this.shadowMapSize = 2048;
+        this.shadowMapSize = 512;
         this.helpersVisible = true;
         /** @type {THREE.Light[]} */
         this.lights = [];
@@ -982,6 +982,112 @@ class MyContents {
             this.app.scene.add(lampMesh);
         }
 
+        // chair
+        {
+            const chair = new THREE.BoxGeometry(0.5, 0.05, 0.5);
+            const chairMesh = new THREE.Mesh(chair, this.tableMaterial);
+            chairMesh.position.y = 0.5;
+            chairMesh.position.z = 1;
+            chairMesh.position.x = -1;
+            chairMesh.rotation.y = (3 * Math.PI) / 4;
+            chairMesh.castShadow = true;
+            chairMesh.receiveShadow = true;
+            this.app.scene.add(chairMesh);
+
+            const chairLeg = new THREE.CylinderGeometry(0.025, 0.025, 0.5, 32);
+
+            const chairLegMesh1 = new THREE.Mesh(
+                chairLeg,
+                this.tableLegMaterial
+            );
+            chairLegMesh1.position.y = -0.25;
+            chairLegMesh1.position.x = 0.2;
+            chairLegMesh1.position.z = 0.2;
+            chairLegMesh1.castShadow = true;
+            chairLegMesh1.receiveShadow = true;
+            chairMesh.add(chairLegMesh1);
+
+            const chairLegMesh2 = new THREE.Mesh(
+                chairLeg,
+                this.tableLegMaterial
+            );
+            chairLegMesh2.position.y = -0.25;
+            chairLegMesh2.position.x = -0.2;
+            chairLegMesh2.position.z = 0.2;
+            chairLegMesh2.castShadow = true;
+            chairLegMesh2.receiveShadow = true;
+            chairMesh.add(chairLegMesh2);
+
+            const chairLegMesh3 = new THREE.Mesh(
+                chairLeg,
+                this.tableLegMaterial
+            );
+            chairLegMesh3.position.y = -0.25;
+            chairLegMesh3.position.x = 0.2;
+            chairLegMesh3.position.z = -0.2;
+            chairLegMesh3.castShadow = true;
+            chairLegMesh3.receiveShadow = true;
+            chairMesh.add(chairLegMesh3);
+
+            const chairLegMesh4 = new THREE.Mesh(
+                chairLeg,
+                this.tableLegMaterial
+            );
+            chairLegMesh4.position.y = -0.25;
+            chairLegMesh4.position.x = -0.2;
+            chairLegMesh4.position.z = -0.2;
+            chairLegMesh4.castShadow = true;
+            chairLegMesh4.receiveShadow = true;
+            chairMesh.add(chairLegMesh4);
+
+            const chairBack = new THREE.BoxGeometry(0.5, 0.5, 0.05);
+            const chairBackMesh = new THREE.Mesh(chairBack, this.tableMaterial);
+            chairBackMesh.position.y = 0.25;
+            chairBackMesh.position.z = -0.225;
+            chairBackMesh.castShadow = true;
+            chairBackMesh.receiveShadow = true;
+            chairMesh.add(chairBackMesh);
+
+            let plate = new THREE.CylinderGeometry(0.1, 0.08, 0.01, 32);
+            const plateMesh = new THREE.Mesh(plate, this.plateMaterial);
+            plateMesh.position.y = 0.025;
+            plateMesh.position.x = 0;
+            plateMesh.position.z = 0;
+            plateMesh.castShadow = true;
+            plateMesh.receiveShadow = true;
+            chairMesh.add(plateMesh);
+
+            let cakeSliceCylinder = new THREE.CylinderGeometry(
+                0.1,
+                0.1,
+                0.1,
+                64,
+                1,
+                false,
+                0,
+                Math.PI / 6
+            );
+            const cakeSliceMesh1 = new THREE.Mesh(
+                cakeSliceCylinder,
+                this.cakeMaterial
+            );
+            cakeSliceMesh1.rotation.z = Math.PI / 2;
+            cakeSliceMesh1.position.y = 0.0275;
+            cakeSliceMesh1.position.z = -0.05;
+            cakeSliceMesh1.receiveShadow = true;
+            cakeSliceMesh1.castShadow = true;
+            chairMesh.add(cakeSliceMesh1);
+
+            let cakeSlice = new THREE.PlaneGeometry(0.1, 0.1);
+            const cakeSliceMesh2 = new THREE.Mesh(cakeSlice, this.cakeMaterial);
+            cakeSliceMesh2.rotation.y = (4 * Math.PI) / 6;
+            cakeSliceMesh2.position.x = Math.sin(Math.PI / 6) * 0.05;
+            cakeSliceMesh2.position.z = Math.cos(Math.PI / 6) * 0.05;
+            cakeSliceMesh2.receiveShadow = true;
+            cakeSliceMesh2.castShadow = true;
+            cakeSliceMesh1.add(cakeSliceMesh2);
+        }
+
         this.updateLights();
     }
 
@@ -994,7 +1100,8 @@ class MyContents {
             l.castShadow = true;
             l.shadow.mapSize.width = this.shadowMapSize;
             l.shadow.mapSize.height = this.shadowMapSize;
-            l.shadow.needsUpdate = true;
+            l.shadow.map?.dispose();
+            l.shadow.map = null;
         });
     }
 
