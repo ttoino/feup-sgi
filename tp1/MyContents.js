@@ -189,6 +189,14 @@ class MyContents {
             side: THREE.DoubleSide,
         });
 
+        this.potMaterial = new THREE.MeshPhongMaterial({
+            color: "#77eeff",
+            specular: "#ffffff",
+            shininess: 100,
+            side: THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
+        });
+
         this.shadowMapSize = 512;
     }
 
@@ -841,22 +849,25 @@ class MyContents {
                     [-0.251, -0.13, 0.15, 1],
                     [0.251, -0.13, 0.15, 1],
                 ],
+                // U = 1
                 [
                     // V = 0..1;
                     [-0.25, -0.15, 0.1, 1],
                     [0.25, -0.15, 0.1, 1],
                 ],
+                // U = 2
                 [
                     // V = 0..1;
                     [-0.25, -0.25, 0.15, 1],
                     [0.25, -0.25, 0.15, 1],
                 ],
-                // U = 1
+                // U = 3
                 [
                     // V = 0..1
                     [-0.25, -0.15, 0.2, 1],
                     [0.25, -0.15, 0.2, 1],
                 ],
+                // U = 4
                 [
                     // V = 0..1
                     [-0.251, -0.11, 0.17, 1],
@@ -928,6 +939,115 @@ class MyContents {
             newspaper.receiveShadow = true;
 
             this.app.scene.add(newspaper);
+
+            function getSurfacePoint(u, v, target) {
+                return nurbsSurface.getPoint(u, v, target);
+            }
+        }
+
+        // flower and pot
+        {
+            const r = 0.05;
+            const R = 0.15;
+            const h = 0.05;
+            const H = 0.15;
+
+            const controlPoints = [
+                // U = 0
+                [
+                    // V = 0..1;
+                    [r, H, 0, 1],
+                    [r, H, -r, .707],
+                    [0, H, -r, 1],
+                ],
+                // U = 1
+                [
+                    // V = 0..1;
+                    [R, h, 0, 1],
+                    [R, h, -R, .707],
+                    [0, h, -R, 1],
+                ],
+                // U = 2
+                [
+                    // V = 0..1;
+                    [r, -H, 0, 1],
+                    [r, -H, -r, .707],
+                    [0, -H, -r, 1],
+                ],
+            ];
+
+            const knots1 = [];
+            const knots2 = [];
+
+            const degree1 = controlPoints.length - 1,
+                degree2 = controlPoints[0].length - 1;
+            const samples1 = 30,
+                samples2 = 10;
+
+            // build knots1 = [ 0, 0, 0, 1, 1, 1 ];
+            for (var i = 0; i <= degree1; i++) {
+                knots1.push(0);
+            }
+            for (var i = 0; i <= degree1; i++) {
+                knots1.push(1);
+            }
+
+            // build knots2 = [ 0, 0, 0, 0, 1, 1, 1, 1 ];
+            for (var i = 0; i <= degree2; i++) {
+                knots2.push(0);
+            }
+            for (var i = 0; i <= degree2; i++) {
+                knots2.push(1);
+            }
+
+            let stackedPoints = [];
+
+            for (var i = 0; i < controlPoints.length; i++) {
+                let row = controlPoints[i];
+                let newRow = [];
+                for (var j = 0; j < row.length; j++) {
+                    let item = row[j];
+                    newRow.push(
+                        new THREE.Vector4(item[0], item[1], item[2], item[3])
+                    );
+                }
+                stackedPoints[i] = newRow;
+            }
+
+            const nurbsSurface = new NURBSSurface(
+                degree1,
+                degree2,
+                knots1,
+                knots2,
+                stackedPoints
+            );
+
+            const potGeometry = new ParametricGeometry(
+                getSurfacePoint,
+                samples1,
+                samples2
+            );
+
+            const pot = new THREE.Mesh(potGeometry, this.potMaterial);
+            pot.position.y = 1;
+            pot.position.x = -0.2;
+            pot.position.z = 0.4;
+            pot.castShadow = true;
+            pot.receiveShadow = true;
+
+            const pot2 = pot.clone();
+            pot2.rotation.y = Math.PI / 2;
+
+            const pot3 = pot.clone();
+            pot3.rotation.y = Math.PI;
+
+            const pot4 = pot.clone();
+            pot4.rotation.y = -Math.PI / 2;
+
+            this.app.scene.add(pot);
+            this.app.scene.add(pot2);
+            this.app.scene.add(pot3);
+            this.app.scene.add(pot4);
 
             function getSurfacePoint(u, v, target) {
                 return nurbsSurface.getPoint(u, v, target);
