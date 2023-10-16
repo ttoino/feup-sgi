@@ -875,62 +875,12 @@ class MyContents {
                 ],
             ];
 
-            const knots1 = [];
-            const knots2 = [];
-
-            const degree1 = controlPoints.length - 1,
-                degree2 = 1;
-            const samples1 = 30,
-                samples2 = 10;
-
-            // build knots1 = [ 0, 0, 0, 1, 1, 1 ];
-            for (var i = 0; i <= degree1; i++) {
-                knots1.push(0);
-            }
-            for (var i = 0; i <= degree1; i++) {
-                knots1.push(1);
-            }
-
-            // build knots2 = [ 0, 0, 0, 0, 1, 1, 1, 1 ];
-            for (var i = 0; i <= degree2; i++) {
-                knots2.push(0);
-            }
-            for (var i = 0; i <= degree2; i++) {
-                knots2.push(1);
-            }
-
-            let stackedPoints = [];
-
-            for (var i = 0; i < controlPoints.length; i++) {
-                let row = controlPoints[i];
-                let newRow = [];
-                for (var j = 0; j < row.length; j++) {
-                    let item = row[j];
-                    newRow.push(
-                        new THREE.Vector4(item[0], item[1], item[2], item[3])
-                    );
-                }
-                stackedPoints[i] = newRow;
-            }
-
-            const nurbsSurface = new NURBSSurface(
-                degree1,
-                degree2,
-                knots1,
-                knots2,
-                stackedPoints
-            );
-            const newspaperGeometry = new ParametricGeometry(
-                getSurfacePoint,
-                samples1,
-                samples2
-            );
-
-            const newspaper = new THREE.Mesh(
-                newspaperGeometry,
+            const newspaper = this.buildNURBS(
+                controlPoints,
+                30,
+                10,
                 this.newspaperMaterial
             );
-
             newspaper.position.y = 1.035;
             newspaper.position.x = 0.15;
             newspaper.position.z = -0.75;
@@ -939,10 +889,6 @@ class MyContents {
             newspaper.receiveShadow = true;
 
             this.app.scene.add(newspaper);
-
-            function getSurfacePoint(u, v, target) {
-                return nurbsSurface.getPoint(u, v, target);
-            }
         }
 
         // flower and pot
@@ -957,78 +903,31 @@ class MyContents {
                 [
                     // V = 0..1;
                     [r, H, 0, 1],
-                    [r, H, -r, .707],
+                    [r, H, -r, 0.707],
                     [0, H, -r, 1],
                 ],
                 // U = 1
                 [
                     // V = 0..1;
                     [R, h, 0, 1],
-                    [R, h, -R, .707],
+                    [R, h, -R, 0.707],
                     [0, h, -R, 1],
                 ],
                 // U = 2
                 [
                     // V = 0..1;
                     [r, -H, 0, 1],
-                    [r, -H, -r, .707],
+                    [r, -H, -r, 0.707],
                     [0, -H, -r, 1],
                 ],
             ];
 
-            const knots1 = [];
-            const knots2 = [];
-
-            const degree1 = controlPoints.length - 1,
-                degree2 = controlPoints[0].length - 1;
-            const samples1 = 30,
-                samples2 = 10;
-
-            // build knots1 = [ 0, 0, 0, 1, 1, 1 ];
-            for (var i = 0; i <= degree1; i++) {
-                knots1.push(0);
-            }
-            for (var i = 0; i <= degree1; i++) {
-                knots1.push(1);
-            }
-
-            // build knots2 = [ 0, 0, 0, 0, 1, 1, 1, 1 ];
-            for (var i = 0; i <= degree2; i++) {
-                knots2.push(0);
-            }
-            for (var i = 0; i <= degree2; i++) {
-                knots2.push(1);
-            }
-
-            let stackedPoints = [];
-
-            for (var i = 0; i < controlPoints.length; i++) {
-                let row = controlPoints[i];
-                let newRow = [];
-                for (var j = 0; j < row.length; j++) {
-                    let item = row[j];
-                    newRow.push(
-                        new THREE.Vector4(item[0], item[1], item[2], item[3])
-                    );
-                }
-                stackedPoints[i] = newRow;
-            }
-
-            const nurbsSurface = new NURBSSurface(
-                degree1,
-                degree2,
-                knots1,
-                knots2,
-                stackedPoints
+            const pot = this.buildNURBS(
+                controlPoints,
+                10,
+                10,
+                this.potMaterial
             );
-
-            const potGeometry = new ParametricGeometry(
-                getSurfacePoint,
-                samples1,
-                samples2
-            );
-
-            const pot = new THREE.Mesh(potGeometry, this.potMaterial);
             pot.position.y = 1;
             pot.position.x = -0.2;
             pot.position.z = 0.4;
@@ -1048,14 +947,51 @@ class MyContents {
             this.app.scene.add(pot2);
             this.app.scene.add(pot3);
             this.app.scene.add(pot4);
-
-            function getSurfacePoint(u, v, target) {
-                return nurbsSurface.getPoint(u, v, target);
-            }
         }
     }
 
     update() {}
+
+    /**
+     * @param {number[][][]} controlPoints
+     * @param {number} samples1
+     * @param {number} samples2
+     * @param {THREE.Material} material
+     * @returns {THREE.Mesh}
+     */
+    buildNURBS(controlPoints, samples1, samples2, material) {
+        const degree1 = controlPoints.length - 1,
+            degree2 = (controlPoints[0]?.length ?? 0) - 1;
+
+        if (degree1 < 0 || degree2 < 0) return;
+
+        const knots1 = new Array(degree1 + 1)
+            .fill(0)
+            .concat(new Array(degree1 + 1).fill(1));
+        const knots2 = new Array(degree2 + 1)
+            .fill(0)
+            .concat(new Array(degree2 + 1).fill(1));
+
+        const vControlPoints = controlPoints.map((row) =>
+            row.map((item) => new THREE.Vector4(...item))
+        );
+
+        const nurbsSurface = new NURBSSurface(
+            degree1,
+            degree2,
+            knots1,
+            knots2,
+            vControlPoints
+        );
+
+        const geometry = new ParametricGeometry(
+            nurbsSurface.getPoint.bind(nurbsSurface),
+            samples1,
+            samples2
+        );
+
+        return new THREE.Mesh(geometry, material);
+    }
 }
 
 export { MyContents };
