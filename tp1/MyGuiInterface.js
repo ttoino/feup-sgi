@@ -1,6 +1,7 @@
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { MyApp } from "./MyApp.js";
 import { MyContents } from "./MyContents.js";
+import * as THREE from "three";
 
 /**
     This class customizes the gui interface for the app
@@ -33,11 +34,37 @@ class MyGuiInterface {
         cameraFolder
             .add(this.app, "activeCameraName", Object.keys(this.app.cameras))
             .name("active camera");
-        // note that we are using a property from the app
-        cameraFolder
-            .add(this.app.activeCamera.position, "x", 0, 10)
-            .name("x coord");
         cameraFolder.open();
+
+        const shadowFolder = this.datgui.addFolder("Shadows");
+        shadowFolder
+            .add(this.app.renderer.shadowMap, "enabled")
+            .name("Enabled")
+            .onChange((value) => {
+                this.app.renderer.shadowMap.needsUpdate = true;
+            });
+        shadowFolder
+            .add(this.app.renderer.shadowMap, "type", {
+                BasicShadowMap: THREE.BasicShadowMap,
+                PCFShadowMap: THREE.PCFShadowMap,
+                PCFSoftShadowMap: THREE.PCFSoftShadowMap,
+                VSMShadowMap: THREE.VSMShadowMap,
+            })
+            .name("Type");
+        shadowFolder
+            .add(this.contents, "shadowMapSize", 512, 8192, 512)
+            .name("Map size")
+            .onChange((value) => {
+                this.contents.updateLights();
+            });
+
+        const lightFolder = this.datgui.addFolder("Lights");
+        lightFolder
+            .add(this.contents, "helpersVisible")
+            .name("Show helpers")
+            .onChange((value) => {
+                this.contents.updateHelpers();
+            });
     }
 }
 

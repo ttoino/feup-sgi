@@ -16,6 +16,13 @@ class MyContents {
         this.app = app;
         this.axis = null;
 
+        this.shadowMapSize = 2048;
+        this.helpersVisible = true;
+        /** @type {THREE.Light[]} */
+        this.lights = [];
+        /** @type {THREE.Object3D[]} */
+        this.helpers = [];
+
         this.setupMaterials();
     }
 
@@ -197,7 +204,13 @@ class MyContents {
             shadowSide: THREE.DoubleSide,
         });
 
-        this.shadowMapSize = 512;
+        this.lampMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#ffffff",
+            shininess: 100,
+            side: THREE.DoubleSide,
+            shadowSide: THREE.DoubleSide,
+        });
     }
 
     /**
@@ -212,24 +225,8 @@ class MyContents {
             this.app.scene.add(this.axis);
         }
 
-        // add a point light on top of the model
-        const pointLight = new THREE.PointLight(0xffffff, 0.5, 0, 1);
-        pointLight.position.set(0, 2.75, 0);
-        pointLight.castShadow = true;
-        pointLight.shadow.mapSize.width = this.shadowMapSize;
-        pointLight.shadow.mapSize.height = this.shadowMapSize;
-        this.app.scene.add(pointLight);
-
-        // add a point light helper for the previous point light
-        const sphereSize = 0.25;
-        const pointLightHelper = new THREE.PointLightHelper(
-            pointLight,
-            sphereSize
-        );
-        this.app.scene.add(pointLightHelper);
-
         // add an ambient light
-        const ambientLight = new THREE.AmbientLight("#ffffff", 0.2);
+        const ambientLight = new THREE.AmbientLight("#ffffff", 0.1);
         this.app.scene.add(ambientLight);
 
         // room
@@ -367,17 +364,17 @@ class MyContents {
             this.app.scene.add(this.tableLegMesh4);
         }
 
-        let plate = new THREE.CylinderGeometry(0.16, 0.14, 0.02, 32);
-        this.plateMesh = new THREE.Mesh(plate, this.plateMaterial);
-        this.plateMesh.position.y = 0.85;
-        this.plateMesh.position.x = 0;
-        this.plateMesh.position.z = 0;
-        this.plateMesh.receiveShadow = true;
-        this.plateMesh.castShadow = true;
-        this.app.scene.add(this.plateMesh);
-
         // cake
         {
+            let plate = new THREE.CylinderGeometry(0.16, 0.14, 0.02, 32);
+            this.plateMesh = new THREE.Mesh(plate, this.plateMaterial);
+            this.plateMesh.position.y = 0.85;
+            this.plateMesh.position.x = 0;
+            this.plateMesh.position.z = 0;
+            this.plateMesh.receiveShadow = true;
+            this.plateMesh.castShadow = true;
+            this.app.scene.add(this.plateMesh);
+
             let cake = new THREE.CylinderGeometry(
                 0.1,
                 0.1,
@@ -432,12 +429,17 @@ class MyContents {
             this.flameMesh.position.z = 0;
             this.app.scene.add(this.flameMesh);
 
-            let flameLight = new THREE.PointLight("orange", 0.05, 0);
-            flameLight.position.set(0, 0.98, 0);
-            flameLight.castShadow = true;
-            flameLight.shadow.mapSize.width = this.shadowMapSize;
-            flameLight.shadow.mapSize.height = this.shadowMapSize;
-            this.app.scene.add(flameLight);
+            this.flameLight = new THREE.PointLight("orange", 0.05, 0);
+            this.flameLight.position.set(0, 0.98, 0);
+            this.app.scene.add(this.flameLight);
+            this.lights.push(this.flameLight);
+
+            let flameLightHelper = new THREE.PointLightHelper(
+                this.flameLight,
+                0.1
+            );
+            this.app.scene.add(flameLightHelper);
+            this.helpers.push(flameLightHelper);
         }
 
         // CAROCHA
@@ -662,23 +664,18 @@ class MyContents {
 
             const flashLightLightSource = new THREE.SpotLight(
                 "white",
-                2.5,
+                1,
                 5,
                 Math.PI / 7,
                 0.2,
                 1
             );
 
-            flashLightLightSource.castShadow = true;
-            flashLightLightSource.shadow.mapSize.width = this.shadowMapSize;
-            flashLightLightSource.shadow.mapSize.height = this.shadowMapSize;
             flashLightLightSource.position.y = -flashLightBodyHeight / 2;
             flashLightLightSource.target.position.x = 0;
             flashLightLightSource.target.position.y = 1;
             flashLightLightSource.target.position.z = 0;
-
-            // For SOME reason this needs to be instantiated
-            const h = new THREE.SpotLightHelper(flashLightLightSource, 0.5);
+            this.lights.push(flashLightLightSource);
 
             flashLight.add(flashLightLightSource);
             flashLight.add(this.flashLightGlow);
@@ -690,6 +687,11 @@ class MyContents {
             flashLight.rotation.z = -0.3;
             flashLight.castShadow = true;
             flashLight.receiveShadow = true;
+
+            // For SOME reason this needs to be instantiated
+            const h = new THREE.SpotLightHelper(flashLightLightSource);
+            this.helpers.push(h);
+            this.app.scene.add(h);
 
             this.app.scene.add(flashLight);
         }
@@ -767,14 +769,16 @@ class MyContents {
 
             this.app.scene.add(this.windowFrame);
 
-            this.sun = new THREE.DirectionalLight("white", 1);
-            this.sun.castShadow = true;
-            this.sun.shadow.mapSize.width = this.shadowMapSize;
-            this.sun.shadow.mapSize.height = this.shadowMapSize;
+            this.sun = new THREE.DirectionalLight("white", 5);
             this.sun.position.y = 5;
             this.sun.position.z = 5;
             this.sun.position.x = 5;
             this.app.scene.add(this.sun);
+            this.lights.push(this.sun);
+
+            this.sunHelper = new THREE.DirectionalLightHelper(this.sun, 0.5);
+            this.app.scene.add(this.sunHelper);
+            this.helpers.push(this.sunHelper);
         }
 
         // spring
@@ -948,9 +952,55 @@ class MyContents {
             this.app.scene.add(pot3);
             this.app.scene.add(pot4);
         }
+
+        // lamp
+        {
+            const pointLight = new THREE.PointLight(0xffffff, 0.5, 0, 1);
+            pointLight.position.set(0, 2.75, 0);
+            this.app.scene.add(pointLight);
+            this.lights.push(pointLight);
+
+            const pointLightHelper = new THREE.PointLightHelper(
+                pointLight,
+                0.25
+            );
+            this.app.scene.add(pointLightHelper);
+            this.helpers.push(pointLightHelper);
+
+            const lamp = new THREE.CylinderGeometry(
+                0.15,
+                0.2,
+                0.3,
+                32,
+                1,
+                true
+            );
+            const lampMesh = new THREE.Mesh(lamp, this.lampMaterial);
+            lampMesh.position.y = 2.75;
+            lampMesh.castShadow = true;
+            lampMesh.receiveShadow = true;
+            this.app.scene.add(lampMesh);
+        }
+
+        this.updateLights();
     }
 
-    update() {}
+    update() {
+        this.flameLight.intensity = Math.random() * 0.02 + 0.04;
+    }
+
+    updateLights() {
+        this.lights.forEach((l) => {
+            l.castShadow = true;
+            l.shadow.mapSize.width = this.shadowMapSize;
+            l.shadow.mapSize.height = this.shadowMapSize;
+            l.shadow.needsUpdate = true;
+        });
+    }
+
+    updateHelpers() {
+        this.helpers.forEach((h) => (h.visible = this.helpersVisible));
+    }
 
     /**
      * @param {number[][][]} controlPoints
