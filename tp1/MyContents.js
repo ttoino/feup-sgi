@@ -161,14 +161,14 @@ class MyContents {
         this.toinoMaterial = new THREE.MeshPhongMaterial({
             map: this.toinoTexture,
             specular: "#ffffff",
-            shininess: 5,
+            shininess: 30,
         });
 
         this.perasTexture = new THREE.TextureLoader().load("images/peras.png");
         this.perasMaterial = new THREE.MeshPhongMaterial({
             map: this.perasTexture,
             specular: "#ffffff",
-            shininess: 5,
+            shininess: 30,
         });
 
         this.windowsTexture = new THREE.TextureLoader().load(
@@ -544,6 +544,7 @@ class MyContents {
             frame1.position.y = 1.5;
             frame1.position.x = -0.5;
             frame1.position.z = -2.5;
+            frame1.receiveShadow = true;
 
             this.app.scene.add(frame1);
 
@@ -553,6 +554,7 @@ class MyContents {
             frame2.position.y = 1.5;
             frame2.position.x = 0.5;
             frame2.position.z = -2.5;
+            frame2.receiveShadow = true;
 
             this.app.scene.add(frame2);
 
@@ -562,12 +564,14 @@ class MyContents {
             toinoPicture.position.y = 1.5;
             toinoPicture.position.x = -0.5;
             toinoPicture.position.z = -2.49;
+            toinoPicture.receiveShadow = true;
             this.app.scene.add(toinoPicture);
 
             let perasPicture = new THREE.Mesh(picture, this.perasMaterial);
             perasPicture.position.y = 1.5;
             perasPicture.position.x = 0.5;
             perasPicture.position.z = -2.49;
+            perasPicture.receiveShadow = true;
             this.app.scene.add(perasPicture);
         }
 
@@ -676,6 +680,8 @@ class MyContents {
             flashLight.position.x = 0.2;
             flashLight.rotation.x = Math.PI / 2 + 0.079;
             flashLight.rotation.z = -0.3;
+            flashLight.castShadow = true;
+            flashLight.receiveShadow = true;
 
             this.app.scene.add(flashLight);
         }
@@ -740,6 +746,7 @@ class MyContents {
             // this.windowFrame.position.z = 1.5;
             this.windowFrame.position.x = 2.5;
             this.windowFrame.castShadow = true;
+            this.windowFrame.receiveShadow = true;
 
             this.sceneryGeometry = new THREE.PlaneGeometry(0.85, 0.85);
             this.scenery = new THREE.Mesh(

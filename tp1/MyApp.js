@@ -21,7 +21,7 @@ class MyApp {
         this.activeCameraName = null
         this.lastCameraName = null
         this.cameras = {}
-        this.frustumSize = 20
+        this.frustumSize = 10
 
         // other attributes
         this.renderer = null
