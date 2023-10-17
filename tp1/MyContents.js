@@ -23,10 +23,14 @@ class MyContents {
         /** @type {THREE.Object3D[]} */
         this.helpers = [];
 
+        this.loadTextures();
         this.setupMaterials();
     }
 
-    setupMaterials() {
+    /**
+     * Loads the textures used in the scene.
+     */
+    loadTextures() {
         this.floorTexture = new THREE.TextureLoader().load(
             "textures/Asphalt_002_COLOR.jpg"
         );
@@ -39,13 +43,6 @@ class MyContents {
         this.floorNormalMap.wrapS = THREE.RepeatWrapping;
         this.floorNormalMap.wrapT = THREE.RepeatWrapping;
         this.floorNormalMap.repeat.set(4, 4);
-        this.floorMaterial = new THREE.MeshPhongMaterial({
-            // color: "darkgray",
-            map: this.floorTexture,
-            normalMap: this.floorNormalMap,
-            specular: "#ffffff",
-            shininess: 5,
-        });
 
         this.wallTexture = new THREE.TextureLoader().load(
             "textures/Plaster_Rough_001_COLOR.jpg"
@@ -59,13 +56,6 @@ class MyContents {
         this.wallNormalMap.wrapS = THREE.RepeatWrapping;
         this.wallNormalMap.wrapT = THREE.RepeatWrapping;
         this.wallNormalMap.repeat.set(4, 4);
-        this.wallMaterial = new THREE.MeshPhongMaterial({
-            // color: "white",
-            map: this.wallTexture,
-            normalMap: this.wallNormalMap,
-            specular: "#ffffff",
-            shininess: 5,
-        });
 
         this.tableTexture = new THREE.TextureLoader().load(
             "textures/Wood_027_basecolor.jpg"
@@ -77,13 +67,6 @@ class MyContents {
         );
         this.tableNormalMap.wrapS = THREE.RepeatWrapping;
         this.tableNormalMap.wrapT = THREE.RepeatWrapping;
-        this.tableMaterial = new THREE.MeshPhongMaterial({
-            // color: "sienna",
-            map: this.tableTexture,
-            normalMap: this.tableNormalMap,
-            specular: "#ffffff",
-            shininess: 5,
-        });
 
         this.tableLegTexture = new THREE.TextureLoader().load(
             "textures/Metal_006_basecolor.jpg"
@@ -95,6 +78,87 @@ class MyContents {
         );
         this.tableLegNormalMap.wrapS = THREE.RepeatWrapping;
         this.tableLegNormalMap.wrapT = THREE.RepeatWrapping;
+
+        this.cakeTexture = new THREE.TextureLoader().load(
+            "textures/Chocolate_001_baseColor.jpg"
+        );
+        this.cakeTexture.wrapS = THREE.RepeatWrapping;
+        this.cakeTexture.wrapT = THREE.RepeatWrapping;
+        this.cakeNormalMap = new THREE.TextureLoader().load(
+            "textures/Chocolate_001_normal.jpg"
+        );
+        this.cakeNormalMap.wrapS = THREE.RepeatWrapping;
+        this.cakeNormalMap.wrapT = THREE.RepeatWrapping;
+
+        this.frameTexture = new THREE.TextureLoader().load(
+            "textures/Wood_027_basecolor.jpg"
+        );
+        this.frameTexture.wrapS = THREE.RepeatWrapping;
+        this.frameTexture.wrapT = THREE.RepeatWrapping;
+        this.frameTexture.repeat.set(4, 4);
+        this.frameNormalMap = new THREE.TextureLoader().load(
+            "textures/Wood_027_normal.jpg"
+        );
+        this.frameNormalMap.wrapS = THREE.RepeatWrapping;
+        this.frameNormalMap.wrapT = THREE.RepeatWrapping;
+        this.frameNormalMap.repeat.set(4, 4);
+
+        this.toinoTexture = new THREE.TextureLoader().load("images/toino.jpg");
+        this.toinoMaterial = new THREE.MeshPhongMaterial({
+            map: this.toinoTexture,
+            specular: "#ffffff",
+            shininess: 30,
+        });
+
+        this.perasTexture = new THREE.TextureLoader().load("images/peras.png");
+        this.perasMaterial = new THREE.MeshPhongMaterial({
+            map: this.perasTexture,
+            specular: "#ffffff",
+            shininess: 30,
+        });
+
+        this.windowsTexture = new THREE.TextureLoader().load(
+            "images/windows_wpp.jpg"
+        );
+
+        this.newspaperTexture = new THREE.TextureLoader().load(
+            "images/newspaper.jpg"
+        );
+
+        this.soilTexture = new THREE.TextureLoader().load(
+            "textures/soil.avif"
+        );
+    }
+
+    /**
+     * Sets up the materials used in the scene.
+     */
+    setupMaterials() {
+
+        this.floorMaterial = new THREE.MeshPhongMaterial({
+            // color: "darkgray",
+            map: this.floorTexture,
+            normalMap: this.floorNormalMap,
+            specular: "#ffffff",
+            shininess: 5,
+        });
+
+        this.wallMaterial = new THREE.MeshPhongMaterial({
+            // color: "white",
+            map: this.wallTexture,
+            normalMap: this.wallNormalMap,
+            specular: "#ffffff",
+            shininess: 5,
+        });
+
+        this.tableMaterial = new THREE.MeshPhongMaterial({
+            // color: "sienna",
+            map: this.tableTexture,
+            normalMap: this.tableNormalMap,
+            specular: "#ffffff",
+            shininess: 5,
+        });
+
         this.tableLegMaterial = new THREE.MeshPhongMaterial({
             // color: "gray",
             map: this.tableLegTexture,
@@ -109,16 +173,6 @@ class MyContents {
             shininess: 100,
         });
 
-        this.cakeTexture = new THREE.TextureLoader().load(
-            "textures/Chocolate_001_baseColor.jpg"
-        );
-        this.cakeTexture.wrapS = THREE.RepeatWrapping;
-        this.cakeTexture.wrapT = THREE.RepeatWrapping;
-        this.cakeNormalMap = new THREE.TextureLoader().load(
-            "textures/Chocolate_001_normal.jpg"
-        );
-        this.cakeNormalMap.wrapS = THREE.RepeatWrapping;
-        this.cakeNormalMap.wrapT = THREE.RepeatWrapping;
         this.cakeMaterial = new THREE.MeshPhongMaterial({
             // color: "lavenderblush",
             map: this.cakeTexture,
@@ -144,18 +198,6 @@ class MyContents {
             color: "#000000",
         });
 
-        this.frameTexture = new THREE.TextureLoader().load(
-            "textures/Wood_027_basecolor.jpg"
-        );
-        this.frameTexture.wrapS = THREE.RepeatWrapping;
-        this.frameTexture.wrapT = THREE.RepeatWrapping;
-        this.frameTexture.repeat.set(4, 4);
-        this.frameNormalMap = new THREE.TextureLoader().load(
-            "textures/Wood_027_normal.jpg"
-        );
-        this.frameNormalMap.wrapS = THREE.RepeatWrapping;
-        this.frameNormalMap.wrapT = THREE.RepeatWrapping;
-        this.frameNormalMap.repeat.set(4, 4);
         this.frameMaterial = new THREE.MeshPhongMaterial({
             // color: "darkgray",
             map: this.frameTexture,
@@ -164,31 +206,12 @@ class MyContents {
             shininess: 5,
         });
 
-        this.toinoTexture = new THREE.TextureLoader().load("images/toino.jpg");
-        this.toinoMaterial = new THREE.MeshPhongMaterial({
-            map: this.toinoTexture,
-            specular: "#ffffff",
-            shininess: 30,
-        });
 
-        this.perasTexture = new THREE.TextureLoader().load("images/peras.png");
-        this.perasMaterial = new THREE.MeshPhongMaterial({
-            map: this.perasTexture,
-            specular: "#ffffff",
-            shininess: 30,
-        });
-
-        this.windowsTexture = new THREE.TextureLoader().load(
-            "images/windows_wpp.jpg"
-        );
         this.windowsMaterial = new THREE.MeshPhongMaterial({
             emissiveMap: this.windowsTexture,
             emissive: "#ffffff",
         });
 
-        this.newspaperTexture = new THREE.TextureLoader().load(
-            "images/newspaper.jpg"
-        );
         this.newspaperMaterial = new THREE.MeshPhongMaterial({
             map: this.newspaperTexture,
             specular: "#ffffff",
@@ -251,9 +274,6 @@ class MyContents {
             shadowSide: THREE.DoubleSide,
         });
 
-        this.soilTexture = new THREE.TextureLoader().load(
-            "textures/soil.avif"
-        );
         this.soilMaterial = new THREE.MeshPhongMaterial({
             map: this.soilTexture,
             specular: "#ffffff",
@@ -278,15 +298,22 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         // Build the scene itself
-        this.buildScene();
+        const sceneContents = this.buildScene();
+        this.app.scene.add(sceneContents);
 
         this.updateLights();
     }
 
+    /**
+     * Updates the contents of the scene every frame.
+     */
     update() {
         this.flameLight.intensity = Math.random() * 0.02 + 0.04;
     }
 
+    /**
+     * Updates the lights of the scene at scene startup.
+     */
     updateLights() {
         this.lights.forEach((l) => {
             l.castShadow = true;
@@ -297,15 +324,22 @@ class MyContents {
         });
     }
 
+    /**
+     * Updates the helpers of the scene on user input (controlled through the GUI).
+     */
     updateHelpers() {
         this.helpers.forEach((h) => (h.visible = this.helpersVisible));
     }
 
     /**
-     * @param {number[][][]} controlPoints
-     * @param {number} samples1
-     * @param {number} samples2
-     * @param {THREE.Material} material
+     * Builds the NURB  defined by the given control points using the given samples along the U and V directions.
+     * The material is applied to the resulting geometry and the resulting mesh is returned.
+     * 
+     * @type NURBControlPoints = number[][][]
+     * @param {NURBControlPoints} controlPoints the points that control the surface shape
+     * @param {number} samples1 the number of samples along the U direction
+     * @param {number} samples2 the number of samples along the V direction
+     * @param {THREE.Material} material the material to apply to the computed geometry
      * @returns {THREE.Mesh}
      */
     buildNURBS(controlPoints, samples1, samples2, material) {
@@ -344,13 +378,20 @@ class MyContents {
 
     /**
      * Calls all the scene builders to build their respective objects.
+     * 
+     * @returns {THREE.Group} the scene contents
      */
     buildScene() {
+
+        const sceneContents = new THREE.Group();
+
         // room
-        this.buildRoom();
+        const room = this.buildRoom();
+        sceneContents.add(room);
 
         // table
-        this.buildTable();
+        const table = this.buildTable();
+        sceneContents.add(table);
 
         // cake
         this.buildCake()
@@ -381,43 +422,89 @@ class MyContents {
 
         // chair
         this.buildChair();
+
+        return sceneContents;
+    }
+
+    /**
+     * 
+     * @type RoomPlaneGeometryParams = {
+     *    width?: number;
+     *   height?: number;
+     * }
+     * @type ShadowParams = {
+     *    receive?: boolean;
+     *    cast?: boolean;
+     * }
+     * @param {THREE.Geometry | undefined} geometry 
+     * @param {RoomPlaneGeometryParams} dimensions 
+     * @param {ShadowParams|null} param2
+     * @param {THREE.Material} material 
+     * @returns {}
+     */
+    buildRoomPlane(geometry, {
+        width, height
+    } = {}, {
+        cast, receive
+    } = {}, material) {
+        let wallGeometry = geometry ?? new THREE.PlaneGeometry(width ?? 5, height ?? 5);
+
+        const wall = new THREE.Mesh(
+            wallGeometry,
+            material,
+        );
+
+        wall.castShadow = cast ?? true;
+        wall.receiveShadow = receive ?? true;
+
+        return wall;
     }
 
     /**
      * Builds the room.
      */
     buildRoom() {
-        let floor = new THREE.PlaneGeometry(5, 5);
-        this.floorMesh = new THREE.Mesh(floor, this.floorMaterial);
-        this.floorMesh.rotation.x = -Math.PI / 2;
-        this.floorMesh.position.y = -0;
-        this.floorMesh.receiveShadow = true;
-        this.app.scene.add(this.floorMesh);
+        const room = new THREE.Group();
 
-        let wall = new THREE.PlaneGeometry(5, 3);
+        const floor = this.buildRoomPlane(null, {
+            width: 5,
+            height: 5
+        }, {
+            cast: true,
+            receive: true
+        }, this.floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -0;
+        floor.receiveShadow = true;
+        room.add(floor);
 
-        this.wallMesh1 = new THREE.Mesh(wall, this.wallMaterial);
-        this.wallMesh1.position.y = 1.5;
-        this.wallMesh1.position.z = -2.5;
-        this.wallMesh1.receiveShadow = true;
-        this.wallMesh1.castShadow = true;
-        this.app.scene.add(this.wallMesh1);
+        let wallGeometry = new THREE.PlaneGeometry(5, 3);
 
-        this.wallMesh2 = new THREE.Mesh(wall, this.wallMaterial);
-        this.wallMesh2.rotation.y = Math.PI;
-        this.wallMesh2.position.y = 1.5;
-        this.wallMesh2.position.z = 2.5;
-        this.wallMesh2.receiveShadow = true;
-        this.wallMesh2.castShadow = true;
-        this.app.scene.add(this.wallMesh2);
+        const wall1 = this.buildRoomPlane(wallGeometry, undefined, {
+            cast: true,
+            receive: true
+        }, this.wallMaterial);
+        wall1.position.y = 1.5;
+        wall1.position.z = -2.5;
+        room.add(wall1);
 
-        this.wallMesh3 = new THREE.Mesh(wall, this.wallMaterial);
-        this.wallMesh3.rotation.y = Math.PI / 2;
-        this.wallMesh3.position.x = -2.5;
-        this.wallMesh3.position.y = 1.5;
-        this.wallMesh3.receiveShadow = true;
-        this.wallMesh3.castShadow = true;
-        this.app.scene.add(this.wallMesh3);
+        const wall2 = this.buildRoomPlane(wallGeometry, undefined, {
+            cast: true,
+            receive: true
+        }, this.wallMaterial);
+        wall2.rotation.y = Math.PI;
+        wall2.position.y = 1.5;
+        wall2.position.z = 2.5;
+        room.add(wall2);
+
+        const wall3 = this.buildRoomPlane(wallGeometry, undefined, {
+            cast: true,
+            receive: true
+        }, this.wallMaterial);
+        wall3.rotation.y = Math.PI / 2;
+        wall3.position.x = -2.5;
+        wall3.position.y = 1.5;
+        room.add(wall3);
 
         let wallH = new THREE.PlaneGeometry(5, (3 - 0.85) / 2);
         let wallV = new THREE.PlaneGeometry((5 - 0.85) / 2, 0.85);
@@ -453,7 +540,7 @@ class MyContents {
         this.wallMesh4 = new THREE.Mesh(wall4, this.wallMaterial);
         this.wallMesh4.receiveShadow = true;
         this.wallMesh4.castShadow = true;
-        this.app.scene.add(this.wallMesh4);
+        room.add(this.wallMesh4);
 
         let ceiling = new THREE.PlaneGeometry(5, 5);
         this.ceilingMesh = new THREE.Mesh(ceiling, this.wallMaterial);
@@ -461,65 +548,93 @@ class MyContents {
         this.ceilingMesh.position.y = 3;
         this.ceilingMesh.receiveShadow = true;
         this.ceilingMesh.castShadow = true;
-        this.app.scene.add(this.ceilingMesh);
+        room.add(this.ceilingMesh);
+
+        return room;
+    }
+
+    /**
+     * Builds a parameterized table leg. The given material is applied to the computed geometry.
+     * 
+     * @type CylinderGeometryParams = {
+     *    radiusTop?: number;
+     *    radiusBottom?: number;
+     *    height?: number;
+     *    radialSegments?: number;
+     * }
+     * @type ShadowParams = {
+     *     receive?: boolean;
+     *    cast?: boolean;
+     * }
+     * @param {THREE.Geometry | null} geometry the geometry to use when building this mesh
+     * @param {CylinderGeometryParams | null} dimensions the dimensions of the geometry in case {geometry} is {null}
+     * @param {ShadowParams|null} shadows shadow controls
+     * @param {THREE.Material|null} material the material to apply to the computed geometry
+     * @returns {THREE.Mesh} the table leg mesh with the given material applied
+     */
+    buildTableLeg(geometry, {
+        radiusTop,
+        radiusBottom,
+        height,
+        radialSegments
+    } = {}, {
+        receive,
+        cast
+    } = {}, material = null) {
+        let tableLegGeometry = geometry ?? new THREE.CylinderGeometry(radiusTop ?? 0.05, radiusBottom ?? 0.05, height ?? 0.8, radialSegments ?? 32);
+
+        const tableLeg = new THREE.Mesh(
+            tableLegGeometry,
+            material ?? this.tableLegMaterial,
+        );
+        tableLeg.receiveShadow = receive ?? true;
+        tableLeg.castShadow = cast ?? true;
+
+        return tableLeg;
     }
 
     /**
      * Builds the table.
+     * 
+     * @return {THREE.Group} the table
      */
     buildTable() {
-        let table = new THREE.BoxGeometry(1, 0.1, 2);
-        this.tableMesh = new THREE.Mesh(table, this.tableMaterial);
-        this.tableMesh.position.y = 0.8;
-        this.tableMesh.receiveShadow = true;
-        this.tableMesh.castShadow = true;
-        this.app.scene.add(this.tableMesh);
+        const table = new THREE.Group()
 
-        let tableLeg = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 32);
+        let tableTopGeometry = new THREE.BoxGeometry(1, 0.1, 2);
+        this.tableTop = new THREE.Mesh(tableTopGeometry, this.tableMaterial);
+        this.tableTop.position.y = 0.8;
+        this.tableTop.receiveShadow = true;
+        this.tableTop.castShadow = true;
+        table.add(this.tableTop);
 
-        this.tableLegMesh1 = new THREE.Mesh(
-            tableLeg,
-            this.tableLegMaterial
-        );
-        this.tableLegMesh1.position.y = 0.4;
-        this.tableLegMesh1.position.x = 0.45;
-        this.tableLegMesh1.position.z = 0.95;
-        this.tableLegMesh1.receiveShadow = true;
-        this.tableLegMesh1.castShadow = true;
-        this.app.scene.add(this.tableLegMesh1);
+        const tableLegGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 32);
 
-        this.tableLegMesh2 = new THREE.Mesh(
-            tableLeg,
-            this.tableLegMaterial
-        );
-        this.tableLegMesh2.position.y = 0.4;
-        this.tableLegMesh2.position.x = -0.45;
-        this.tableLegMesh2.position.z = 0.95;
-        this.tableLegMesh2.receiveShadow = true;
-        this.tableLegMesh2.castShadow = true;
-        this.app.scene.add(this.tableLegMesh2);
+        const tableLeg1 = this.buildTableLeg(tableLegGeometry);
+        tableLeg1.position.y = 0.4;
+        tableLeg1.position.x = 0.45;
+        tableLeg1.position.z = 0.95;
+        table.add(tableLeg1);
 
-        this.tableLegMesh3 = new THREE.Mesh(
-            tableLeg,
-            this.tableLegMaterial
-        );
-        this.tableLegMesh3.position.y = 0.4;
-        this.tableLegMesh3.position.x = 0.45;
-        this.tableLegMesh3.position.z = -0.95;
-        this.tableLegMesh3.receiveShadow = true;
-        this.tableLegMesh3.castShadow = true;
-        this.app.scene.add(this.tableLegMesh3);
+        const tableLeg2 = this.buildTableLeg(tableLegGeometry);
+        tableLeg2.position.y = 0.4;
+        tableLeg2.position.x = -0.45;
+        tableLeg2.position.z = 0.95;
+        table.add(tableLeg2);
 
-        this.tableLegMesh4 = new THREE.Mesh(
-            tableLeg,
-            this.tableLegMaterial
-        );
-        this.tableLegMesh4.position.y = 0.4;
-        this.tableLegMesh4.position.x = -0.45;
-        this.tableLegMesh4.position.z = -0.95;
-        this.tableLegMesh4.receiveShadow = true;
-        this.tableLegMesh4.castShadow = true;
-        this.app.scene.add(this.tableLegMesh4);
+        const tableLeg3 = this.buildTableLeg(tableLegGeometry);
+        tableLeg3.position.y = 0.4;
+        tableLeg3.position.x = 0.45;
+        tableLeg3.position.z = -0.95;
+        table.add(tableLeg3);
+
+        const tableLeg4 = this.buildTableLeg(tableLegGeometry);
+        tableLeg4.position.y = 0.4;
+        tableLeg4.position.x = -0.45;
+        tableLeg4.position.z = -0.95;
+        table.add(tableLeg4);
+
+        return table;
     }
 
     /**
