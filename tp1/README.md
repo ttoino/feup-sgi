@@ -27,4 +27,5 @@
 
 - In terms of creativity, although it exists, we feel like we could have done more. We tried to make the scene as realistic as possible, but we feel like we could have added more objects to the scene, or even more light sources.
 - The scene consumes a lot of memory on the device. This might be due to the way we are grouping geometries and meshes, but more testing was needed.
-- In order for the spotlight to correctly cast shadows, an helper had to be instantiated. On the final scene it is included as "debug information" but it is still needed for the spotlight's shadows to work correctly.
+- In order for the spotlight to correctly cast shadows, an helper had to be instantiated. On the final scene it is included as "debug information" but it is still needed for the spotlight's shadows to work correctly. This is a bug in Three.JS.
+- The order in which the spotlight helper is instantiated matter so we have to stick to a fixed order of instantiation of the objects in the scene. This is the only exception to the refactor that was done.
