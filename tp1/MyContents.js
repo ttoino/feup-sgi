@@ -427,6 +427,7 @@ class MyContents {
     }
 
     /**
+     *  Builds a plane to be used when constructing the room.
      * 
      * @type RoomPlaneGeometryParams = {
      *    width?: number;
@@ -440,14 +441,14 @@ class MyContents {
      * @param {RoomPlaneGeometryParams} dimensions 
      * @param {ShadowParams|null} param2
      * @param {THREE.Material} material 
-     * @returns {}
+     * @returns {THREE.Mesh} the plane to be used when building the room
      */
     buildRoomPlane(geometry, {
         width, height
     } = {}, {
         cast, receive
     } = {}, material) {
-        let wallGeometry = geometry ?? new THREE.PlaneGeometry(width ?? 5, height ?? 5);
+        const wallGeometry = geometry ?? new THREE.PlaneGeometry(width ?? 5, height ?? 5);
 
         const wall = new THREE.Mesh(
             wallGeometry,
@@ -506,29 +507,29 @@ class MyContents {
         wall3.position.y = 1.5;
         room.add(wall3);
 
-        let wallH = new THREE.PlaneGeometry(5, (3 - 0.85) / 2);
-        let wallV = new THREE.PlaneGeometry((5 - 0.85) / 2, 0.85);
+        const wallHGeometry = new THREE.PlaneGeometry(5, (3 - 0.85) / 2);
+        const wallVGeometry = new THREE.PlaneGeometry((5 - 0.85) / 2, 0.85);
 
-        const wallMesh41 = new THREE.Mesh(wallH, this.wallMaterial);
+        const wallMesh41 = new THREE.Mesh(wallHGeometry, this.wallMaterial);
         wallMesh41.rotation.y = -Math.PI / 2;
         wallMesh41.position.x = 2.5;
-        wallMesh41.position.y = wallH.parameters.height / 2;
-        const wallMesh42 = new THREE.Mesh(wallH, this.wallMaterial);
+        wallMesh41.position.y = wallHGeometry.parameters.height / 2;
+        const wallMesh42 = new THREE.Mesh(wallHGeometry, this.wallMaterial);
         wallMesh42.rotation.y = -Math.PI / 2;
         wallMesh42.position.x = 2.5;
-        wallMesh42.position.y = 3 - wallH.parameters.height / 2;
-        const wallMesh43 = new THREE.Mesh(wallV, this.wallMaterial);
+        wallMesh42.position.y = 3 - wallHGeometry.parameters.height / 2;
+        const wallMesh43 = new THREE.Mesh(wallVGeometry, this.wallMaterial);
         wallMesh43.rotation.y = -Math.PI / 2;
         wallMesh43.position.x = 2.5;
         wallMesh43.position.y = 1.5;
-        wallMesh43.position.z = 2.5 - wallV.parameters.width / 2;
-        const wallMesh44 = new THREE.Mesh(wallV, this.wallMaterial);
+        wallMesh43.position.z = 2.5 - wallVGeometry.parameters.width / 2;
+        const wallMesh44 = new THREE.Mesh(wallVGeometry, this.wallMaterial);
         wallMesh44.rotation.y = -Math.PI / 2;
         wallMesh44.position.x = 2.5;
         wallMesh44.position.y = 1.5;
-        wallMesh44.position.z = -2.5 + wallV.parameters.width / 2;
+        wallMesh44.position.z = -2.5 + wallVGeometry.parameters.width / 2;
 
-        const wall4 = BufferGeometryUtils.mergeBufferGeometries(
+        const wall4Geometry = BufferGeometryUtils.mergeBufferGeometries(
             [wallMesh41, wallMesh42, wallMesh43, wallMesh44].map((m) => {
                 m.updateMatrixWorld();
 
@@ -537,18 +538,18 @@ class MyContents {
             true
         );
 
-        this.wallMesh4 = new THREE.Mesh(wall4, this.wallMaterial);
-        this.wallMesh4.receiveShadow = true;
-        this.wallMesh4.castShadow = true;
-        room.add(this.wallMesh4);
+        this.wall4 = new THREE.Mesh(wall4Geometry, this.wallMaterial);
+        this.wall4.receiveShadow = true;
+        this.wall4.castShadow = true;
+        room.add(this.wall4);
 
-        let ceiling = new THREE.PlaneGeometry(5, 5);
-        this.ceilingMesh = new THREE.Mesh(ceiling, this.wallMaterial);
-        this.ceilingMesh.rotation.x = Math.PI / 2;
-        this.ceilingMesh.position.y = 3;
-        this.ceilingMesh.receiveShadow = true;
-        this.ceilingMesh.castShadow = true;
-        room.add(this.ceilingMesh);
+        const ceiling = this.buildRoomPlane(undefined, {
+            width: 5,
+            height: 5
+        }, undefined, this.wallMaterial);
+        ceiling.rotation.x = Math.PI / 2;
+        ceiling.position.y = 3;
+        room.add(ceiling);
 
         return room;
     }
