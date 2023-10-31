@@ -4,6 +4,8 @@ import { MyFileReader } from "./parser/MyFileReader.js";
 import { MySceneData } from "./parser/MySceneData.js";
 import { MyApp } from "./MyApp.js";
 import { degreesToRadians } from "./MyMath.js";
+import { NURBSSurface } from "three/addons/curves/NURBSSurface.js";
+import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
 
 /**
  *  This class contains the contents of out application
@@ -72,6 +74,8 @@ class MyContents {
             this.textures[id] = new THREE.TextureLoader().load(
                 texture.filepath
             );
+            // this.textures[id].wrapS = THREE.RepeatWrapping;
+            // this.textures[id].wrapT = THREE.RepeatWrapping;
         }
 
         console.log("materials:");
@@ -94,6 +98,8 @@ class MyContents {
                 bumpMap: this.textures[material.bump_ref],
                 bumpScale: material.bump_scale,
             });
+
+            // this.materials[id].map.repeat.set(material.texlength_s, material.texlength_t)
         }
 
         console.log("cameras:");
@@ -312,7 +318,19 @@ class MyContents {
                 break;
             }
             case "triangle": {
-                // TODO
+                const representation = primitive.representations[0];
+
+                const p1 = representation.xyz1;
+                const p2 = representation.xyz2;
+                const p3 = representation.xyz3;
+
+                mesh = new THREE.Mesh(
+                    new THREE.BufferGeometry().setFromPoints(
+                        [p1, p2, p3].map((p) => new THREE.Vector3(...p))
+                    ),
+                    material
+                );
+
                 break;
             }
             case "box": {
@@ -352,7 +370,7 @@ class MyContents {
                         representation.height,
                         representation.slices,
                         representation.stacks,
-                        !representation.capsclose,
+                        representation.capsclose,
                         representation.thetaStart,
                         representation.thetaLength
                     ),
@@ -379,6 +397,30 @@ class MyContents {
 
                 break;
             }
+            case "nurbs": {
+                const representation = primitive.representations[0];
+
+                console.log(representation);
+
+                mesh = this.buildNURBS(
+                    representation.controlpoints.map((p) => [
+                        p.xx,
+                        p.yy,
+                        p.zz,
+                        p.ww ?? 1,
+                    ]),
+                    representation.parts_u,
+                    representation.parts_v,
+                    representation.degree_u,
+                    representation.degree_v,
+                    material
+                );
+
+                break;
+            }
+            default: {
+                console.log(primitive.subtype);
+            }
         }
 
         if (mesh) {
@@ -387,6 +429,58 @@ class MyContents {
         }
 
         return mesh ?? new THREE.Object3D();
+    }
+
+    /**
+     * Builds the NURB  defined by the given control points using the given samples along the U and V directions.
+     * The material is applied to the resulting geometry and the resulting mesh is returned.
+     *
+     * @type NURBControlPoints = number[][][]
+     * @param {NURBControlPoints} controlPoints the points that control the surface shape
+     * @param {number} samples1 the number of samples along the U direction
+     * @param {number} samples2 the number of samples along the V direction
+     * @param {number} degree1 the number of samples along the U direction
+     * @param {number} degree2 the number of samples along the V direction
+     * @param {THREE.Material} material the material to apply to the computed geometry
+     * @returns {THREE.Mesh}
+     */
+    buildNURBS(controlPoints, samples1, samples2, degree1, degree2, material) {
+        if (degree1 < 0 || degree2 < 0) return;
+
+        const knots1 = new Array(degree1 + 1)
+            .fill(0)
+            .concat(new Array(degree1 + 1).fill(1));
+        const knots2 = new Array(degree2 + 1)
+            .fill(0)
+            .concat(new Array(degree2 + 1).fill(1));
+
+        const vControlPoints = [];
+
+        for (let i = 0; i <= degree1; i++) {
+            vControlPoints.push([]);
+
+            for (let j = 0; j <= degree2; j++) {
+                vControlPoints[i].push(
+                    new THREE.Vector4(...controlPoints[i * (degree2 + 1) + j])
+                );
+            }
+        }
+
+        const nurbsSurface = new NURBSSurface(
+            degree1,
+            degree2,
+            knots1,
+            knots2,
+            vControlPoints
+        );
+
+        const geometry = new ParametricGeometry(
+            nurbsSurface.getPoint.bind(nurbsSurface),
+            samples1,
+            samples2
+        );
+
+        return new THREE.Mesh(geometry, material);
     }
 
     update() {}

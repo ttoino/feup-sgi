@@ -125,16 +125,13 @@ class MyContents {
             "images/newspaper.jpg"
         );
 
-        this.soilTexture = new THREE.TextureLoader().load(
-            "textures/soil.avif"
-        );
+        this.soilTexture = new THREE.TextureLoader().load("textures/soil.avif");
     }
 
     /**
      * Sets up the materials used in the scene.
      */
     setupMaterials() {
-
         this.floorMaterial = new THREE.MeshPhongMaterial({
             // color: "darkgray",
             map: this.floorTexture,
@@ -205,7 +202,6 @@ class MyContents {
             specular: "#ffffff",
             shininess: 5,
         });
-
 
         this.windowsMaterial = new THREE.MeshPhongMaterial({
             emissiveMap: this.windowsTexture,
@@ -334,18 +330,17 @@ class MyContents {
     /**
      * Builds the NURB  defined by the given control points using the given samples along the U and V directions.
      * The material is applied to the resulting geometry and the resulting mesh is returned.
-     * 
+     *
      * @type NURBControlPoints = number[][][]
      * @param {NURBControlPoints} controlPoints the points that control the surface shape
      * @param {number} samples1 the number of samples along the U direction
      * @param {number} samples2 the number of samples along the V direction
+     * @param {number} degree1 the number of samples along the U direction
+     * @param {number} degree2 the number of samples along the V direction
      * @param {THREE.Material} material the material to apply to the computed geometry
      * @returns {THREE.Mesh}
      */
-    buildNURBS(controlPoints, samples1, samples2, material) {
-        const degree1 = controlPoints.length - 1,
-            degree2 = (controlPoints[0]?.length ?? 0) - 1;
-
+    buildNURBS(controlPoints, samples1, samples2, degree1, degree2, material) {
         if (degree1 < 0 || degree2 < 0) return;
 
         const knots1 = new Array(degree1 + 1)
@@ -378,11 +373,10 @@ class MyContents {
 
     /**
      * Calls all the scene builders to build their respective objects.
-     * 
+     *
      * @returns {THREE.Group} the scene contents
      */
     buildScene() {
-
         const sceneContents = new THREE.Group();
 
         // room
@@ -394,7 +388,7 @@ class MyContents {
         sceneContents.add(table);
 
         // cake
-        const cakeAndPlate = this.buildCakeAndPlate()
+        const cakeAndPlate = this.buildCakeAndPlate();
         sceneContents.add(cakeAndPlate);
 
         // CAROCHA
@@ -414,7 +408,7 @@ class MyContents {
         sceneContents.add(spring);
 
         // newspaper
-        const newspaper = this.buildNewspaper()
+        const newspaper = this.buildNewspaper();
         sceneContents.add(newspaper);
 
         // flower and pot
@@ -434,7 +428,7 @@ class MyContents {
 
     /**
      *  Builds a plane to be used when constructing the room.
-     * 
+     *
      * @type RoomPlaneGeometryParams = {
      *    width?: number;
      *   height?: number;
@@ -449,17 +443,16 @@ class MyContents {
      * @param {THREE.Material} material the material to apply to the computed plane geometry
      * @returns {THREE.Mesh} the plane to be used when building the room
      */
-    buildRoomPlane(geometry, {
-        width, height
-    } = {}, {
-        cast, receive
-    } = {}, material) {
-        const wallGeometry = geometry ?? new THREE.PlaneGeometry(width ?? 5, height ?? 5);
+    buildRoomPlane(
+        geometry,
+        { width, height } = {},
+        { cast, receive } = {},
+        material
+    ) {
+        const wallGeometry =
+            geometry ?? new THREE.PlaneGeometry(width ?? 5, height ?? 5);
 
-        const wall = new THREE.Mesh(
-            wallGeometry,
-            material,
-        );
+        const wall = new THREE.Mesh(wallGeometry, material);
 
         wall.castShadow = cast ?? true;
         wall.receiveShadow = receive ?? true;
@@ -469,19 +462,24 @@ class MyContents {
 
     /**
      * Builds the room.
-     * 
+     *
      * @returns {THREE.Group} the room
      */
     buildRoom() {
         const room = new THREE.Group();
 
-        const floor = this.buildRoomPlane(null, {
-            width: 5,
-            height: 5
-        }, {
-            cast: true,
-            receive: true
-        }, this.floorMaterial);
+        const floor = this.buildRoomPlane(
+            null,
+            {
+                width: 5,
+                height: 5,
+            },
+            {
+                cast: true,
+                receive: true,
+            },
+            this.floorMaterial
+        );
         floor.rotation.x = -Math.PI / 2;
         floor.position.y = -0;
         floor.receiveShadow = true;
@@ -489,10 +487,15 @@ class MyContents {
 
         let wallGeometry = new THREE.PlaneGeometry(5, 3);
 
-        const wall1 = this.buildRoomPlane(wallGeometry, undefined, {
-            cast: true,
-            receive: true
-        }, this.wallMaterial);
+        const wall1 = this.buildRoomPlane(
+            wallGeometry,
+            undefined,
+            {
+                cast: true,
+                receive: true,
+            },
+            this.wallMaterial
+        );
         wall1.position.y = 1.5;
         wall1.position.z = -2.5;
 
@@ -502,19 +505,29 @@ class MyContents {
 
         room.add(wall1);
 
-        const wall2 = this.buildRoomPlane(wallGeometry, undefined, {
-            cast: true,
-            receive: true
-        }, this.wallMaterial);
+        const wall2 = this.buildRoomPlane(
+            wallGeometry,
+            undefined,
+            {
+                cast: true,
+                receive: true,
+            },
+            this.wallMaterial
+        );
         wall2.rotation.y = Math.PI;
         wall2.position.y = 1.5;
         wall2.position.z = 2.5;
         room.add(wall2);
 
-        const wall3 = this.buildRoomPlane(wallGeometry, undefined, {
-            cast: true,
-            receive: true
-        }, this.wallMaterial);
+        const wall3 = this.buildRoomPlane(
+            wallGeometry,
+            undefined,
+            {
+                cast: true,
+                receive: true,
+            },
+            this.wallMaterial
+        );
         wall3.rotation.y = Math.PI / 2;
         wall3.position.x = -2.5;
         wall3.position.y = 1.5;
@@ -557,10 +570,15 @@ class MyContents {
         this.wall4.castShadow = true;
         room.add(this.wall4);
 
-        const ceiling = this.buildRoomPlane(undefined, {
-            width: 5,
-            height: 5
-        }, undefined, this.wallMaterial);
+        const ceiling = this.buildRoomPlane(
+            undefined,
+            {
+                width: 5,
+                height: 5,
+            },
+            undefined,
+            this.wallMaterial
+        );
         ceiling.rotation.x = Math.PI / 2;
         ceiling.position.y = 3;
         room.add(ceiling);
@@ -570,7 +588,7 @@ class MyContents {
 
     /**
      * Builds a parameterized table leg. The given material is applied to the computed geometry.
-     * 
+     *
      * @type CylinderGeometryParams = {
      *    radiusTop?: number;
      *    radiusBottom?: number;
@@ -587,20 +605,24 @@ class MyContents {
      * @param {THREE.Material|null} material the material to apply to the computed geometry
      * @returns {THREE.Mesh} the table leg mesh with the given material applied
      */
-    buildTableLeg(geometry, {
-        radiusTop,
-        radiusBottom,
-        height,
-        radialSegments
-    } = {}, {
-        receive,
-        cast
-    } = {}, material = null) {
-        let tableLegGeometry = geometry ?? new THREE.CylinderGeometry(radiusTop ?? 0.05, radiusBottom ?? 0.05, height ?? 0.8, radialSegments ?? 32);
+    buildTableLeg(
+        geometry,
+        { radiusTop, radiusBottom, height, radialSegments } = {},
+        { receive, cast } = {},
+        material = null
+    ) {
+        let tableLegGeometry =
+            geometry ??
+            new THREE.CylinderGeometry(
+                radiusTop ?? 0.05,
+                radiusBottom ?? 0.05,
+                height ?? 0.8,
+                radialSegments ?? 32
+            );
 
         const tableLeg = new THREE.Mesh(
             tableLegGeometry,
-            material ?? this.tableLegMaterial,
+            material ?? this.tableLegMaterial
         );
         tableLeg.receiveShadow = receive ?? true;
         tableLeg.castShadow = cast ?? true;
@@ -610,11 +632,11 @@ class MyContents {
 
     /**
      * Builds the table.
-     * 
+     *
      * @return {THREE.Group} the table
      */
     buildTable() {
-        const table = new THREE.Group()
+        const table = new THREE.Group();
 
         let tableTopGeometry = new THREE.BoxGeometry(1, 0.1, 2);
         this.tableTop = new THREE.Mesh(tableTopGeometry, this.tableMaterial);
@@ -623,7 +645,12 @@ class MyContents {
         this.tableTop.castShadow = true;
         table.add(this.tableTop);
 
-        const tableLegGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.8, 32);
+        const tableLegGeometry = new THREE.CylinderGeometry(
+            0.05,
+            0.05,
+            0.8,
+            32
+        );
 
         const tableLeg1 = this.buildTableLeg(tableLegGeometry);
         tableLeg1.position.y = 0.4;
@@ -654,7 +681,7 @@ class MyContents {
 
     /**
      * Builds the plate used to hold the cake.
-     * 
+     *
      * @returns {THREE.Group} the plate used to hold the cake
      */
     buildPlate() {
@@ -668,7 +695,7 @@ class MyContents {
 
     /**
      * Builds the cake.
-     * 
+     *
      * @returns {THREE.Group} the cake
      */
     buildCake() {
@@ -690,7 +717,7 @@ class MyContents {
         cakeBody.castShadow = true;
         cake.add(cakeBody);
 
-        let cakeSliceGeometry = new THREE.PlaneGeometry(.1, .1);
+        let cakeSliceGeometry = new THREE.PlaneGeometry(0.1, 0.1);
 
         const cakeSlice1 = new THREE.Mesh(cakeSliceGeometry, this.cakeMaterial);
         cakeSlice1.rotation.y = -Math.PI / 2;
@@ -719,15 +746,23 @@ class MyContents {
 
     /**
      * Builds the candle that sits on top of the cake.
-     * 
+     *
      * @returns {THREE.Group} the candle that sits on top of the cake
      */
     buildCandle() {
         const candle = new THREE.Group();
 
-        const candleBodyGeometry = new THREE.CylinderGeometry(0.005, 0.005, 0.025, 8);
+        const candleBodyGeometry = new THREE.CylinderGeometry(
+            0.005,
+            0.005,
+            0.025,
+            8
+        );
 
-        const candleBody = new THREE.Mesh(candleBodyGeometry, this.candleMaterial);
+        const candleBody = new THREE.Mesh(
+            candleBodyGeometry,
+            this.candleMaterial
+        );
         candleBody.receiveShadow = true;
         candleBody.castShadow = true;
 
@@ -759,11 +794,10 @@ class MyContents {
 
     /**
      * Builds the cake.
-     * 
+     *
      * @returns {THREE.Group} the cake and the plate
      */
     buildCakeAndPlate() {
-
         const cakeAndPlate = new THREE.Group();
 
         const plate = this.buildPlate();
@@ -773,18 +807,17 @@ class MyContents {
         cake.position.y = plate.position.y + 0.0;
         cakeAndPlate.add(cake);
 
-        cakeAndPlate.position.y = 0.85
+        cakeAndPlate.position.y = 0.85;
 
         return cakeAndPlate;
     }
 
     /**
      * Builds the "carocha" figure.
-     * 
+     *
      * @returns {THREE.Group} the "carocha" figure
      */
     buildCarocha() {
-
         const carocha = new THREE.Group();
 
         const carocha1 = new THREE.CubicBezierCurve3(
@@ -891,12 +924,11 @@ class MyContents {
 
     /**
      * Builds the picture frame.
-     * 
+     *
      * @param {THREE.Geometry} frameGeometry the geometry of the frame
      * @returns {THREE.Mesh} the picture frame
      */
     buildFrame(frameGeometry) {
-
         const frame = new THREE.Mesh(frameGeometry, this.frameMaterial);
 
         frame.rotation.z = Math.PI / 4;
@@ -907,14 +939,13 @@ class MyContents {
 
     /**
      * Builds a frame with a picture.
-     * 
+     *
      * @param {THREE.Geometry} frameGeometry the geometry of the frame
      * @param {THREE.Geometry} pictureGeometry the geometry of the picture
      * @param {THREE.Material} pictureMaterial the material of the picture
      * @returns {THREE.Mesh} the frame with a picture
      */
     buildPicture(frameGeometry, pictureGeometry, pictureMaterial) {
-
         const frame = this.buildFrame(frameGeometry);
 
         const picture = new THREE.Mesh(pictureGeometry, pictureMaterial);
@@ -930,29 +961,37 @@ class MyContents {
 
     /**
      * Builds the Peras
-     * 
+     *
      * @param {THREE.Geometry} frameGeometry the frame geometry
      * @param {THREE.Geometry} pictureGeometry the picture geometry
      * @returns {THREE.Group} the Peras
      */
     buildPeras(frameGeometry, pictureGeometry) {
-        return this.buildPicture(frameGeometry, pictureGeometry, this.perasMaterial);
+        return this.buildPicture(
+            frameGeometry,
+            pictureGeometry,
+            this.perasMaterial
+        );
     }
 
     /**
      * Builds the Toino
-     * 
+     *
      * @param {THREE.Geometry} frameGeometry the frame geometry
      * @param {THREE.Geometry} pictureGeometry the picture geometry
      * @returns {THREE.Group} the Toino
      */
     buildToino(frameGeometry, pictureGeometry) {
-        return this.buildPicture(frameGeometry, pictureGeometry, this.toinoMaterial);
+        return this.buildPicture(
+            frameGeometry,
+            pictureGeometry,
+            this.toinoMaterial
+        );
     }
 
     /**
      * Builds the pictures.7
-     * 
+     *
      * @returns {THREE.Group[]} the pictures
      */
     buildPictures() {
@@ -969,16 +1008,15 @@ class MyContents {
         toino.position.x = 0.5;
         toino.receiveShadow = true;
 
-        return [peras, toino]
+        return [peras, toino];
     }
 
     /**
      * Builds the flashlight.
-     * 
+     *
      * @returns {THREE.Group} the flashlight
      */
     buildFlashlight() {
-
         const flashlight = new THREE.Group();
 
         const flashLightBodyHeight = 0.15;
@@ -1092,24 +1130,17 @@ class MyContents {
         return flashlight;
     }
 
-
     /**
      * Builds the window.
-     * 
+     *
      * @returns {THREE.Group} the window
      */
     buildWindow() {
-
         const window = new THREE.Group();
 
         const displacement = 0.21;
 
-        const windowQuarterGeometry = new THREE.TorusGeometry(
-            0.3,
-            0.03,
-            4,
-            4
-        );
+        const windowQuarterGeometry = new THREE.TorusGeometry(0.3, 0.03, 4, 4);
         const window1 = this.buildFrame(windowQuarterGeometry);
         window1.position.x = displacement;
         window1.position.y = displacement;
@@ -1214,21 +1245,14 @@ class MyContents {
 
         for (let i = 0; i < num_revolutions; i++) {
             points.push(
-                ...generateRevolution(
-                    50,
-                    0.025,
-                    HEIGHT_STEP,
-                    i * HEIGHT_STEP
-                )
+                ...generateRevolution(50, 0.025, HEIGHT_STEP, i * HEIGHT_STEP)
             );
         }
 
         const curve = new THREE.CatmullRomCurve3(points);
 
         const curvePoints = curve.getPoints(50 * num_revolutions);
-        const geometry = new THREE.BufferGeometry().setFromPoints(
-            curvePoints
-        );
+        const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
 
         const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
 
@@ -1298,7 +1322,7 @@ class MyContents {
 
     /**
      * Builds the pot.
-     * 
+     *
      * @returns {THREE.Group} the pot
      */
     buildVase() {
@@ -1364,7 +1388,7 @@ class MyContents {
 
     /**
      * Builds the flower.
-     * 
+     *
      * @returns {THREE.Group} the flower
      */
     buildFlower() {
@@ -1374,20 +1398,20 @@ class MyContents {
         const H = 0.15;
 
         const flowerBodyPoints = new THREE.CubicBezierCurve3(
-            new THREE.Vector3(-0.08, .2 - 0.08, 0),
-            new THREE.Vector3(-0.08, .2 - 0.08 + 0.552284749831 * 0.08, 0),
-            new THREE.Vector3(0 - 0.08 * 0.552284749831, .2, 0),
-            new THREE.Vector3(0, .2, 0)
+            new THREE.Vector3(-0.08, 0.2 - 0.08, 0),
+            new THREE.Vector3(-0.08, 0.2 - 0.08 + 0.552284749831 * 0.08, 0),
+            new THREE.Vector3(0 - 0.08 * 0.552284749831, 0.2, 0),
+            new THREE.Vector3(0, 0.2, 0)
         );
         const flowerBody = new THREE.Line(
             new THREE.BufferGeometry().setFromPoints(
                 flowerBodyPoints.getPoints(50)
             ),
             this.flowerBodyMaterial
-        )
+        );
 
-        const scale = .10;
-        const leafBaseHalfLength = 0.0
+        const scale = 0.1;
+        const leafBaseHalfLength = 0.0;
         const leafControlPoints = [
             // U = 0
             [
@@ -1418,33 +1442,56 @@ class MyContents {
             10,
             this.flowerLeafMaterial
         );
-        leaf.position.y = .169;
+        leaf.position.y = 0.169;
         leaf.position.x = -0.058;
         leaf.position.z = flowerBody.position.z + 0.015;
         leaf.rotation.z = Math.PI / 2;
-        leaf.rotation.y = -3 * Math.PI / 2;
-        leaf.rotation.x = -0.1 * Math.PI / 9;
+        leaf.rotation.y = (-3 * Math.PI) / 2;
+        leaf.rotation.x = (-0.1 * Math.PI) / 9;
         flowerBody.add(leaf);
 
         const headScale = 0.5;
 
-        const flowerHeadCoreGeometry = new THREE.CylinderGeometry(headScale * 0.05, headScale * 0.05, headScale * 0.0125);
-        const flowerHeadCore = new THREE.Mesh(flowerHeadCoreGeometry, this.flowerHeadCoreMaterial);
+        const flowerHeadCoreGeometry = new THREE.CylinderGeometry(
+            headScale * 0.05,
+            headScale * 0.05,
+            headScale * 0.0125
+        );
+        const flowerHeadCore = new THREE.Mesh(
+            flowerHeadCoreGeometry,
+            this.flowerHeadCoreMaterial
+        );
 
-        const flowerHeadRing1Geometry = new THREE.TorusGeometry(headScale * 0.05, headScale * 0.01, 40, 40);
-        const flowerHeadRing1 = new THREE.Mesh(flowerHeadRing1Geometry, this.flowerHeadRing1Material);
+        const flowerHeadRing1Geometry = new THREE.TorusGeometry(
+            headScale * 0.05,
+            headScale * 0.01,
+            40,
+            40
+        );
+        const flowerHeadRing1 = new THREE.Mesh(
+            flowerHeadRing1Geometry,
+            this.flowerHeadRing1Material
+        );
         flowerHeadRing1.rotation.x = Math.PI / 2;
 
-        const flowerHeadRing2Geometry = new THREE.TorusGeometry(headScale * 0.065, headScale * 0.01, 40, 40);
-        const flowerHeadRing2 = new THREE.Mesh(flowerHeadRing2Geometry, this.flowerHeadRing2Material);
+        const flowerHeadRing2Geometry = new THREE.TorusGeometry(
+            headScale * 0.065,
+            headScale * 0.01,
+            40,
+            40
+        );
+        const flowerHeadRing2 = new THREE.Mesh(
+            flowerHeadRing2Geometry,
+            this.flowerHeadRing2Material
+        );
         flowerHeadRing2.rotation.x = Math.PI / 2;
 
         const flowerHead = new THREE.Group();
         flowerHead.add(flowerHeadCore);
         flowerHead.add(flowerHeadRing1);
         flowerHead.add(flowerHeadRing2);
-        flowerHead.position.y = .2;
-        flowerHead.rotation.z = - Math.PI / 2;
+        flowerHead.position.y = 0.2;
+        flowerHead.rotation.z = -Math.PI / 2;
 
         const flower = new THREE.Group();
         flower.add(flowerBody);
@@ -1453,7 +1500,12 @@ class MyContents {
         flower.castShadow = true;
         flower.receiveShadow = true;
 
-        const potSoilGeometry = new THREE.CylinderGeometry(0.07, 0.09, 0.05, 32);
+        const potSoilGeometry = new THREE.CylinderGeometry(
+            0.07,
+            0.09,
+            0.05,
+            32
+        );
         const potSoil = new THREE.Mesh(potSoilGeometry, this.soilMaterial);
         potSoil.position.y = 0.095;
         potSoil.position.x = -0.05;
@@ -1466,11 +1518,10 @@ class MyContents {
 
     /**
      * Builds the flower and pot.
-     * 
+     *
      * @returns {THREE.Group} the flower and pot
      */
     buildFlowerAndPot() {
-
         const flowerAndPot = new THREE.Group();
 
         const vase = this.buildVase();
@@ -1492,7 +1543,6 @@ class MyContents {
      * Builds the ceiling lamp.
      */
     buildLamp() {
-
         const lamp = new THREE.Group();
 
         const lampGeometry = new THREE.CylinderGeometry(
@@ -1514,10 +1564,7 @@ class MyContents {
         lamp.add(pointLight);
         this.lights.push(pointLight);
 
-        const pointLightHelper = new THREE.PointLightHelper(
-            pointLight,
-            0.25
-        );
+        const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.25);
         lamp.add(pointLightHelper);
         this.helpers.push(pointLightHelper);
 
@@ -1526,27 +1573,31 @@ class MyContents {
 
     /**
      * Builds a leg of the chair
-     * 
+     *
      * @param {*} geometry the geometry of the leg
      * @param {*} dimensions the dimensions of the leg
      * @param {*} shadow the shadow properties of the leg
      * @param {*} material the material to apply to the leg (defaults to the table leg material)
      * @returns a chair leg
      */
-    buildChairLeg(geometry, {
-        radiusTop,
-        radiusBottom,
-        height,
-        radialSegments
-    } = {}, {
-        receive,
-        cast
-    } = {}, material = null) {
-        let tableLegGeometry = geometry ?? new THREE.CylinderGeometry(radiusTop ?? 0.025, radiusBottom ?? 0.025, height ?? 0.5, radialSegments ?? 32);
+    buildChairLeg(
+        geometry,
+        { radiusTop, radiusBottom, height, radialSegments } = {},
+        { receive, cast } = {},
+        material = null
+    ) {
+        let tableLegGeometry =
+            geometry ??
+            new THREE.CylinderGeometry(
+                radiusTop ?? 0.025,
+                radiusBottom ?? 0.025,
+                height ?? 0.5,
+                radialSegments ?? 32
+            );
 
         const tableLeg = new THREE.Mesh(
             tableLegGeometry,
-            material ?? this.tableLegMaterial,
+            material ?? this.tableLegMaterial
         );
         tableLeg.receiveShadow = receive ?? true;
         tableLeg.castShadow = cast ?? true;
@@ -1556,11 +1607,10 @@ class MyContents {
 
     /**
      * Builds the chair.
-     * 
+     *
      * @returns {THREE.Group} the chair
      */
     buildChair() {
-
         const chair = new THREE.Group();
 
         const chairGeometry = new THREE.BoxGeometry(0.5, 0.05, 0.5);
@@ -1571,7 +1621,12 @@ class MyContents {
 
         const chairLegHeight = 0.5;
 
-        const chairLegGeometry = new THREE.CylinderGeometry(0.025, 0.025, chairLegHeight, 32);
+        const chairLegGeometry = new THREE.CylinderGeometry(
+            0.025,
+            0.025,
+            chairLegHeight,
+            32
+        );
 
         const chairLeg1 = this.buildChairLeg(chairLegGeometry);
         chairLeg1.position.y = -chairLegHeight / 2;
@@ -1647,11 +1702,9 @@ class MyContents {
         chair.position.y = chairLegHeight;
         chair.position.x = -1;
         chair.position.z = 1;
-        chair.rotation.y = 3 * Math.PI / 4;
+        chair.rotation.y = (3 * Math.PI) / 4;
 
         return chair;
     }
-
-
 }
 export { MyContents };
