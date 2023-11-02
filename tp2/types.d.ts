@@ -1,16 +1,16 @@
 import * as THREE from "three";
 
 interface SceneData {
-    public options: OptionsData;
-    public fog: FogData;
+    options: OptionsData;
+    fog: FogData;
 
-    public textures: Record<string, TextureData>;
-    public materials: Record<string, MaterialData>;
-    public cameras: Record<string, CameraData>;
-    public nodes: Record<string, NodeData>;
+    textures: Record<string, TextureData>;
+    materials: Record<string, MaterialData>;
+    cameras: Record<string, CameraData>;
+    nodes: Record<string, NodeData>;
 
-    public activeCameraId: string;
-    public rootId: string;
+    activeCameraId: string;
+    rootId: string;
 }
 
 interface Data<T extends string = string> {
@@ -155,7 +155,7 @@ type PrimitiveData =
     | SphereData
     | NurbsData;
 
-interface BasePrimitiveData<T extends string = string, R>
+interface BasePrimitiveData<R, T extends string = string>
     extends Data<"primitive"> {
     subtype: T;
     representations: (R & {
@@ -165,37 +165,36 @@ interface BasePrimitiveData<T extends string = string, R>
 }
 
 type RectangleData = BasePrimitiveData<
-    "rectangle",
     {
         xy1: Vector2;
         xy2: Vector2;
         parts_x: number;
         parts_y: number;
-    }
+    },
+    "rectangle"
 >;
 
 type TriangleData = BasePrimitiveData<
-    "triangle",
     {
         xyz1: Vector3;
         xyz2: Vector3;
         xyz3: Vector3;
-    }
+    },
+    "triangle"
 >;
 
 type BoxData = BasePrimitiveData<
-    "box",
     {
         xyz1: Vector3;
         xyz2: Vector3;
         parts_x: number;
         parts_y: number;
         parts_z: number;
-    }
+    },
+    "box"
 >;
 
 type CylinderData = BasePrimitiveData<
-    "cylinder",
     {
         height: number;
         top: number;
@@ -205,11 +204,11 @@ type CylinderData = BasePrimitiveData<
         capsclose: boolean;
         thetastart: number;
         thetalength: number;
-    }
+    },
+    "cylinder"
 >;
 
 type SphereData = BasePrimitiveData<
-    "sphere",
     {
         radius: number;
         slices: number;
@@ -218,18 +217,19 @@ type SphereData = BasePrimitiveData<
         thetalength: number;
         phistart: number;
         philength: number;
-    }
+    },
+    "sphere"
 >;
 
 type NurbsData = BasePrimitiveData<
-    "nurbs",
     {
         degree_u: number;
         degree_v: number;
         controlpoints: ControlPointData[];
         parts_u: number;
         parts_v: number;
-    }
+    },
+    "nurbs"
 >;
 
 interface ControlPointData {
