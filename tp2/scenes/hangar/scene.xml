@@ -6,7 +6,7 @@
 
     <globals background="0 0 0 1" ambient="0.5 0.6 0.8 1" />
 
-    <fog color="1.0 1.0 1.0 1.0" near="0.0" far="100.0" />
+    <fog color="1.0 1.0 1.0 1.0" near="0.0" far="200.0" />
 
     <cameras initial="cam1">
         <perspective id="cam1"
@@ -40,6 +40,16 @@
             specular="0 0 0 0"
             shininess="0"
             textureref="wallTex"
+            texlength_s="8"
+            texlength_t="4"
+            twosided="true"
+        />
+
+        <material id="planeMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.85 0.85 0.85 1.0"
+            specular="0.9 0.9 0.9 1.0"
+            shininess="10"
             texlength_s="8"
             texlength_t="4"
             twosided="true" />
@@ -179,11 +189,14 @@
                 <translate value3="-5 0 0" />
             </transforms>
 
+            <materialref id="planeMat" />
+
             <children>
                 <noderef id="planeBody" />
                 <noderef id="planeNose" />
                 <noderef id="planeWingL" />
                 <noderef id="planeWingR" />
+                <noderef id="planeTail" />
             </children>
         </node>
 
@@ -220,7 +233,12 @@
         </node>
 
         <node id="planeWing">
-            <materialref id="wallMat" />
+
+            <transforms>
+                <rotate value3="0 7.5 0" />
+            </transforms>
+
+            <materialref id="planeMat" />
 
             <children>
                 <primitive>
@@ -245,12 +263,199 @@
 
         <node id="planeWingR">
             <transforms>
-                <rotate value3="0 180 0" />
-                <translate value3="0 1 3" />
+                <scale value3="1 1 -1" />
+                <translate value3="0 1 -3" />
             </transforms>
 
             <children>
                 <noderef id="planeWing" />
+            </children>
+        </node>
+
+        <node id="planeTail">
+
+            <transforms>
+                <rotate value3="0 0 90" />
+                <rotate value3="0 -90 0" />
+                <scale value3="3 3 3" />
+                <translate value3="0 0 10" />
+            </transforms>
+
+            <materialref id="planeMat" />
+
+            <children>
+                <noderef id="planeTailTop" />
+                <noderef id="planeTailBottom" />
+                <noderef id="planeTailTip" />
+                <noderef id="planeTailTipFlaps" />
+            </children>
+        </node>
+
+        <node id="planeTailTopHalf">
+            <children>
+                <primitive>
+                    <nurbs degree_u="1" degree_v="3" parts_u="32" parts_v="32">
+                        <controlpoint xx="1" yy="0" zz="0" />
+                        <controlpoint xx="1" yy="0.55228474983" zz="0" />
+                        <controlpoint xx="0.55228474983" yy="1" zz="0" />
+                        <controlpoint xx="0" yy="1" zz="0" />
+
+                        <controlpoint xx="0.3" yy="0.8" zz="2" />
+                        <controlpoint xx="0.3" yy="1.01045694997" zz="2" />
+                        <controlpoint xx="0.16568542494" yy="1.1" zz="2" />
+                        <controlpoint xx="0" yy="1.1" zz="2" />
+                    </nurbs>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeTailTopHalf1">
+            <children>
+                <noderef id="planeTailTopHalf" />
+            </children>
+        </node>
+        <node id="planeTailTopHalf2">
+            <transforms>
+                <scale value3="-1 1 1" />
+            </transforms>
+
+            <children>
+                <noderef id="planeTailTopHalf" />
+            </children>
+        </node>
+
+        <node id="planeTailTop">
+            <children>
+                <noderef id="planeTailTopHalf1" />
+                <noderef id="planeTailTopHalf2" />
+            </children>
+        </node>
+
+        <node id="planeTailBottomHalf">
+
+            <transforms>
+                <scale value3="1 -1 1" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <nurbs degree_u="1" degree_v="3" parts_u="32" parts_v="32">
+                        <controlpoint xx="1" yy="0" zz="0" />
+                        <controlpoint xx="1" yy="0.55228474983" zz="0" />
+                        <controlpoint xx="0.55228474983" yy="1" zz="0" />
+                        <controlpoint xx="0" yy="1" zz="0" />
+
+                        <controlpoint xx="0.3" yy="-0.8" zz="2" />
+                        <controlpoint xx="0.3" yy="-0.55228474983" zz="2" />
+                        <controlpoint xx="0.16568542494" yy="-.5" zz="2" />
+                        <controlpoint xx="0" yy="-.5" zz="2" />
+                    </nurbs>
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeTailBottomHalf1">
+            <children>
+                <noderef id="planeTailBottomHalf" />
+            </children>
+        </node>
+        <node id="planeTailBottomHalf2">
+            <transforms>
+                <scale value3="-1 1 1" />
+            </transforms>
+
+            <children>
+                <noderef id="planeTailBottomHalf" />
+            </children>
+        </node>
+
+        <node id="planeTailBottom">
+            <children>
+                <noderef id="planeTailBottomHalf1" />
+                <noderef id="planeTailBottomHalf2" />
+            </children>
+        </node>
+
+        <node id="planeTailTip">
+
+            <transforms>
+                <translate value3="0 .975 2.25" />
+                <rotate value3="65 0 0" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <cylinder base=".345" top="0" height="1" slices="32" stacks="32" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeTailTipFlaps">
+
+            <transforms>
+                <translate value3="0 1 .7" />
+                <scale value3="1 .7 1" />
+            </transforms>
+
+            <children>
+                <noderef id="planeTailTipFlapsBody" />
+                <noderef id="planeTailTipFlapsArms" />
+            </children>
+        </node>
+
+        <node id="planeTailTipFlapsBody">
+
+            <materialref id="planeMat" />
+
+            <children>
+                <primitive>
+                    <nurbs degree_u="1" degree_v="1" parts_u="20" parts_v="20">
+                        <controlpoint xx="0" yy="0" zz="0" />
+                        <controlpoint xx="0" yy="0" zz="1" />
+                        <controlpoint xx="0" yy="2" zz="1.1" />
+                        <controlpoint xx="0" yy="2" zz="1.5" />
+                    </nurbs>
+                </primitive>
+            </children>
+        </node>
+        <node id="planeTailTipFlapsArmHalf">
+
+            <materialref id="planeMat" />
+
+            <children>
+                <primitive>
+                    <nurbs degree_u="1" degree_v="1" parts_u="20" parts_v="20">
+                        <controlpoint xx="0" yy="0" zz="0" />
+                        <controlpoint xx="0" yy="0" zz=".4" />
+                        <controlpoint xx="1" yy="0" zz=".85" />
+                        <controlpoint xx="1" yy="0" zz="1" />
+                    </nurbs>
+                </primitive>
+            </children>
+        </node>
+        <node id="planeTailTipFlapsArmHalf1">
+            <transforms>
+                <translate value3="0 2 1.1" />
+            </transforms>
+
+            <children>
+                <noderef id="planeTailTipFlapsArmHalf" />
+            </children>
+        </node>
+        <node id="planeTailTipFlapsArmHalf2">
+            <transforms>
+                <rotate value3="0 0 180" />
+                <translate value3="0 -2 1.1" />
+            </transforms>
+
+            <children>
+                <noderef id="planeTailTipFlapsArmHalf" />
+            </children>
+        </node>
+        <node id="planeTailTipFlapsArms">
+            <children>
+                <noderef id="planeTailTipFlapsArmHalf1" />
+                <noderef id="planeTailTipFlapsArmHalf2" />
             </children>
         </node>
     </graph>
