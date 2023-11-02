@@ -71,6 +71,12 @@ class MyContents {
         this.ambientLight = new THREE.AmbientLight(data.options.ambient);
         this.app.scene.add(this.ambientLight);
 
+        this.app.scene.fog = new THREE.Fog(
+            data.fog.color,
+            data.fog.near,
+            data.fog.far
+        );
+
         console.log("textures:");
         /** @type {Record<string, THREE.Texture>} */
         this.textures = {};
@@ -521,7 +527,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() { }
+    update() {}
 }
 
 export { MyContents };
