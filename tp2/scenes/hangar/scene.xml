@@ -78,6 +78,7 @@
                 <noderef id="leftWall" />
                 <noderef id="backWall" />
                 <noderef id="rightWall" />
+                <noderef id="ceiling" />
             </children>
         </node>
 
@@ -134,6 +135,38 @@
             <children>
                 <primitive>
                     <rectangle xy1="0 0" xy2="60 20" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="ceiling">
+
+            <transforms>
+                <translate value3="0.0 20.0 -50.0" />
+            </transforms>
+
+            <materialref id="wallMat" />
+
+            <children>
+                <primitive>
+                    <nurbs degree_u="1" degree_v="2" parts_u="20" parts_v="20">
+                        <controlpoint xx="0" yy="0" zz="00" />
+                        <controlpoint xx="0" yy="10" zz="25" />
+                        <controlpoint xx="0" yy="0" zz="50" />
+                        <controlpoint xx="60" yy="0" zz="0" />
+                        <controlpoint xx="60" yy="10" zz="25" />
+                        <controlpoint xx="60" yy="0" zz="50" />
+                    </nurbs>
+                </primitive>
+                <primitive>
+                    <nurbs degree_u="1" degree_v="2" parts_u="20" parts_v="20">
+                        <controlpoint xx="0" yy="0" zz="0" />
+                        <controlpoint xx="0" yy="0" zz="25" />
+                        <controlpoint xx="0" yy="0" zz="50" />
+                        <controlpoint xx="0" yy="0" zz="0" />
+                        <controlpoint xx="0" yy="10" zz="25" />
+                        <controlpoint xx="0" yy="0" zz="50" />
+                    </nurbs>
                 </primitive>
             </children>
         </node>
