@@ -1,10 +1,15 @@
+/// @ts-check
+/// <reference path="types.d.ts"/>
+
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import { MyFileReader } from "./parser/MyFileReader.js";
 import { MySceneData } from "./parser/MySceneData.js";
 import { MyApp } from "./MyApp.js";
 import { degreesToRadians } from "./MyMath.js";
+// @ts-expect-error
 import { NURBSSurface } from "three/addons/curves/NURBSSurface.js";
+// @ts-expect-error
 import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
 
 /**
@@ -30,7 +35,7 @@ class MyContents {
         // create once
         if (this.axis === null) {
             // create and attach the axis to the scene
-            this.axis = new MyAxis(this);
+            this.axis = new MyAxis(this.app);
             this.app.scene.add(this.axis);
         }
     }
@@ -45,6 +50,7 @@ class MyContents {
             data,
             "visit MySceneData javascript class to check contents for each data item."
         );
+        // @ts-expect-error
         this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
@@ -53,7 +59,7 @@ class MyContents {
     }
 
     /**
-     * @param {MySceneData} data
+     * @param {import("./types.js").SceneData} data
      */
     onAfterSceneLoadedAndBeforeRender(data) {
         // refer to descriptors in class MySceneData.js
@@ -62,6 +68,8 @@ class MyContents {
         this.output(data.options);
 
         this.app.renderer.setClearColor(data.options.background);
+        this.ambientLight = new THREE.AmbientLight(data.options.ambient);
+        this.app.scene.add(this.ambientLight);
 
         console.log("textures:");
         /** @type {Record<string, THREE.Texture>} */
@@ -93,9 +101,13 @@ class MyContents {
                 shininess: material.shininess,
                 wireframe: material.wireframe,
                 flatShading: material.shading === "flat",
-                map: this.textures[material.textureref],
+                map: material.textureref
+                    ? this.textures[material.textureref]
+                    : undefined,
                 side: material.twosided ? THREE.DoubleSide : THREE.FrontSide,
-                bumpMap: this.textures[material.bump_ref],
+                bumpMap: material.bump_ref
+                    ? this.textures[material.bump_ref]
+                    : undefined,
                 bumpScale: material.bump_scale,
             });
 
@@ -146,11 +158,11 @@ class MyContents {
     }
 
     /**
-     * @param {MySceneData} data
+     * @param {import("./types.js").SceneData} data
      * @param {string} node
-     * @param {boolean} castShadow
-     * @param {boolean} receiveShadow
-     * @param {THREE.Material | undefined} material
+     * @param {boolean} pCastShadow
+     * @param {boolean} pReceiveShadow
+     * @param {THREE.Material | undefined} pMaterial
      *
      * @returns {THREE.Object3D}
      */
@@ -163,9 +175,12 @@ class MyContents {
     ) {
         const nodeData = data.nodes[node];
 
+        // FIXME: castShadow and receiveShadow are not present
+        // @ts-expect-error
         const castShadow = nodeData.castShadow || pCastShadow;
+        // @ts-expect-error
         const receiveShadow = nodeData.receiveShadow || pReceiveShadow;
-        const material = this.materials[nodeData.materialIds[0]] ?? pMaterial;
+        const material = this.materials?.[nodeData.materialIds[0]] ?? pMaterial;
 
         const group = new THREE.Group();
 
@@ -206,8 +221,8 @@ class MyContents {
     }
 
     /**
-     * @param {MySceneData} data
-     * @param {any} node
+     * @param {import("./types.js").SceneData} data
+     * @param {import("./types.js").ChildData} node
      * @param {boolean} castShadow
      * @param {boolean} receiveShadow
      * @param {THREE.Material | undefined} material
@@ -239,9 +254,16 @@ class MyContents {
                     node.decay
                 );
                 light.position.set(...node.position);
-                light.castShadow = node.castShadow;
+                light.castShadow = node.castshadow;
                 light.shadow.camera.far = node.shadowfar;
-                light.shadow.mapSize = node.shadowmapsize;
+                light.shadow.mapSize.set(
+                    node.shadowmapsize,
+                    node.shadowmapsize
+                );
+
+                const helper = new THREE.PointLightHelper(light, 1);
+                this.app.scene.add(helper);
+
                 return light;
             }
             case "spotlight": {
@@ -255,9 +277,16 @@ class MyContents {
                 );
                 light.position.set(...node.position);
                 light.target.position.set(...node.target);
-                light.castShadow = node.castShadow;
+                light.castShadow = node.castshadow;
                 light.shadow.camera.far = node.shadowfar;
-                light.shadow.mapSize = node.shadowmapsize;
+                light.shadow.mapSize.set(
+                    node.shadowmapsize,
+                    node.shadowmapsize
+                );
+
+                const helper = new THREE.SpotLightHelper(light);
+                this.app.scene.add(helper);
+
                 return light;
             }
             case "directionallight": {
@@ -266,24 +295,32 @@ class MyContents {
                     node.intensity
                 );
                 light.position.set(...node.position);
-                light.castShadow = node.castShadow;
+                light.castShadow = node.castshadow;
                 light.shadow.camera.left = node.shadowleft;
                 light.shadow.camera.right = node.shadowright;
                 light.shadow.camera.top = node.shadowtop;
                 light.shadow.camera.bottom = node.shadowbottom;
                 light.shadow.camera.far = node.shadowfar;
-                light.shadow.mapSize = node.shadowmapsize;
+                light.shadow.mapSize.set(
+                    node.shadowmapsize,
+                    node.shadowmapsize
+                );
+
+                const helper = new THREE.DirectionalLightHelper(light, 1);
+                this.app.scene.add(helper);
+
                 return light;
             }
         }
 
+        // @ts-expect-error
         console.log(node.type);
 
         return new THREE.Object3D();
     }
 
     /**
-     * @param {any} primitive
+     * @param {import("./types.js").PrimitiveData} primitive
      * @param {boolean} castShadow
      * @param {boolean} receiveShadow
      * @param {THREE.Material | undefined} material
@@ -371,8 +408,8 @@ class MyContents {
                         representation.slices,
                         representation.stacks,
                         representation.capsclose,
-                        representation.thetaStart,
-                        representation.thetaLength
+                        representation.thetastart,
+                        representation.thetalength
                     ),
                     material
                 );
@@ -387,10 +424,10 @@ class MyContents {
                         representation.radius,
                         representation.slices,
                         representation.stacks,
-                        representation.phiStart,
-                        representation.phiLength,
-                        representation.thetaStart,
-                        representation.thetaLength
+                        representation.phistart,
+                        representation.philength,
+                        representation.thetastart,
+                        representation.thetalength
                     ),
                     material
                 );
@@ -407,7 +444,7 @@ class MyContents {
                         p.xx,
                         p.yy,
                         p.zz,
-                        p.ww ?? 1,
+                        1,
                     ]),
                     representation.parts_u,
                     representation.parts_v,
@@ -419,6 +456,7 @@ class MyContents {
                 break;
             }
             default: {
+                // @ts-expect-error
                 console.log(primitive.subtype);
             }
         }
@@ -435,14 +473,13 @@ class MyContents {
      * Builds the NURB  defined by the given control points using the given samples along the U and V directions.
      * The material is applied to the resulting geometry and the resulting mesh is returned.
      *
-     * @type NURBControlPoints = number[][][]
-     * @param {NURBControlPoints} controlPoints the points that control the surface shape
+     * @param {import("./types.js").Vector4[]} controlPoints the points that control the surface shape
      * @param {number} samples1 the number of samples along the U direction
      * @param {number} samples2 the number of samples along the V direction
      * @param {number} degree1 the number of samples along the U direction
      * @param {number} degree2 the number of samples along the V direction
-     * @param {THREE.Material} material the material to apply to the computed geometry
-     * @returns {THREE.Mesh}
+     * @param {THREE.Material | undefined} material the material to apply to the computed geometry
+     * @returns {THREE.Mesh | undefined}
      */
     buildNURBS(controlPoints, samples1, samples2, degree1, degree2, material) {
         if (degree1 < 0 || degree2 < 0) return;
@@ -454,6 +491,7 @@ class MyContents {
             .fill(0)
             .concat(new Array(degree2 + 1).fill(1));
 
+        /** @type {THREE.Vector4[][]} */
         const vControlPoints = [];
 
         for (let i = 0; i <= degree1; i++) {
