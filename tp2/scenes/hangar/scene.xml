@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<yaf>
+    <!-- Credits of the original file go to Group 1, class 1 of course LAIG school year 2013/2014,
+    FEUP, University of Porto -->
+
+    <globals background="0 0 0 1" ambient="0.5 0.6 0.8 1" />
+
+    <fog color="1.0 1.0 1.0 1.0" near="0.0" far="100.0" />
+
+    <cameras initial="cam1">
+        <perspective id="cam1"
+            angle="60"
+            near="0.1"
+            far="1000"
+            location="15 15 15"
+            target="0 0.0 0" />
+    </cameras>
+
+    <!-- bloco de texturas. Este bloco tem de existir mas pode estar vazio, se nao forem usadas
+    texturas -->
+    <textures>
+        <texture id="floorTex" filepath="scenes/hangar/textures/floor.jpg" />
+        <texture id="wallTex" filepath="scenes/hangar/textures/wall.jpg" />
+    </textures>
+
+    <materials>
+        <material id="floorMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.8 0.8 0.8 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="floorTex"
+            texlength_s="8"
+            texlength_t="4"
+            twosided="true" />
+        <material id="wallMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.8 0.8 0.8 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="wallTex"
+            texlength_s="8"
+            texlength_t="4"
+            twosided="true" />
+    </materials>
+
+    <graph rootid="scene">
+
+        <node id="scene">
+            <children>
+                <noderef id="hangar" />
+                <noderef id="plane" />
+
+                <pointlight id="light1" enabled="true"
+                    color="0.5 0.6 0.8 1"
+                    intensity="10.0"
+                    distance="1000"
+                    decay="2.0"
+                    castshadow="false"
+                    position="0 1 0"
+                />
+                <directionallight id="light5" enabled="true"
+                    color="1.0 1.0 1.0 1"
+                    intensity="1.0"
+                    castshadow="true"
+                    position="2 2 4"
+                />
+            </children>
+        </node>
+
+        <node id="hangar">
+            <transforms>
+                <translate value3="-25.0 0.0 25.0" />
+            </transforms>
+
+            <children>
+                <noderef id="floor" />
+                <noderef id="leftWall" />
+                <noderef id="backWall" />
+                <noderef id="rightWall" />
+            </children>
+        </node>
+
+        <node id="floor">
+            <transforms>
+                <rotate value3="-90.0 0.0 0.0" />
+            </transforms>
+
+            <materialref id="floorMat" />
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="60 50" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="leftWall">
+            <transforms>
+                <translate value3="0.0 0.0 -50.0" />
+            </transforms>
+
+            <materialref id="wallMat" />
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="60 20" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="backWall">
+            <transforms>
+                <rotate value3="0.0 90.0 0.0" />
+            </transforms>
+
+            <materialref id="wallMat" />
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="50 20" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="rightWall">
+            <transforms>
+                <rotate value3="0.0 180.0 0.0" />
+                <translate value3="-60.0 0.0 0.0" />
+            </transforms>
+
+            <materialref id="wallMat" />
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="60 20" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="plane">
+
+            <transforms>
+                <rotate value3="0 0 -90" />
+                <translate value3="-5 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeBody" />
+                <noderef id="planeNose" />
+                <noderef id="planeWingL" />
+                <noderef id="planeWingR" />
+            </children>
+        </node>
+
+        <node id="planeBody">
+
+            <transforms>
+            </transforms>
+
+            <children>
+                <primitive>
+                    <cylinder base="3" top="3" height="20" slices="100" stacks="100" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeNose">
+
+            <transforms>
+                <translate value3="0 9.9 0" />
+                <scale value3="1 2.5 1" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <sphere
+                        radius="3.0"
+                        slices="100"
+                        stacks="100"
+                        thetastart="0"
+                        thetalength="1.57"
+                    />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeWing">
+            <materialref id="wallMat" />
+
+            <children>
+                <primitive>
+                    <triangle
+                        xyz1="0 0 15"
+                        xyz2="0 4 0"
+                        xyz3="0 0 0" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeWingL">
+            <transforms>
+                <rotate value3="0 0 0" />
+                <translate value3="0 1 3" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWing" />
+            </children>
+        </node>
+
+        <node id="planeWingR">
+            <transforms>
+                <rotate value3="0 180 0" />
+                <translate value3="0 1 3" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWing" />
+            </children>
+        </node>
+    </graph>
+</yaf> 

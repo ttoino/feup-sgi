@@ -25,7 +25,7 @@ class MyContents {
         this.axis = null;
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/demo/demo.xml");
+        this.reader.open("scenes/hangar/scene.xml");
     }
 
     /**
@@ -521,7 +521,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() {}
+    update() { }
 }
 
 export { MyContents };
