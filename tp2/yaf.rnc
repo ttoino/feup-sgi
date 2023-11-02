@@ -1,0 +1,237 @@
+start = element yaf {
+    \globals &
+    \fog &
+    \cameras &
+    \textures &
+    \materials &
+    \graph
+}
+
+globals = element globals {
+    attribute background { \vec4 },
+    attribute ambient { \vec4 }
+}
+
+fog = element fog {
+    attribute color { \vec4 },
+    attribute near { xsd:double },
+    attribute far { xsd:double }
+}
+
+cameras = element cameras {
+    attribute initial { string },
+    (
+        \perspective_camera |
+        \orthographic_camera
+    )+
+}
+
+perspective_camera = element perspective {
+    attribute id { xsd:string },
+    attribute angle { xsd:double },
+    attribute near { xsd:double },
+    attribute far { xsd:double },
+    attribute location { \vec3 },
+    attribute target { \vec3 }
+}
+
+orthographic_camera = element orthogonal {
+    attribute id { xsd:string },
+    attribute near { xsd:double },
+    attribute far { xsd:double },
+    attribute location { \vec3 },
+    attribute target { \vec3 },
+    attribute left { xsd:double },
+    attribute right { xsd:double },
+    attribute bottom { xsd:double },
+    attribute top { xsd:double }
+}
+
+textures = element textures {
+    element texture {
+        attribute id { xsd:string },
+        attribute filepath { xsd:string }
+    }*
+}
+
+materials = element materials {
+    element material {
+        attribute id { xsd:string },
+        attribute color { \vec4 },
+        attribute specular { \vec4 },
+        attribute shininess { xsd:double },
+        attribute emissive { \vec4 },
+        attribute wireframe { xsd:boolean }?,
+        attribute shading { "none" | "flat" | "smooth" }?,
+        attribute textureref { xsd:string }?,
+        attribute texlength_s { xsd:double }?,
+        attribute texlength_t { xsd:double }?,
+        attribute twosided { xsd:boolean }?
+    }*
+}
+
+graph = element graph {
+    attribute rootid { xsd:string },
+    \node+
+}
+
+node = element node {
+    attribute id { xsd:string } &
+    attribute castshadows { xsd:boolean }? &
+    attribute receiveshadows { xsd:boolean }? &
+
+    \transforms? &
+    \materialref? &
+    \children
+}
+
+transforms = element transforms {
+    (
+        \translate |
+        \rotate |
+        \scale
+    )*
+}
+
+translate = element translate {
+    attribute value3 { \vec3 }
+}
+
+rotate = element rotate {
+    attribute value3 { \vec3 }
+}
+
+scale = element scale {
+    attribute value3 { \vec3 }
+}
+
+materialref = element materialref {
+    attribute id { xsd:string }
+}
+
+children = element children {
+    (
+        \primitive |
+        \pointlight |
+        \spotlight |
+        \directionallight |
+        \noderef
+    )+
+}
+
+primitive = element primitive {
+    \rectangle |
+    \triangle |
+    \box |
+    \cylinder |
+    \sphere |
+    \nurbs
+}
+
+rectangle = element rectangle {
+    attribute xy1 { \vec2 },
+    attribute xy2 { \vec2 },
+    attribute parts_x { xsd:integer }?,
+    attribute parts_y { xsd:integer }?
+}
+
+triangle = element triangle {
+    attribute xyz1 { \vec3 },
+    attribute xyz2 { \vec3 },
+    attribute xyz3 { \vec3 }
+}
+
+box = element box {
+    attribute xyz1 { \vec3 },
+    attribute xyz2 { \vec3 },
+    attribute parts_x { xsd:integer }?,
+    attribute parts_y { xsd:integer }?,
+    attribute parts_z { xsd:integer }?
+}
+
+cylinder = element cylinder {
+    attribute base { xsd:double },
+    attribute top { xsd:double },
+    attribute height { xsd:double },
+    attribute slices { xsd:integer },
+    attribute stacks { xsd:integer },
+    attribute capsclose { xsd:boolean }?,
+    attribute thetaStart { xsd:double }?,
+    attribute thetaLength { xsd:double }?
+}
+
+sphere = element sphere {
+    attribute radius { xsd:double },
+    attribute slices { xsd:integer },
+    attribute stacks { xsd:integer },
+    attribute thetastart { xsd:double }?,
+    attribute thetalength { xsd:double }?,
+    attribute phistart { xsd:double }?,
+    attribute philength { xsd:double }?
+}
+
+nurbs = element nurbs {
+    attribute degree_u { xsd:integer },
+    attribute degree_v { xsd:integer },
+    attribute parts_u { xsd:integer },
+    attribute parts_v { xsd:integer },
+    \controlpoint*
+}
+
+controlpoint = element controlpoint {
+    attribute xx { xsd:double },
+    attribute yy { xsd:double },
+    attribute zz { xsd:double }
+}
+
+pointlight = element pointlight {
+    attribute id { xsd:string },
+    attribute enabled { xsd:boolean }?,
+    attribute color { \vec4 },
+    attribute intensity { xsd:double }?,
+    attribute distance { xsd:double }?,
+    attribute decay { xsd:double }?,
+    attribute position { \vec3 },
+    attribute castshadow { xsd:boolean }?,
+    attribute shadowfar { xsd:double }?,
+    attribute shadowmapsize { xsd:integer }?
+}
+
+spotlight = element spotlight {
+    attribute id { xsd:string },
+    attribute enabled { xsd:boolean }?,
+    attribute color { \vec4 },
+    attribute intensity { xsd:double }?,
+    attribute distance { xsd:double }?,
+    attribute angle { xsd:double },
+    attribute decay { xsd:double }?,
+    attribute penumbra { xsd:double }?,
+    attribute position { \vec3 },
+    attribute target { \vec3 },
+    attribute castshadow { xsd:boolean }?,
+    attribute shadowfar { xsd:double }?,
+    attribute shadowmapsize { xsd:integer }?
+}
+
+directionallight = element directionallight {
+    attribute id { xsd:string },
+    attribute enabled { xsd:boolean }?,
+    attribute color { \vec4 },
+    attribute intensity { xsd:double }?,
+    attribute position { \vec3 },
+    attribute castshadow { xsd:boolean }?,
+    attribute shadowleft { xsd:double }?,
+    attribute shadowright { xsd:double }?,
+    attribute shadowbottom { xsd:double }?,
+    attribute shadowtop { xsd:double }?,
+    attribute shadowfar { xsd:double }?,
+    attribute shadowmapsize { xsd:integer }?
+}
+
+noderef = element noderef {
+    attribute id { xsd:string }
+}
+
+vec2 = list { xsd:double, xsd:double }
+vec3 = list { xsd:double, xsd:double, xsd:double }
+vec4 = list { xsd:double, xsd:double, xsd:double, xsd:double }
