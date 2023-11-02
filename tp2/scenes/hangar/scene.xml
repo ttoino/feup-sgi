@@ -33,7 +33,9 @@
             textureref="floorTex"
             texlength_s="8"
             texlength_t="4"
-            twosided="true" />
+            twosided="true"
+        />
+
         <material id="wallMat"
             emissive="0.0 0.0 0.0 1"
             color="0.8 0.8 0.8 1.0"
@@ -50,9 +52,16 @@
             color="0.85 0.85 0.85 1.0"
             specular="0.9 0.9 0.9 1.0"
             shininess="10"
-            texlength_s="8"
-            texlength_t="4"
-            twosided="true" />
+            twosided="true"
+        />
+
+        <material
+            id="tireMat"
+            color="0.0 0.0 0.0 1"
+            specular="0.0 0.0 0.0 0.0"
+            shininess="1"
+            emissive="0.0 0.0 0.0 0"
+        />
     </materials>
 
     <graph rootid="scene">
@@ -185,8 +194,8 @@
         <node id="plane">
 
             <transforms>
-                <rotate value3="0 0 -90" />
-                <translate value3="-5 0 0" />
+                <rotate value3="0 0 -91" />
+                <translate value3="-5.2 0 0" />
             </transforms>
 
             <materialref id="planeMat" />
@@ -194,9 +203,23 @@
             <children>
                 <noderef id="planeBody" />
                 <noderef id="planeNose" />
-                <noderef id="planeWingL" />
-                <noderef id="planeWingR" />
                 <noderef id="planeTail" />
+                <noderef id="planeFrontWheel" />
+                <noderef id="planeWingSupport" />
+            </children>
+        </node>
+
+        <node id="planeFrontWheel">
+
+            <transforms>
+                <rotate value3="0 0 90" />
+                <translate value3="13 -4 0" />
+                <rotate value3="0 0 10" />
+                <translate value3="0 -.5 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWheel" />
             </children>
         </node>
 
@@ -232,10 +255,76 @@
             </children>
         </node>
 
+        <node id="planeWingSupport">
+
+            <transforms>
+                <rotate value3="-90 0 90" />
+                <translate value3="0 -2.2 0" />
+            </transforms>
+
+            <materialref id="planeMat" />
+
+            <children>
+                <noderef id="planeWingSupportBody" />
+                <noderef id="planeWingL" />
+                <noderef id="planeWingR" />
+            </children>
+        </node>
+
+        <node id="planeWingSupportBody">
+
+            <transforms>
+                <scale value3="2.5 2.5 1.5" />
+                <rotate value3="90 0 0" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <cylinder base="1" top="1" height="3" slices="100" stacks="100" />
+                </primitive>
+                <noderef id="planeWingSupportFrontEnd" />
+                <noderef id="planeWingSupportBackEnd" />
+            </children>
+        </node>
+        <node id="planeWingSupportEnd">
+
+            <transforms>
+                <translate value3="0 1.5 0" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <sphere
+                        radius="1.0"
+                        slices="100"
+                        stacks="100"
+                        thetastart="0"
+                        thetalength="1.57"
+                    />
+                </primitive>
+            </children>
+        </node>
+        <node id="planeWingSupportFrontEnd">
+            <children>
+                <noderef id="planeWingSupportEnd" />
+            </children>
+        </node>
+        <node id="planeWingSupportBackEnd">
+
+            <transforms>
+                <rotate value3="180 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWingSupportEnd" />
+            </children>
+        </node>
+
         <node id="planeWing">
 
             <transforms>
-                <rotate value3="0 7.5 0" />
+                <rotate value3="0 -7.5 0" />
+                <scale value3="1.5 1.5 1.5" />
             </transforms>
 
             <materialref id="planeMat" />
@@ -247,13 +336,27 @@
                         xyz2="0 4 0"
                         xyz3="0 0 0" />
                 </primitive>
+                <noderef id="wingWheel" />
+            </children>
+        </node>
+
+        <node id="wingWheel">
+
+            <transforms>
+                <rotate value3="0 0 90" />
+                <translate value3="1 -1.751 5" />
+                <scale value3=".9 .9 .9" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWheel" />
             </children>
         </node>
 
         <node id="planeWingL">
             <transforms>
-                <rotate value3="0 0 0" />
-                <translate value3="0 1 3" />
+                <rotate value3="0 -90 -90" />
+                <translate value3="0.7 -2 1" />
             </transforms>
 
             <children>
@@ -263,8 +366,9 @@
 
         <node id="planeWingR">
             <transforms>
+                <rotate value3="0 -90 -90" />
                 <scale value3="1 1 -1" />
-                <translate value3="0 1 -3" />
+                <translate value3="0.7 -2 1" />
             </transforms>
 
             <children>
@@ -456,6 +560,82 @@
             <children>
                 <noderef id="planeTailTipFlapsArmHalf1" />
                 <noderef id="planeTailTipFlapsArmHalf2" />
+            </children>
+        </node>
+
+        <node id="planeWheelTire">
+
+            <materialref id="tireMat" />
+
+            <children>
+                <primitive>
+                    <cylinder base="0.5" top="0.5" height="0.2" slices="32" stacks="32" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeWhellSupportArm">
+
+            <transforms>
+                <translate value3="0 1 0" />
+            </transforms>
+
+            <materialref id="planeMat" />
+
+            <children>
+                <primitive>
+                    <cylinder base="0.1" top="0.1" height="1.5" slices="32" stacks="32" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeWhellSupportHold">
+
+            <transforms>
+                <rotate value3="90 0 0" />
+            </transforms>
+
+            <materialref id="planeMat" />
+
+            <children>
+                <primitive>
+                    <cylinder base="0.3" top="0.3" height=".71" slices="32" stacks="32" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="planeWheelTire1">
+            <transforms>
+                <rotate value3="90 0 0" />
+                <translate value3="0 .25 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWheelTire" />
+            </children>
+        </node>
+        <node id="planeWheelTire2">
+            <transforms>
+                <rotate value3="90 0 0" />
+                <translate value3="0 -.25 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWheelTire" />
+            </children>
+        </node>
+
+        <node id="planeWheel">
+
+            <transforms>
+                <translate value3="0 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWheelTire1" />
+                <noderef id="planeWheelTire2" />
+                <noderef id="planeWhellSupportArm" />
+                <noderef id="planeWhellSupportHold" />
             </children>
         </node>
     </graph>
