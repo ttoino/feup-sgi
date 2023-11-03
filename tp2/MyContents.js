@@ -385,10 +385,13 @@ class MyContents {
                 const p2 = representation.xyz2;
                 const p3 = representation.xyz3;
 
+                const geom = new THREE.BufferGeometry().setFromPoints(
+                    [p1, p2, p3].map((p) => new THREE.Vector3(...p))
+                );
+                geom.computeVertexNormals();
+
                 mesh = new THREE.Mesh(
-                    new THREE.BufferGeometry().setFromPoints(
-                        [p1, p2, p3].map((p) => new THREE.Vector3(...p))
-                    ),
+                    geom,
                     material
                 );
 
