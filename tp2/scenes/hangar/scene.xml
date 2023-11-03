@@ -22,6 +22,8 @@
     <textures>
         <texture id="floorTex" filepath="scenes/hangar/textures/floor.jpg" />
         <texture id="wallTex" filepath="scenes/hangar/textures/wall.jpg" />
+        <texture id="planeWindowTex" filepath="scenes/hangar/textures/window.png" />
+        <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.jpg" />
     </textures>
 
     <materials>
@@ -61,6 +63,29 @@
             specular="0.0 0.0 0.0 0.0"
             shininess="1"
             emissive="0.0 0.0 0.0 0"
+        />
+
+        <material id="planeWindowMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.85 0.85 0.85 1.0"
+            specular="0.9 0.9 0.9 1.0"
+            shininess="10"
+            textureref="planeWindowTex"
+            texlength_s="8"
+            texlength_t="4"
+            twosided="true"
+        />
+
+
+        <material id="planeNoseMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.85 0.85 0.85 1.0"
+            specular="0.9 0.9 0.9 1.0"
+            shininess="10"
+            textureref="planeNoseTex"
+            texlength_s="8"
+            texlength_t="4"
+            twosided="true"
         />
     </materials>
 
@@ -226,7 +251,10 @@
         <node id="planeBody">
 
             <transforms>
+                <rotate value3="0 90 0" />
             </transforms>
+
+            <materialref id="planeWindowMat" />
 
             <children>
                 <primitive>
@@ -240,7 +268,10 @@
             <transforms>
                 <translate value3="0 9.9 0" />
                 <scale value3="1 2.5 1" />
+                <rotate value3="0 180 0" />
             </transforms>
+
+            <materialref id="planeNoseMat" />
 
             <children>
                 <primitive>
@@ -274,7 +305,7 @@
         <node id="planeWingSupportBody">
 
             <transforms>
-                <scale value3="2.5 2.5 1.5" />
+                <scale value3="3.5 2.5 1.5" />
                 <rotate value3="90 0 0" />
             </transforms>
 
@@ -368,7 +399,7 @@
             <transforms>
                 <rotate value3="0 -90 -90" />
                 <scale value3="1 1 -1" />
-                <translate value3="0.7 -2 1" />
+                <translate value3="0.7 -2 -1" />
             </transforms>
 
             <children>
@@ -636,6 +667,14 @@
                 <noderef id="planeWheelTire2" />
                 <noderef id="planeWhellSupportArm" />
                 <noderef id="planeWhellSupportHold" />
+            </children>
+        </node>
+
+        <node id="planeEngine">
+            <children>
+                <primitive>
+                    <cylinder base="1.2" top="1" height="2.5" slices="100" stacks="100" />
+                </primitive>
             </children>
         </node>
     </graph>

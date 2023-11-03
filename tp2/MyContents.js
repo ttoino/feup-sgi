@@ -101,6 +101,7 @@ class MyContents {
 
             // TODO: texlength_s, texlength_t, shading = none
             this.materials[id] = new THREE.MeshPhongMaterial({
+                name: `Material ${id}`,
                 color: material.color,
                 specular: material.specular,
                 emissive: material.emissive,
@@ -527,7 +528,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() {}
+    update() { }
 }
 
 export { MyContents };
