@@ -24,6 +24,9 @@ class MyContents {
         this.app = app;
         this.axis = null;
 
+        this.showHelpers = true;
+        this.helpers = [];
+
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/hangar/scene.xml");
     }
@@ -32,12 +35,20 @@ class MyContents {
      * initializes the contents
      */
     init() {
+
         // create once
         if (this.axis === null) {
             // create and attach the axis to the scene
             this.axis = new MyAxis(this.app);
             this.app.scene.add(this.axis);
         }
+    }
+
+    /**
+ * Updates the helpers of the scene on user input (controlled through the GUI).
+ */
+    updateHelpers() {
+        this.helpers.forEach((h) => (h.visible = this.showHelpers));
     }
 
     /**
@@ -267,9 +278,11 @@ class MyContents {
                     node.shadowmapsize,
                     node.shadowmapsize
                 );
+                light.visible = node.enabled;
 
                 const helper = new THREE.PointLightHelper(light, 1);
                 this.app.scene.add(helper);
+                this.helpers.push(helper);
 
                 return light;
             }
@@ -290,9 +303,11 @@ class MyContents {
                     node.shadowmapsize,
                     node.shadowmapsize
                 );
+                light.visible = node.enabled;
 
                 const helper = new THREE.SpotLightHelper(light);
                 this.app.scene.add(helper);
+                this.helpers.push(helper);
 
                 return light;
             }
@@ -312,9 +327,11 @@ class MyContents {
                     node.shadowmapsize,
                     node.shadowmapsize
                 );
+                light.visible = node.enabled;
 
                 const helper = new THREE.DirectionalLightHelper(light, 1);
                 this.app.scene.add(helper);
+                this.helpers.push(helper);
 
                 return light;
             }

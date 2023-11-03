@@ -64,6 +64,7 @@ materials = element materials {
         attribute wireframe { xsd:boolean }?,
         attribute shading { "none" | "flat" | "smooth" }?,
         attribute textureref { xsd:string }?,
+        attribute bump_ref { xsd:string }?,
         attribute texlength_s { xsd:double }?,
         attribute texlength_t { xsd:double }?,
         attribute twosided { xsd:boolean }?

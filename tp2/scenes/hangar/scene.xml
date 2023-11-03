@@ -24,6 +24,8 @@
         <texture id="wallTex" filepath="scenes/hangar/textures/wall.jpg" />
         <texture id="planeWindowTex" filepath="scenes/hangar/textures/window.png" />
         <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.jpg" />
+        <texture id="crateTex" filepath="scenes/hangar/textures/crate.jpg" />
+        <texture id="crateNormals" filepath="scenes/hangar/textures/crate_normals.jpg" />
     </textures>
 
     <materials>
@@ -50,15 +52,14 @@
         />
 
         <material id="planeMat"
-            emissive="0.0 0.0 0.0 1"
+            emissive="0.0 0.0 0.0 1.0"
             color="0.85 0.85 0.85 1.0"
             specular="0.9 0.9 0.9 1.0"
             shininess="10"
             twosided="true"
         />
 
-        <material
-            id="tireMat"
+        <material id="tireMat"
             color="0.0 0.0 0.0 1"
             specular="0.0 0.0 0.0 0.0"
             shininess="1"
@@ -76,7 +77,6 @@
             twosided="true"
         />
 
-
         <material id="planeNoseMat"
             emissive="0.0 0.0 0.0 1"
             color="0.85 0.85 0.85 1.0"
@@ -87,24 +87,37 @@
             texlength_t="4"
             twosided="true"
         />
+
+        <material id="crateMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.85 0.85 0.85 1.0"
+            specular="0.9 0.9 0.9 1.0"
+            shininess="10"
+            textureref="crateTex"
+            bump_ref="crateNormals"
+        />
+
+        <material id="ceilingLightMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.85 0.85 0.85 1.0"
+            specular="0.9 0.9 0.9 1.0"
+            shininess="10"
+            twosided="true"
+        />
     </materials>
 
     <graph rootid="scene">
-
         <node id="scene">
             <children>
                 <noderef id="hangar" />
                 <noderef id="plane" />
+                <noderef id="crate1" />
+                <noderef id="crate2" />
+                <noderef id="crate3" />
+                <noderef id="crate4" />
 
-                <pointlight id="light1" enabled="true"
-                    color="0.5 0.6 0.8 1"
-                    intensity="10.0"
-                    distance="1000"
-                    decay="2.0"
-                    castshadow="false"
-                    position="0 1 0"
-                />
-                <directionallight id="light5" enabled="true"
+                <directionallight id="light5"
+                    enabled="true"
                     color="1.0 1.0 1.0 1"
                     intensity="1.0"
                     castshadow="true"
@@ -213,10 +226,11 @@
                         <controlpoint xx="0" yy="0" zz="50" />
                     </nurbs>
                 </primitive>
+                <noderef id="ceilingLight" />
             </children>
         </node>
 
-        <node id="plane">
+        <node id="plane" castshadows="true" receiveshadows="true">
 
             <transforms>
                 <rotate value3="0 0 -91" />
@@ -248,7 +262,7 @@
             </children>
         </node>
 
-        <node id="planeBody">
+        <node id="planeBody" castshadows="true" receiveshadows="true">
 
             <transforms>
                 <rotate value3="0 90 0" />
@@ -264,7 +278,6 @@
         </node>
 
         <node id="planeNose">
-
             <transforms>
                 <translate value3="0 9.9 0" />
                 <scale value3="1 2.5 1" />
@@ -286,7 +299,7 @@
             </children>
         </node>
 
-        <node id="planeWingSupport">
+        <node id="planeWingSupport" castshadows="true" receiveshadows="true">
 
             <transforms>
                 <rotate value3="-90 0 90" />
@@ -372,11 +385,9 @@
         </node>
 
         <node id="wingWheel">
-
             <transforms>
                 <rotate value3="0 0 90" />
                 <translate value3="1 -1.751 5" />
-                <scale value3=".9 .9 .9" />
             </transforms>
 
             <children>
@@ -670,11 +681,112 @@
             </children>
         </node>
 
-        <node id="planeEngine">
+        <node id="crate">
+
+            <materialref id="crateMat" />
+
             <children>
                 <primitive>
-                    <cylinder base="1.2" top="1" height="2.5" slices="100" stacks="100" />
+                    <box xyz1="0 0 0" xyz2="1 1 1" />
                 </primitive>
+            </children>
+        </node>
+
+        <node id="crate1">
+
+            <transforms>
+                <translate value3="10 0.001 20" />
+                <scale value3="3 3 3" />
+            </transforms>
+
+            <children>
+                <noderef id="crate" />
+            </children>
+        </node>
+
+        <node id="crate2">
+
+            <transforms>
+                <translate value3="10 0.001 -20" />
+                <scale value3="3 3 4" />
+                <rotate value3="0 45 0" />
+            </transforms>
+
+            <children>
+                <noderef id="crate" />
+            </children>
+        </node>
+
+        <node id="crate3">
+
+            <transforms>
+                <translate value3="-15 0.001 -20" />
+                <scale value3="5 5 5" />
+            </transforms>
+
+            <children>
+                <noderef id="crate" />
+            </children>
+        </node>
+
+        <node id="crate4">
+
+            <transforms>
+                <translate value3="-15.3 5 -18" />
+                <scale value3="3 3 3" />
+                <rotate value3="0 26 0" />
+            </transforms>
+
+            <children>
+                <noderef id="crate" />
+            </children>
+        </node>
+
+        <node id="ceilingLight">
+
+            <materialref id="ceilingLightMat" />
+
+            <transforms>
+                <translate value3="30 2.9 25" />
+                <rotate value3="0 0 180" />
+            </transforms>
+
+            <children>
+                <noderef id="ceilingLightArm" />
+                <noderef id="ceilingLightHead" />
+            </children>
+        </node>
+
+        <node id="ceilingLightArm">
+
+            <transforms>
+                <translate value3="0 -1 0" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <cylinder base="0.1" top="0.1" height="2" slices="100" stacks="100" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="ceilingLightHead">
+            <children>
+                <primitive>
+                    <cylinder base="0.5" top="0.8" height="1" slices="100" stacks="100" />
+                </primitive>
+                <spotlight id="ceilingLightSource"
+                    enabled="true"
+                    color=".9 .9 .9 1"
+                    angle="20"
+                    position="0 -0.5 0"
+                    target="0 1 0"
+                    intensity="50"
+                    distance="25"
+                    decay="1"
+                    penumbra="0.2"
+                    castshadow="true"
+                />
             </children>
         </node>
     </graph>
