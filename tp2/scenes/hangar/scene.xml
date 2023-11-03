@@ -392,6 +392,23 @@
                         xyz3="0 0 0" />
                 </primitive>
                 <noderef id="wingWheel" />
+                <!--
+                We managed to implement blinking but it required us to change MySceneData so the parser does not
+                break, so this cannot be used.
+                <pointlight id="wingEndLight"
+                    intensity="10"
+                    enabled="true"
+                    color="1 0.2 0.1 1"
+                    position="0 0 15"
+                    blink_enabled="true"
+                    blink_period="1000"
+                /> -->
+                <pointlight id="wingEndLight"
+                    intensity="10"
+                    enabled="true"
+                    color="1 0.2 0.1 1"
+                    position="0 0 15"
+                />
             </children>
         </node>
 

@@ -196,6 +196,8 @@ pointlight = element pointlight {
     attribute castshadow { xsd:boolean }?,
     attribute shadowfar { xsd:double }?,
     attribute shadowmapsize { xsd:integer }?
+    # attribute blink_enabled { xsd:boolean }?,
+    # attribute blink_period { xsd:double }?,
 }
 
 spotlight = element spotlight {

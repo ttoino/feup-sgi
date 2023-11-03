@@ -15,7 +15,7 @@ interface SceneData {
 
 interface Data<T extends string = string> {
     type: T;
-    custom: unknown;
+    custom: Record<string | number | symbol, unknown>;
 }
 
 type Vector2 = [number, number];
@@ -112,6 +112,8 @@ interface PointLightData extends Data<"pointlight"> {
     castshadow: boolean;
     shadowfar: number;
     shadowmapsize: number;
+    // blink_enabled: boolean;
+    // blink_period: number;
 }
 
 interface SpotLightData extends Data<"spotlight"> {

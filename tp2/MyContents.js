@@ -280,6 +280,12 @@ class MyContents {
                 );
                 light.visible = node.enabled;
 
+                /*                 if (node.blink_enabled)
+                                    setInterval(() => {
+                                        light.visible = !light.visible;
+                                        // @ts-ignore
+                                    }, node.blink_period);
+                 */
                 const helper = new THREE.PointLightHelper(light, 1);
                 this.app.scene.add(helper);
                 this.helpers.push(helper);

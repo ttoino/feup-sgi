@@ -250,6 +250,10 @@
       <xs:attribute name="castshadow" type="xs:boolean" />
       <xs:attribute name="shadowfar" type="xs:double" />
       <xs:attribute name="shadowmapsize" type="xs:integer" />
+      <!--       
+      <xs:attribute name="blink_enabled" type="xs:boolean" />
+      <xs:attribute name="blink_period" type="xs:double" />
+      -->
     </xs:complexType>
   </xs:element>
   <xs:element name="spotlight">
