@@ -34,7 +34,7 @@
         <texture id="floorTex" filepath="scenes/hangar/textures/floor.jpg" />
         <texture id="wallTex" filepath="scenes/hangar/textures/wall.jpg" />
         <texture id="planeWindowTex" filepath="scenes/hangar/textures/window.png" />
-        <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.jpg" />
+        <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.png" />
         <texture id="crateTex" filepath="scenes/hangar/textures/crate.jpg" />
         <texture id="crateNormals" filepath="scenes/hangar/textures/crate_normals.jpg" />
     </textures>
@@ -90,8 +90,8 @@
 
         <material id="planeNoseMat"
             emissive="0.0 0.0 0.0 1"
-            color="0.85 0.85 0.85 1.0"
-            specular="0.9 0.9 0.9 1.0"
+            color="0.85 0.85 0.85 1"
+            specular="0.9 0.9 0.9 1"
             shininess="10"
             textureref="planeNoseTex"
             texlength_s="8"
@@ -114,6 +114,13 @@
             specular="0.9 0.9 0.9 1.0"
             shininess="10"
             twosided="true"
+        />
+
+        <material id="wingLightMaterial"
+            color="1 .2 .3 1"
+            specular="0 0 0 0"
+            shininess="0"
+            emissive="1 .2 .3 1"
         />
     </materials>
 
@@ -392,6 +399,18 @@
                         xyz3="0 0 0" />
                 </primitive>
                 <noderef id="wingWheel" />
+                <noderef id="planeWingLight" />
+            </children>
+        </node>
+
+        <node id="planeWingLight">
+            <transforms>
+                <translate value3="0 0 15" />
+            </transforms>
+
+            <materialref id="wingLightMaterial" />
+
+            <children>
                 <!--
                 We managed to implement blinking but it required us to change MySceneData so the parser does not
                 break, so this cannot be used.
@@ -407,8 +426,11 @@
                     intensity="10"
                     enabled="true"
                     color="1 0.2 0.1 1"
-                    position="0 0 15"
+                    position="0 0 0"
                 />
+                <primitive>
+                    <sphere radius=".05" slices="100" stacks="100" />
+                </primitive>
             </children>
         </node>
 
