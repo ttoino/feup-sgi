@@ -3,295 +3,337 @@
   <xs:element name="yaf">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="globals" />
-        <xs:element ref="fog" />
-        <xs:element ref="cameras" />
-        <xs:element ref="textures" />
-        <xs:element ref="materials" />
-        <xs:element ref="graph" />
+        <xs:element ref="globals"/>
+        <xs:element ref="fog"/>
+        <xs:element ref="skybox"/>
+        <xs:element ref="cameras"/>
+        <xs:element ref="textures"/>
+        <xs:element ref="materials"/>
+        <xs:element ref="graph"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="globals">
     <xs:complexType>
-      <xs:attribute name="background" use="required" type="vec4" />
-      <xs:attribute name="ambient" use="required" type="vec4" />
+      <xs:attribute name="background" use="required" type="vec4"/>
+      <xs:attribute name="ambient" use="required" type="vec4"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="fog">
     <xs:complexType>
-      <xs:attribute name="color" use="required" type="vec4" />
-      <xs:attribute name="near" use="required" type="xs:double" />
-      <xs:attribute name="far" use="required" type="xs:double" />
+      <xs:attribute name="color" use="required" type="vec4"/>
+      <xs:attribute name="near" use="required" type="xs:double"/>
+      <xs:attribute name="far" use="required" type="xs:double"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="skybox">
+    <xs:complexType>
+      <xs:attribute name="size" use="required" type="vec3"/>
+      <xs:attribute name="center" use="required" type="vec3"/>
+      <xs:attribute name="emissive" use="required" type="vec4"/>
+      <xs:attribute name="intensity" use="required" type="xs:double"/>
+      <xs:attribute name="front" use="required" type="xs:string"/>
+      <xs:attribute name="back" use="required" type="xs:string"/>
+      <xs:attribute name="up" use="required" type="xs:string"/>
+      <xs:attribute name="down" use="required" type="xs:string"/>
+      <xs:attribute name="left" use="required" type="xs:string"/>
+      <xs:attribute name="right" use="required" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="cameras">
     <xs:complexType>
       <xs:choice maxOccurs="unbounded">
-        <xs:element ref="perspective" />
-        <xs:element ref="orthogonal" />
+        <xs:element ref="perspective"/>
+        <xs:element ref="orthogonal"/>
       </xs:choice>
-      <xs:attribute name="initial" use="required" type="xs:string" />
+      <xs:attribute name="initial" use="required" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="perspective">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="angle" use="required" type="xs:double" />
-      <xs:attribute name="near" use="required" type="xs:double" />
-      <xs:attribute name="far" use="required" type="xs:double" />
-      <xs:attribute name="location" use="required" type="vec3" />
-      <xs:attribute name="target" use="required" type="vec3" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="angle" use="required" type="xs:double"/>
+      <xs:attribute name="near" use="required" type="xs:double"/>
+      <xs:attribute name="far" use="required" type="xs:double"/>
+      <xs:attribute name="location" use="required" type="vec3"/>
+      <xs:attribute name="target" use="required" type="vec3"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="orthogonal">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="near" use="required" type="xs:double" />
-      <xs:attribute name="far" use="required" type="xs:double" />
-      <xs:attribute name="location" use="required" type="vec3" />
-      <xs:attribute name="target" use="required" type="vec3" />
-      <xs:attribute name="left" use="required" type="xs:double" />
-      <xs:attribute name="right" use="required" type="xs:double" />
-      <xs:attribute name="bottom" use="required" type="xs:double" />
-      <xs:attribute name="top" use="required" type="xs:double" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="near" use="required" type="xs:double"/>
+      <xs:attribute name="far" use="required" type="xs:double"/>
+      <xs:attribute name="location" use="required" type="vec3"/>
+      <xs:attribute name="target" use="required" type="vec3"/>
+      <xs:attribute name="left" use="required" type="xs:double"/>
+      <xs:attribute name="right" use="required" type="xs:double"/>
+      <xs:attribute name="bottom" use="required" type="xs:double"/>
+      <xs:attribute name="top" use="required" type="xs:double"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="textures">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="texture" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="texture"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="texture">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="filepath" use="required" type="xs:string" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="filepath" use="required" type="xs:string"/>
+      <xs:attribute name="mipmap0" type="xs:string"/>
+      <xs:attribute name="mipmap1" type="xs:string"/>
+      <xs:attribute name="mipmap2" type="xs:string"/>
+      <xs:attribute name="mipmap3" type="xs:string"/>
+      <xs:attribute name="mipmap4" type="xs:string"/>
+      <xs:attribute name="mipmap5" type="xs:string"/>
+      <xs:attribute name="mipmap6" type="xs:string"/>
+      <xs:attribute name="mipmap7" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="materials">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="material" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="material"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="material">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="color" use="required" type="vec4" />
-      <xs:attribute name="specular" use="required" type="vec4" />
-      <xs:attribute name="shininess" use="required" type="xs:double" />
-      <xs:attribute name="emissive" use="required" type="vec4" />
-      <xs:attribute name="wireframe" type="xs:boolean" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="color" use="required" type="vec4"/>
+      <xs:attribute name="specular" use="required" type="vec4"/>
+      <xs:attribute name="shininess" use="required" type="xs:double"/>
+      <xs:attribute name="emissive" use="required" type="vec4"/>
+      <xs:attribute name="wireframe" type="xs:boolean"/>
       <xs:attribute name="shading">
         <xs:simpleType>
           <xs:restriction base="xs:token">
-            <xs:enumeration value="none" />
-            <xs:enumeration value="flat" />
-            <xs:enumeration value="smooth" />
+            <xs:enumeration value="none"/>
+            <xs:enumeration value="flat"/>
+            <xs:enumeration value="smooth"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="textureref" type="xs:string" />
-      <xs:attribute name="bump_ref" type="xs:string" />
-      <xs:attribute name="texlength_s" type="xs:double" />
-      <xs:attribute name="texlength_t" type="xs:double" />
-      <xs:attribute name="twosided" type="xs:boolean" />
+      <xs:attribute name="textureref" type="xs:string"/>
+      <xs:attribute name="texlength_s" type="xs:double"/>
+      <xs:attribute name="texlength_t" type="xs:double"/>
+      <xs:attribute name="twosided" type="xs:boolean"/>
+      <xs:attribute name="bumpref" type="xs:string"/>
+      <xs:attribute name="bumpscale" type="xs:double"/>
+      <xs:attribute name="specularref" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="graph">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="node" />
-      </xs:sequence>
-      <xs:attribute name="rootid" use="required" type="xs:string" />
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="node"/>
+        <xs:element ref="lod"/>
+      </xs:choice>
+      <xs:attribute name="rootid" use="required" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="node">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="transforms" />
-        <xs:element ref="materialref" />
-        <xs:element ref="children" />
+        <xs:element ref="transforms"/>
+        <xs:element ref="materialref"/>
+        <xs:element ref="children"/>
       </xs:choice>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="castshadows" type="xs:boolean" />
-      <xs:attribute name="receiveshadows" type="xs:boolean" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="castshadows" type="xs:boolean"/>
+      <xs:attribute name="receiveshadows" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lod">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="lodnoderef"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="transforms">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element ref="translate" />
-        <xs:element ref="rotate" />
-        <xs:element ref="scale" />
+        <xs:element ref="translate"/>
+        <xs:element ref="rotate"/>
+        <xs:element ref="scale"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="translate">
     <xs:complexType>
-      <xs:attribute name="value3" use="required" type="vec3" />
+      <xs:attribute name="value3" use="required" type="vec3"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="rotate">
     <xs:complexType>
-      <xs:attribute name="value3" use="required" type="vec3" />
+      <xs:attribute name="value3" use="required" type="vec3"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="scale">
     <xs:complexType>
-      <xs:attribute name="value3" use="required" type="vec3" />
+      <xs:attribute name="value3" use="required" type="vec3"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="materialref">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="children">
     <xs:complexType>
       <xs:choice maxOccurs="unbounded">
-        <xs:element ref="primitive" />
-        <xs:element ref="pointlight" />
-        <xs:element ref="spotlight" />
-        <xs:element ref="directionallight" />
-        <xs:element ref="noderef" />
+        <xs:element ref="primitive"/>
+        <xs:element ref="pointlight"/>
+        <xs:element ref="spotlight"/>
+        <xs:element ref="directionallight"/>
+        <xs:element ref="noderef"/>
+        <xs:element ref="lodref"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="primitive">
     <xs:complexType>
       <xs:choice>
-        <xs:element ref="rectangle" />
-        <xs:element ref="triangle" />
-        <xs:element ref="box" />
-        <xs:element ref="cylinder" />
-        <xs:element ref="sphere" />
-        <xs:element ref="nurbs" />
+        <xs:element ref="rectangle"/>
+        <xs:element ref="triangle"/>
+        <xs:element ref="box"/>
+        <xs:element ref="cylinder"/>
+        <xs:element ref="sphere"/>
+        <xs:element ref="nurbs"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="rectangle">
     <xs:complexType>
-      <xs:attribute name="xy1" use="required" type="vec2" />
-      <xs:attribute name="xy2" use="required" type="vec2" />
-      <xs:attribute name="parts_x" type="xs:integer" />
-      <xs:attribute name="parts_y" type="xs:integer" />
+      <xs:attribute name="xy1" use="required" type="vec2"/>
+      <xs:attribute name="xy2" use="required" type="vec2"/>
+      <xs:attribute name="parts_x" type="xs:integer"/>
+      <xs:attribute name="parts_y" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="triangle">
     <xs:complexType>
-      <xs:attribute name="xyz1" use="required" type="vec3" />
-      <xs:attribute name="xyz2" use="required" type="vec3" />
-      <xs:attribute name="xyz3" use="required" type="vec3" />
+      <xs:attribute name="xyz1" use="required" type="vec3"/>
+      <xs:attribute name="xyz2" use="required" type="vec3"/>
+      <xs:attribute name="xyz3" use="required" type="vec3"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="box">
     <xs:complexType>
-      <xs:attribute name="xyz1" use="required" type="vec3" />
-      <xs:attribute name="xyz2" use="required" type="vec3" />
-      <xs:attribute name="parts_x" type="xs:integer" />
-      <xs:attribute name="parts_y" type="xs:integer" />
-      <xs:attribute name="parts_z" type="xs:integer" />
+      <xs:attribute name="xyz1" use="required" type="vec3"/>
+      <xs:attribute name="xyz2" use="required" type="vec3"/>
+      <xs:attribute name="parts_x" type="xs:integer"/>
+      <xs:attribute name="parts_y" type="xs:integer"/>
+      <xs:attribute name="parts_z" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="cylinder">
     <xs:complexType>
-      <xs:attribute name="base" use="required" type="xs:double" />
-      <xs:attribute name="top" use="required" type="xs:double" />
-      <xs:attribute name="height" use="required" type="xs:double" />
-      <xs:attribute name="slices" use="required" type="xs:integer" />
-      <xs:attribute name="stacks" use="required" type="xs:integer" />
-      <xs:attribute name="capsclose" type="xs:boolean" />
-      <xs:attribute name="thetaStart" type="xs:double" />
-      <xs:attribute name="thetaLength" type="xs:double" />
+      <xs:attribute name="base" use="required" type="xs:double"/>
+      <xs:attribute name="top" use="required" type="xs:double"/>
+      <xs:attribute name="height" use="required" type="xs:double"/>
+      <xs:attribute name="slices" use="required" type="xs:integer"/>
+      <xs:attribute name="stacks" use="required" type="xs:integer"/>
+      <xs:attribute name="capsclose" type="xs:boolean"/>
+      <xs:attribute name="thetastart" type="xs:double"/>
+      <xs:attribute name="thetalength" type="xs:double"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="sphere">
     <xs:complexType>
-      <xs:attribute name="radius" use="required" type="xs:double" />
-      <xs:attribute name="slices" use="required" type="xs:integer" />
-      <xs:attribute name="stacks" use="required" type="xs:integer" />
-      <xs:attribute name="thetastart" type="xs:double" />
-      <xs:attribute name="thetalength" type="xs:double" />
-      <xs:attribute name="phistart" type="xs:double" />
-      <xs:attribute name="philength" type="xs:double" />
+      <xs:attribute name="radius" use="required" type="xs:double"/>
+      <xs:attribute name="slices" use="required" type="xs:integer"/>
+      <xs:attribute name="stacks" use="required" type="xs:integer"/>
+      <xs:attribute name="thetastart" type="xs:double"/>
+      <xs:attribute name="thetalength" type="xs:double"/>
+      <xs:attribute name="phistart" type="xs:double"/>
+      <xs:attribute name="philength" type="xs:double"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="nurbs">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" maxOccurs="unbounded" ref="controlpoint" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="controlpoint"/>
       </xs:sequence>
-      <xs:attribute name="degree_u" use="required" type="xs:integer" />
-      <xs:attribute name="degree_v" use="required" type="xs:integer" />
-      <xs:attribute name="parts_u" use="required" type="xs:integer" />
-      <xs:attribute name="parts_v" use="required" type="xs:integer" />
+      <xs:attribute name="degree_u" use="required" type="xs:integer"/>
+      <xs:attribute name="degree_v" use="required" type="xs:integer"/>
+      <xs:attribute name="parts_u" use="required" type="xs:integer"/>
+      <xs:attribute name="parts_v" use="required" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="controlpoint">
     <xs:complexType>
-      <xs:attribute name="xx" use="required" type="xs:double" />
-      <xs:attribute name="yy" use="required" type="xs:double" />
-      <xs:attribute name="zz" use="required" type="xs:double" />
+      <xs:attribute name="xx" use="required" type="xs:double"/>
+      <xs:attribute name="yy" use="required" type="xs:double"/>
+      <xs:attribute name="zz" use="required" type="xs:double"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="pointlight">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="enabled" type="xs:boolean" />
-      <xs:attribute name="color" use="required" type="vec4" />
-      <xs:attribute name="intensity" type="xs:double" />
-      <xs:attribute name="distance" type="xs:double" />
-      <xs:attribute name="decay" type="xs:double" />
-      <xs:attribute name="position" use="required" type="vec3" />
-      <xs:attribute name="castshadow" type="xs:boolean" />
-      <xs:attribute name="shadowfar" type="xs:double" />
-      <xs:attribute name="shadowmapsize" type="xs:integer" />
-      <!--       
-      <xs:attribute name="blink_enabled" type="xs:boolean" />
-      <xs:attribute name="blink_period" type="xs:double" />
-      -->
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="enabled" type="xs:boolean"/>
+      <xs:attribute name="color" use="required" type="vec4"/>
+      <xs:attribute name="intensity" type="xs:double"/>
+      <xs:attribute name="distance" type="xs:double"/>
+      <xs:attribute name="decay" type="xs:double"/>
+      <xs:attribute name="position" use="required" type="vec3"/>
+      <xs:attribute name="castshadow" type="xs:boolean"/>
+      <xs:attribute name="shadowfar" type="xs:double"/>
+      <xs:attribute name="shadowmapsize" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="spotlight">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="enabled" type="xs:boolean" />
-      <xs:attribute name="color" use="required" type="vec4" />
-      <xs:attribute name="intensity" type="xs:double" />
-      <xs:attribute name="distance" type="xs:double" />
-      <xs:attribute name="angle" use="required" type="xs:double" />
-      <xs:attribute name="decay" type="xs:double" />
-      <xs:attribute name="penumbra" type="xs:double" />
-      <xs:attribute name="position" use="required" type="vec3" />
-      <xs:attribute name="target" use="required" type="vec3" />
-      <xs:attribute name="castshadow" type="xs:boolean" />
-      <xs:attribute name="shadowfar" type="xs:double" />
-      <xs:attribute name="shadowmapsize" type="xs:integer" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="enabled" type="xs:boolean"/>
+      <xs:attribute name="color" use="required" type="vec4"/>
+      <xs:attribute name="intensity" type="xs:double"/>
+      <xs:attribute name="distance" type="xs:double"/>
+      <xs:attribute name="angle" use="required" type="xs:double"/>
+      <xs:attribute name="decay" type="xs:double"/>
+      <xs:attribute name="penumbra" type="xs:double"/>
+      <xs:attribute name="position" use="required" type="vec3"/>
+      <xs:attribute name="target" use="required" type="vec3"/>
+      <xs:attribute name="castshadow" type="xs:boolean"/>
+      <xs:attribute name="shadowfar" type="xs:double"/>
+      <xs:attribute name="shadowmapsize" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="directionallight">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
-      <xs:attribute name="enabled" type="xs:boolean" />
-      <xs:attribute name="color" use="required" type="vec4" />
-      <xs:attribute name="intensity" type="xs:double" />
-      <xs:attribute name="position" use="required" type="vec3" />
-      <xs:attribute name="castshadow" type="xs:boolean" />
-      <xs:attribute name="shadowleft" type="xs:double" />
-      <xs:attribute name="shadowright" type="xs:double" />
-      <xs:attribute name="shadowbottom" type="xs:double" />
-      <xs:attribute name="shadowtop" type="xs:double" />
-      <xs:attribute name="shadowfar" type="xs:double" />
-      <xs:attribute name="shadowmapsize" type="xs:integer" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="enabled" type="xs:boolean"/>
+      <xs:attribute name="color" use="required" type="vec4"/>
+      <xs:attribute name="intensity" type="xs:double"/>
+      <xs:attribute name="position" use="required" type="vec3"/>
+      <xs:attribute name="castshadow" type="xs:boolean"/>
+      <xs:attribute name="shadowleft" type="xs:double"/>
+      <xs:attribute name="shadowright" type="xs:double"/>
+      <xs:attribute name="shadowbottom" type="xs:double"/>
+      <xs:attribute name="shadowtop" type="xs:double"/>
+      <xs:attribute name="shadowfar" type="xs:double"/>
+      <xs:attribute name="shadowmapsize" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="noderef">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string" />
+      <xs:attribute name="id" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lodref">
+    <xs:complexType>
+      <xs:attribute name="id" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="lodnoderef">
+    <xs:complexType>
+      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="mindist" use="required" type="xs:double"/>
     </xs:complexType>
   </xs:element>
   <xs:simpleType name="vec2">
@@ -299,11 +341,11 @@
       <xs:simpleType>
         <xs:list>
           <xs:simpleType>
-            <xs:union memberTypes="xs:double xs:double" />
+            <xs:union memberTypes="xs:double xs:double"/>
           </xs:simpleType>
         </xs:list>
       </xs:simpleType>
-      <xs:length value="2" />
+      <xs:length value="2"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="vec3">
@@ -311,11 +353,11 @@
       <xs:simpleType>
         <xs:list>
           <xs:simpleType>
-            <xs:union memberTypes="xs:double xs:double xs:double" />
+            <xs:union memberTypes="xs:double xs:double xs:double"/>
           </xs:simpleType>
         </xs:list>
       </xs:simpleType>
-      <xs:length value="3" />
+      <xs:length value="3"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="vec4">
@@ -323,11 +365,11 @@
       <xs:simpleType>
         <xs:list>
           <xs:simpleType>
-            <xs:union memberTypes="xs:double xs:double xs:double xs:double" />
+            <xs:union memberTypes="xs:double xs:double xs:double xs:double"/>
           </xs:simpleType>
         </xs:list>
       </xs:simpleType>
-      <xs:length value="4" />
+      <xs:length value="4"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

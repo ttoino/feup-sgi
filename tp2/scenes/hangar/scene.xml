@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
-<yaf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../yaf.xsd">
+<?xml-model href="../../yaf.rnc" type="application/xml"?>
+<yaf>
     <!-- Credits of the original file go to Group 1, class 1 of course LAIG school year 2013/2014,
     FEUP, University of Porto -->
 
@@ -105,7 +105,7 @@
             specular="0.9 0.9 0.9 1.0"
             shininess="10"
             textureref="crateTex"
-            bump_ref="crateNormals"
+            bumpref="crateNormals"
         />
 
         <material id="ceilingLightMat"

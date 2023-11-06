@@ -1,6 +1,7 @@
 start = element yaf {
     \globals &
     \fog &
+    \skybox &
     \cameras &
     \textures &
     \materials &
@@ -16,6 +17,19 @@ fog = element fog {
     attribute color { \vec4 },
     attribute near { xsd:double },
     attribute far { xsd:double }
+}
+
+skybox = element skybox {
+    attribute size { \vec3 },
+    attribute center { \vec3 },
+    attribute emissive { \vec4 },
+    attribute intensity { xsd:double },
+    attribute front { xsd:string },
+    attribute back { xsd:string },
+    attribute up { xsd:string },
+    attribute down { xsd:string },
+    attribute left { xsd:string },
+    attribute right { xsd:string }
 }
 
 cameras = element cameras {
@@ -50,7 +64,29 @@ orthographic_camera = element orthogonal {
 textures = element textures {
     element texture {
         attribute id { xsd:string },
-        attribute filepath { xsd:string }
+        attribute filepath { xsd:string },
+        (
+            attribute mipmap0 { xsd:string },
+            (
+                attribute mipmap1 { xsd:string },
+                (
+                    attribute mipmap2 { xsd:string },
+                    (
+                        attribute mipmap3 { xsd:string },
+                        (
+                            attribute mipmap4 { xsd:string },
+                            (
+                                attribute mipmap5 { xsd:string },
+                                (
+                                    attribute mipmap6 { xsd:string },
+                                    attribute mipmap7 { xsd:string }?
+                                )?
+                            )?
+                        )?
+                    )?
+                )?
+            )?
+        )?
     }*
 }
 
@@ -64,16 +100,18 @@ materials = element materials {
         attribute wireframe { xsd:boolean }?,
         attribute shading { "none" | "flat" | "smooth" }?,
         attribute textureref { xsd:string }?,
-        attribute bump_ref { xsd:string }?,
         attribute texlength_s { xsd:double }?,
         attribute texlength_t { xsd:double }?,
-        attribute twosided { xsd:boolean }?
+        attribute twosided { xsd:boolean }?,
+        attribute bumpref { xsd:string }?,
+        attribute bumpscale { xsd:double }?,
+        attribute specularref { xsd:string }?
     }*
 }
 
 graph = element graph {
     attribute rootid { xsd:string },
-    \node+
+    (\node | \lod)+
 }
 
 node = element node {
@@ -84,6 +122,11 @@ node = element node {
     \transforms? &
     \materialref? &
     \children
+}
+
+lod = element lod {
+    attribute id { xsd:string },
+    \lodnoderef+
 }
 
 transforms = element transforms {
@@ -116,7 +159,8 @@ children = element children {
         \pointlight |
         \spotlight |
         \directionallight |
-        \noderef
+        \noderef |
+        \lodref
     )+
 }
 
@@ -157,8 +201,8 @@ cylinder = element cylinder {
     attribute slices { xsd:integer },
     attribute stacks { xsd:integer },
     attribute capsclose { xsd:boolean }?,
-    attribute thetaStart { xsd:double }?,
-    attribute thetaLength { xsd:double }?
+    attribute thetastart { xsd:double }?,
+    attribute thetalength { xsd:double }?
 }
 
 sphere = element sphere {
@@ -233,6 +277,15 @@ directionallight = element directionallight {
 
 noderef = element noderef {
     attribute id { xsd:string }
+}
+
+lodref = element lodref {
+    attribute id { xsd:string }
+}
+
+lodnoderef = element lodnoderef {
+    attribute id { xsd:string },
+    attribute mindist { xsd:double }
 }
 
 vec2 = list { xsd:double, xsd:double }
