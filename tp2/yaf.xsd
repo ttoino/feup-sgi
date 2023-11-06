@@ -32,12 +32,12 @@
       <xs:attribute name="center" use="required" type="vec3"/>
       <xs:attribute name="emissive" use="required" type="vec4"/>
       <xs:attribute name="intensity" use="required" type="xs:double"/>
-      <xs:attribute name="front" use="required" type="xs:string"/>
-      <xs:attribute name="back" use="required" type="xs:string"/>
-      <xs:attribute name="up" use="required" type="xs:string"/>
-      <xs:attribute name="down" use="required" type="xs:string"/>
-      <xs:attribute name="left" use="required" type="xs:string"/>
-      <xs:attribute name="right" use="required" type="xs:string"/>
+      <xs:attribute name="front" use="required" type="xs:anyURI"/>
+      <xs:attribute name="back" use="required" type="xs:anyURI"/>
+      <xs:attribute name="up" use="required" type="xs:anyURI"/>
+      <xs:attribute name="down" use="required" type="xs:anyURI"/>
+      <xs:attribute name="left" use="required" type="xs:anyURI"/>
+      <xs:attribute name="right" use="required" type="xs:anyURI"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="cameras">
@@ -46,12 +46,12 @@
         <xs:element ref="perspective"/>
         <xs:element ref="orthogonal"/>
       </xs:choice>
-      <xs:attribute name="initial" use="required" type="xs:string"/>
+      <xs:attribute name="initial" use="required" type="xs:IDREF"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="perspective">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
       <xs:attribute name="angle" use="required" type="xs:double"/>
       <xs:attribute name="near" use="required" type="xs:double"/>
       <xs:attribute name="far" use="required" type="xs:double"/>
@@ -61,7 +61,7 @@
   </xs:element>
   <xs:element name="orthogonal">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
       <xs:attribute name="near" use="required" type="xs:double"/>
       <xs:attribute name="far" use="required" type="xs:double"/>
       <xs:attribute name="location" use="required" type="vec3"/>
@@ -81,16 +81,16 @@
   </xs:element>
   <xs:element name="texture">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
-      <xs:attribute name="filepath" use="required" type="xs:string"/>
-      <xs:attribute name="mipmap0" type="xs:string"/>
-      <xs:attribute name="mipmap1" type="xs:string"/>
-      <xs:attribute name="mipmap2" type="xs:string"/>
-      <xs:attribute name="mipmap3" type="xs:string"/>
-      <xs:attribute name="mipmap4" type="xs:string"/>
-      <xs:attribute name="mipmap5" type="xs:string"/>
-      <xs:attribute name="mipmap6" type="xs:string"/>
-      <xs:attribute name="mipmap7" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
+      <xs:attribute name="filepath" use="required" type="xs:anyURI"/>
+      <xs:attribute name="mipmap0" type="xs:anyURI"/>
+      <xs:attribute name="mipmap1" type="xs:anyURI"/>
+      <xs:attribute name="mipmap2" type="xs:anyURI"/>
+      <xs:attribute name="mipmap3" type="xs:anyURI"/>
+      <xs:attribute name="mipmap4" type="xs:anyURI"/>
+      <xs:attribute name="mipmap5" type="xs:anyURI"/>
+      <xs:attribute name="mipmap6" type="xs:anyURI"/>
+      <xs:attribute name="mipmap7" type="xs:anyURI"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="materials">
@@ -102,7 +102,7 @@
   </xs:element>
   <xs:element name="material">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
       <xs:attribute name="color" use="required" type="vec4"/>
       <xs:attribute name="specular" use="required" type="vec4"/>
       <xs:attribute name="shininess" use="required" type="xs:double"/>
@@ -117,13 +117,13 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="textureref" type="xs:string"/>
+      <xs:attribute name="textureref" type="xs:IDREF"/>
       <xs:attribute name="texlength_s" type="xs:double"/>
       <xs:attribute name="texlength_t" type="xs:double"/>
       <xs:attribute name="twosided" type="xs:boolean"/>
-      <xs:attribute name="bumpref" type="xs:string"/>
+      <xs:attribute name="bumpref" type="xs:IDREF"/>
       <xs:attribute name="bumpscale" type="xs:double"/>
-      <xs:attribute name="specularref" type="xs:string"/>
+      <xs:attribute name="specularref" type="xs:IDREF"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="graph">
@@ -132,7 +132,7 @@
         <xs:element ref="node"/>
         <xs:element ref="lod"/>
       </xs:choice>
-      <xs:attribute name="rootid" use="required" type="xs:string"/>
+      <xs:attribute name="rootid" use="required" type="xs:IDREF"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="node">
@@ -142,7 +142,7 @@
         <xs:element ref="materialref"/>
         <xs:element ref="children"/>
       </xs:choice>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
       <xs:attribute name="castshadows" type="xs:boolean"/>
       <xs:attribute name="receiveshadows" type="xs:boolean"/>
     </xs:complexType>
@@ -152,7 +152,7 @@
       <xs:sequence>
         <xs:element maxOccurs="unbounded" ref="lodnoderef"/>
       </xs:sequence>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="transforms">
@@ -181,7 +181,7 @@
   </xs:element>
   <xs:element name="materialref">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:IDREF"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="children">
@@ -275,7 +275,7 @@
   </xs:element>
   <xs:element name="pointlight">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
       <xs:attribute name="enabled" type="xs:boolean"/>
       <xs:attribute name="color" use="required" type="vec4"/>
       <xs:attribute name="intensity" type="xs:double"/>
@@ -289,7 +289,7 @@
   </xs:element>
   <xs:element name="spotlight">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
       <xs:attribute name="enabled" type="xs:boolean"/>
       <xs:attribute name="color" use="required" type="vec4"/>
       <xs:attribute name="intensity" type="xs:double"/>
@@ -306,7 +306,7 @@
   </xs:element>
   <xs:element name="directionallight">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:ID"/>
       <xs:attribute name="enabled" type="xs:boolean"/>
       <xs:attribute name="color" use="required" type="vec4"/>
       <xs:attribute name="intensity" type="xs:double"/>
@@ -322,17 +322,17 @@
   </xs:element>
   <xs:element name="noderef">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:IDREF"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="lodref">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:IDREF"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="lodnoderef">
     <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:string"/>
+      <xs:attribute name="id" use="required" type="xs:IDREF"/>
       <xs:attribute name="mindist" use="required" type="xs:double"/>
     </xs:complexType>
   </xs:element>

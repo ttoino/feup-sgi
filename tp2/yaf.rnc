@@ -24,16 +24,16 @@ skybox = element skybox {
     attribute center { \vec3 },
     attribute emissive { \vec4 },
     attribute intensity { xsd:double },
-    attribute front { xsd:string },
-    attribute back { xsd:string },
-    attribute up { xsd:string },
-    attribute down { xsd:string },
-    attribute left { xsd:string },
-    attribute right { xsd:string }
+    attribute front { xsd:anyURI },
+    attribute back { xsd:anyURI },
+    attribute up { xsd:anyURI },
+    attribute down { xsd:anyURI },
+    attribute left { xsd:anyURI },
+    attribute right { xsd:anyURI }
 }
 
 cameras = element cameras {
-    attribute initial { string },
+    attribute initial { xsd:IDREF },
     (
         \perspective_camera |
         \orthographic_camera
@@ -41,7 +41,7 @@ cameras = element cameras {
 }
 
 perspective_camera = element perspective {
-    attribute id { xsd:string },
+    attribute id { xsd:ID },
     attribute angle { xsd:double },
     attribute near { xsd:double },
     attribute far { xsd:double },
@@ -50,7 +50,7 @@ perspective_camera = element perspective {
 }
 
 orthographic_camera = element orthogonal {
-    attribute id { xsd:string },
+    attribute id { xsd:ID },
     attribute near { xsd:double },
     attribute far { xsd:double },
     attribute location { \vec3 },
@@ -63,23 +63,23 @@ orthographic_camera = element orthogonal {
 
 textures = element textures {
     element texture {
-        attribute id { xsd:string },
-        attribute filepath { xsd:string },
+        attribute id { xsd:ID },
+        attribute filepath { xsd:anyURI },
         (
-            attribute mipmap0 { xsd:string },
+            attribute mipmap0 { xsd:anyURI },
             (
-                attribute mipmap1 { xsd:string },
+                attribute mipmap1 { xsd:anyURI },
                 (
-                    attribute mipmap2 { xsd:string },
+                    attribute mipmap2 { xsd:anyURI },
                     (
-                        attribute mipmap3 { xsd:string },
+                        attribute mipmap3 { xsd:anyURI },
                         (
-                            attribute mipmap4 { xsd:string },
+                            attribute mipmap4 { xsd:anyURI },
                             (
-                                attribute mipmap5 { xsd:string },
+                                attribute mipmap5 { xsd:anyURI },
                                 (
-                                    attribute mipmap6 { xsd:string },
-                                    attribute mipmap7 { xsd:string }?
+                                    attribute mipmap6 { xsd:anyURI },
+                                    attribute mipmap7 { xsd:anyURI }?
                                 )?
                             )?
                         )?
@@ -92,30 +92,30 @@ textures = element textures {
 
 materials = element materials {
     element material {
-        attribute id { xsd:string },
+        attribute id { xsd:ID },
         attribute color { \vec4 },
         attribute specular { \vec4 },
         attribute shininess { xsd:double },
         attribute emissive { \vec4 },
         attribute wireframe { xsd:boolean }?,
         attribute shading { "none" | "flat" | "smooth" }?,
-        attribute textureref { xsd:string }?,
+        attribute textureref { xsd:IDREF }?,
         attribute texlength_s { xsd:double }?,
         attribute texlength_t { xsd:double }?,
         attribute twosided { xsd:boolean }?,
-        attribute bumpref { xsd:string }?,
+        attribute bumpref { xsd:IDREF }?,
         attribute bumpscale { xsd:double }?,
-        attribute specularref { xsd:string }?
+        attribute specularref { xsd:IDREF }?
     }*
 }
 
 graph = element graph {
-    attribute rootid { xsd:string },
+    attribute rootid { xsd:IDREF },
     (\node | \lod)+
 }
 
 node = element node {
-    attribute id { xsd:string } &
+    attribute id { xsd:ID } &
     attribute castshadows { xsd:boolean }? &
     attribute receiveshadows { xsd:boolean }? &
 
@@ -125,7 +125,7 @@ node = element node {
 }
 
 lod = element lod {
-    attribute id { xsd:string },
+    attribute id { xsd:ID },
     \lodnoderef+
 }
 
@@ -150,7 +150,7 @@ scale = element scale {
 }
 
 materialref = element materialref {
-    attribute id { xsd:string }
+    attribute id { xsd:IDREF }
 }
 
 children = element children {
@@ -230,7 +230,7 @@ controlpoint = element controlpoint {
 }
 
 pointlight = element pointlight {
-    attribute id { xsd:string },
+    attribute id { xsd:ID },
     attribute enabled { xsd:boolean }?,
     attribute color { \vec4 },
     attribute intensity { xsd:double }?,
@@ -245,7 +245,7 @@ pointlight = element pointlight {
 }
 
 spotlight = element spotlight {
-    attribute id { xsd:string },
+    attribute id { xsd:ID },
     attribute enabled { xsd:boolean }?,
     attribute color { \vec4 },
     attribute intensity { xsd:double }?,
@@ -261,7 +261,7 @@ spotlight = element spotlight {
 }
 
 directionallight = element directionallight {
-    attribute id { xsd:string },
+    attribute id { xsd:ID },
     attribute enabled { xsd:boolean }?,
     attribute color { \vec4 },
     attribute intensity { xsd:double }?,
@@ -276,15 +276,15 @@ directionallight = element directionallight {
 }
 
 noderef = element noderef {
-    attribute id { xsd:string }
+    attribute id { xsd:IDREF }
 }
 
 lodref = element lodref {
-    attribute id { xsd:string }
+    attribute id { xsd:IDREF }
 }
 
 lodnoderef = element lodnoderef {
-    attribute id { xsd:string },
+    attribute id { xsd:IDREF },
     attribute mindist { xsd:double }
 }
 
