@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <?xml-model href="../../yaf.rnc" type="application/xml"?>
+<?xml-model href="../../yaf.xsd" type="application/xml"?>
 <yaf>
     <!-- Credits of the original file go to Group 1, class 1 of course LAIG school year 2013/2014,
     FEUP, University of Porto -->
@@ -7,6 +8,14 @@
     <globals background="0 0 0 1" ambient="0.5 0.6 0.8 1" />
 
     <fog color="1.0 1.0 1.0 1.0" near="0.0" far="200.0" />
+
+    <skybox size="1000 1000 1000" center="0 0 0" emissive="1 1 1 1" intensity="100"
+        front="scenes/hangar/textures/skybox/front.jpg"
+        back="scenes/hangar/textures/skybox/back.jpg"
+        up="scenes/hangar/textures/skybox/up.jpg"
+        down="scenes/hangar/textures/skybox/down.jpg"
+        left="scenes/hangar/textures/skybox/left.jpg"
+        right="scenes/hangar/textures/skybox/right.jpg" />
 
     <cameras initial="cam1">
         <perspective id="cam1"
@@ -17,7 +26,7 @@
             target="0 0.0 0" />
 
         <orthogonal id="cam2"
-            near="-10"
+            near="-100"
             far="1000"
             location="15 15 15"
             target="0.0 0.0 0.0"
