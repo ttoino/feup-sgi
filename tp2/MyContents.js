@@ -35,7 +35,6 @@ class MyContents {
      * initializes the contents
      */
     init() {
-
         // create once
         if (this.axis === null) {
             // create and attach the axis to the scene
@@ -45,8 +44,8 @@ class MyContents {
     }
 
     /**
- * Updates the helpers of the scene on user input (controlled through the GUI).
- */
+     * Updates the helpers of the scene on user input (controlled through the GUI).
+     */
     updateHelpers() {
         this.helpers.forEach((h) => (h.visible = this.showHelpers));
     }
@@ -88,25 +87,108 @@ class MyContents {
             data.fog.far
         );
 
+        const textureLoader = new THREE.TextureLoader();
+
+        /** @type {Record<string, THREE.Object3D>} */
+        this.skyboxes = {};
+        for (let id in data.skyboxes) {
+            let skybox = data.skyboxes[id];
+
+            const baseMaterial = new THREE.MeshLambertMaterial({
+                emissive: skybox.emissive,
+                emissiveIntensity: skybox.intensity,
+                color: 0x000000,
+                fog: false,
+            });
+            const size = new THREE.Vector3(...skybox.size);
+
+            const frontMaterial = baseMaterial.clone();
+            frontMaterial.emissiveMap = textureLoader.load(skybox.front);
+
+            const backMaterial = baseMaterial.clone();
+            backMaterial.emissiveMap = textureLoader.load(skybox.back);
+
+            const upMaterial = baseMaterial.clone();
+            upMaterial.emissiveMap = textureLoader.load(skybox.up);
+
+            const downMaterial = baseMaterial.clone();
+            downMaterial.emissiveMap = textureLoader.load(skybox.down);
+
+            const leftMaterial = baseMaterial.clone();
+            leftMaterial.emissiveMap = textureLoader.load(skybox.left);
+
+            const rightMaterial = baseMaterial.clone();
+            rightMaterial.emissiveMap = textureLoader.load(skybox.right);
+
+            this.skyboxes[id] = new THREE.Group();
+            this.skyboxes[id].position.set(...skybox.center);
+
+            const front = new THREE.Mesh(
+                new THREE.PlaneGeometry(size.x, size.y),
+                frontMaterial
+            );
+            front.position.set(0, 0, size.z / 2);
+            front.rotation.y = Math.PI;
+
+            const back = new THREE.Mesh(
+                new THREE.PlaneGeometry(size.x, size.y),
+                backMaterial
+            );
+            back.position.set(0, 0, -size.z / 2);
+
+            const up = new THREE.Mesh(
+                new THREE.PlaneGeometry(size.x, size.z),
+                upMaterial
+            );
+            up.position.set(0, size.y / 2, 0);
+            up.rotation.x = Math.PI / 2;
+            up.rotation.z = Math.PI;
+
+            const down = new THREE.Mesh(
+                new THREE.PlaneGeometry(size.x, size.z),
+                downMaterial
+            );
+            down.position.set(0, -size.y / 2, 0);
+            down.rotation.x = -Math.PI / 2;
+            down.rotation.z = Math.PI;
+
+            const left = new THREE.Mesh(
+                new THREE.PlaneGeometry(size.z, size.y),
+                leftMaterial
+            );
+            left.position.set(size.x / 2, 0, 0);
+            left.rotation.y = -Math.PI / 2;
+
+            const right = new THREE.Mesh(
+                new THREE.PlaneGeometry(size.z, size.y),
+                rightMaterial
+            );
+            right.position.set(-size.x / 2, 0, 0);
+            right.rotation.y = Math.PI / 2;
+
+            this.skyboxes[id].add(front, back, up, down, left, right);
+            this.app.scene.add(this.skyboxes[id]);
+        }
+
         console.log("textures:");
         /** @type {Record<string, THREE.Texture>} */
         this.textures = {};
-        for (var id in data.textures) {
+        for (let id in data.textures) {
             let texture = data.textures[id];
             this.output(texture, 1);
 
-            // TODO: isVideo, magFilter, minFilter, mipmaps, anisotropy
-            this.textures[id] = new THREE.TextureLoader().load(
-                texture.filepath
-            );
-            // this.textures[id].wrapS = THREE.RepeatWrapping;
-            // this.textures[id].wrapT = THREE.RepeatWrapping;
+            // TODO: isVideo, mipmaps, anisotropy
+            this.textures[id] = textureLoader.load(texture.filepath);
+            this.textures[id].magFilter = THREE[texture.magFilter];
+            this.textures[id].minFilter = THREE[texture.minFilter];
+            this.textures[id].wrapS = THREE.RepeatWrapping;
+            this.textures[id].wrapT = THREE.RepeatWrapping;
         }
 
         console.log("materials:");
         /** @type {Record<string, THREE.Material>} */
         this.materials = {};
-        for (var id in data.materials) {
+        for (let id in data.materials) {
             let material = data.materials[id];
             this.output(material, 1);
 
@@ -123,10 +205,13 @@ class MyContents {
                     ? this.textures[material.textureref]
                     : undefined,
                 side: material.twosided ? THREE.DoubleSide : THREE.FrontSide,
-                bumpMap: material.bump_ref
-                    ? this.textures[material.bump_ref]
+                bumpMap: material.bumpref
+                    ? this.textures[material.bumpref]
                     : undefined,
-                bumpScale: material.bump_scale,
+                bumpScale: material.bumpscale,
+                specularMap: material.specularref
+                    ? this.textures[material.specularref]
+                    : undefined,
             });
 
             // this.materials[id].map.repeat.set(material.texlength_s, material.texlength_t)
@@ -136,7 +221,7 @@ class MyContents {
         /** @type {Record<string, THREE.Camera>} */
         this.app.cameras = {};
         const aspect = window.innerWidth / window.innerHeight;
-        for (var id in data.cameras) {
+        for (let id in data.cameras) {
             let camera = data.cameras[id];
             this.output(camera, 1);
 
@@ -396,10 +481,7 @@ class MyContents {
                 );
                 geom.computeVertexNormals();
 
-                mesh = new THREE.Mesh(
-                    geom,
-                    material
-                );
+                mesh = new THREE.Mesh(geom, material);
 
                 break;
             }
@@ -554,7 +636,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() { }
+    update() {}
 }
 
 export { MyContents };
