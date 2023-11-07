@@ -186,7 +186,7 @@ class MyContents {
         }
 
         console.log("materials:");
-        /** @type {Record<string, THREE.Material>} */
+        /** @type {Record<string, THREE.MeshPhongMaterial>} */
         this.materials = {};
         for (let id in data.materials) {
             let material = data.materials[id];
@@ -214,7 +214,18 @@ class MyContents {
                     : undefined,
             });
 
-            // this.materials[id].map.repeat.set(material.texlength_s, material.texlength_t)
+            this.materials[id].map?.repeat.set(
+                material.texlength_s,
+                material.texlength_t
+            );
+            this.materials[id].bumpMap?.repeat.set(
+                material.texlength_s,
+                material.texlength_t
+            );
+            this.materials[id].specularMap?.repeat.set(
+                material.texlength_s,
+                material.texlength_t
+            );
         }
 
         console.log("cameras:");
@@ -278,11 +289,8 @@ class MyContents {
     ) {
         const nodeData = data.nodes[node];
 
-        // FIXME: castShadow and receiveShadow are not present
-        // @ts-expect-error
-        const castShadow = nodeData.castShadow || pCastShadow;
-        // @ts-expect-error
-        const receiveShadow = nodeData.receiveShadow || pReceiveShadow;
+        const castShadow = nodeData.castShadows || pCastShadow;
+        const receiveShadow = nodeData.receiveShadows || pReceiveShadow;
         const material = this.materials?.[nodeData.materialIds[0]] ?? pMaterial;
 
         const group = new THREE.Group();
@@ -365,11 +373,12 @@ class MyContents {
                 );
                 light.visible = node.enabled;
 
-                /*                 if (node.blink_enabled)
-                                    setInterval(() => {
-                                        light.visible = !light.visible;
-                                        // @ts-ignore
-                                    }, node.blink_period);
+                /*
+                if (node.blink_enabled)
+                    setInterval(() => {
+                        light.visible = !light.visible;
+                        // @ts-ignore
+                    }, node.blink_period);
                  */
                 const helper = new THREE.PointLightHelper(light, 1);
                 this.app.scene.add(helper);
