@@ -4,10 +4,12 @@ interface SceneData {
     options: OptionsData;
     fog: FogData;
 
+    skyboxes: Record<string, SkyboxData>;
     textures: Record<string, TextureData>;
     materials: Record<string, MaterialData>;
     cameras: Record<string, CameraData>;
     nodes: Record<string, NodeData>;
+    lods: Record<string, LodData>;
 
     activeCameraId: string;
     rootId: string;
@@ -33,11 +35,25 @@ interface FogData extends Data<"fog"> {
     far: number;
 }
 
+interface SkyboxData extends Data<"skybox"> {
+    size: Vector3;
+    center: Vector3;
+    emissive: THREE.Color;
+    intensity: number;
+    front: string;
+    back: string;
+    up: string;
+    down: string;
+    left: string;
+    right: string;
+}
+
 type MagFilter = "LinearFilter" | "NearestFilter";
 type MinFilter =
     | "LinearMipMapLinearFilter"
     | "LinearMipMapNearestFilter"
-    | "NearestFilter";
+    | "NearestMipMapLinearFilter"
+    | "NearestMipMapNearestFilter";
 
 interface TextureData extends Data<"texture"> {
     id: string;
@@ -47,6 +63,14 @@ interface TextureData extends Data<"texture"> {
     magFilter: MagFilter;
     minFilter: MinFilter;
     mipmaps: boolean;
+    mipmap0?: string;
+    mipmap1?: string;
+    mipmap2?: string;
+    mipmap3?: string;
+    mipmap4?: string;
+    mipmap5?: string;
+    mipmap6?: string;
+    mipmap7?: string;
 }
 
 type Shading = "smooth" | "flat" | "none";
@@ -61,10 +85,11 @@ interface MaterialData extends Data<"material"> {
     wireframe: boolean;
     twosided: boolean;
     textureref?: string;
-    bump_ref?: string;
-    bump_scale: number;
     texlength_s: number;
     texlength_t: number;
+    bumpref?: string;
+    bumpscale: number;
+    specularref?: string;
 }
 
 type CameraData = PerspectiveCameraData | OrthographicCameraData;
@@ -94,9 +119,15 @@ type ChildData = NodeData | LightData | PrimitiveData;
 
 interface NodeData extends Data<"node"> {
     id: string;
+    castShadows: boolean;
+    receiveShadows: boolean;
     children: ChildData[];
     materialIds: string[];
     transformations: TransformationData[];
+}
+
+interface LodData extends Data<"lod"> {
+    id: string;
 }
 
 type LightData = PointLightData | SpotLightData | DirectionalLightData;
