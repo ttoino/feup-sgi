@@ -104,8 +104,6 @@
             specular="0.9 0.9 0.9 1.0"
             shininess="10"
             textureref="planeWindowTex"
-            texlength_s="8"
-            texlength_t="4"
             twosided="true"
         />
 
@@ -115,8 +113,6 @@
             specular="0.9 0.9 0.9 1"
             shininess="10"
             textureref="planeNoseTex"
-            texlength_s="8"
-            texlength_t="4"
             twosided="true"
         />
 
@@ -146,7 +142,7 @@
     </materials>
 
     <graph rootid="scene">
-        <node id="scene">
+        <node id="scene" castshadows="true" receiveshadows="true">
             <children>
                 <noderef id="ground" />
                 <noderef id="hangar" />
@@ -161,7 +157,11 @@
                     color="1.0 1.0 1.0 1"
                     intensity="1.0"
                     castshadow="true"
-                    position="2 2 4"
+                    position="20 20 40"
+                    shadowleft="-80"
+                    shadowright="80"
+                    shadowtop="80"
+                    shadowbottom="-80"
                 />
             </children>
         </node>
@@ -285,7 +285,7 @@
             </children>
         </node>
 
-        <node id="plane" castshadows="true" receiveshadows="true">
+        <node id="plane">
 
             <transforms>
                 <rotate value3="0 0 -91" />
@@ -317,7 +317,7 @@
             </children>
         </node>
 
-        <node id="planeBody" castshadows="true" receiveshadows="true">
+        <node id="planeBody">
 
             <transforms>
                 <rotate value3="0 90 0" />
@@ -354,7 +354,7 @@
             </children>
         </node>
 
-        <node id="planeWingSupport" castshadows="true" receiveshadows="true">
+        <node id="planeWingSupport">
 
             <transforms>
                 <rotate value3="-90 0 90" />
@@ -466,7 +466,7 @@
                     position="0 0 0"
                 />
                 <primitive>
-                    <sphere radius=".05" slices="100" stacks="100" />
+                    <sphere radius=".05" slices="10" stacks="10" />
                 </primitive>
             </children>
         </node>
@@ -847,12 +847,12 @@
         <node id="ceilingLightArm">
 
             <transforms>
-                <translate value3="0 -1 0" />
+                <translate value3="0 -1.25 0" />
             </transforms>
 
             <children>
                 <primitive>
-                    <cylinder base="0.1" top="0.1" height="2" slices="100" stacks="100" />
+                    <cylinder base="0.1" top="0.1" height="1.5" slices="10" stacks="10" />
                 </primitive>
             </children>
         </node>
@@ -860,7 +860,7 @@
         <node id="ceilingLightHead">
             <children>
                 <primitive>
-                    <cylinder base="0.5" top="0.8" height="1" slices="100" stacks="100" />
+                    <cylinder base="0.5" top="0.8" height="1" slices="10" stacks="10" capsclose="true" />
                 </primitive>
                 <spotlight id="ceilingLightSource"
                     enabled="true"
