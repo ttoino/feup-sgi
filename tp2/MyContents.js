@@ -28,7 +28,7 @@ class MyContents {
         this.helpers = [];
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/demo/demo.xml");
+        this.reader.open("scenes/hangar/scene.xml");
     }
 
     /**
@@ -387,13 +387,6 @@ class MyContents {
                 );
                 light.visible = node.enabled;
 
-                /*
-                if (node.blink_enabled)
-                    setInterval(() => {
-                        light.visible = !light.visible;
-                        // @ts-ignore
-                    }, node.blink_period);
-                 */
                 const helper = new THREE.PointLightHelper(light, 1);
                 this.app.scene.add(helper);
                 this.helpers.push(helper);
