@@ -115,7 +115,7 @@ interface OrthographicCameraData extends Data<"orthogonal"> {
     target: Vector3;
 }
 
-type ChildData = NodeData | LightData | PrimitiveData;
+type ChildData = NodeData | LodData | LightData | PrimitiveData;
 
 interface NodeData extends Data<"node"> {
     id: string;
@@ -128,6 +128,12 @@ interface NodeData extends Data<"node"> {
 
 interface LodData extends Data<"lod"> {
     id: string;
+    children: LodChildData[];
+}
+
+interface LodChildData extends Data<"lodnoderef"> {
+    mindist: number;
+    node: NodeData;
 }
 
 type LightData = PointLightData | SpotLightData | DirectionalLightData;

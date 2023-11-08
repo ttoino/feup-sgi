@@ -28,7 +28,7 @@ class MyContents {
         this.helpers = [];
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/hangar/scene.xml");
+        this.reader.open("scenes/demo/demo.xml");
     }
 
     /**
@@ -265,52 +265,39 @@ class MyContents {
         }
         this.app.setActiveCamera(data.activeCameraId);
 
-        console.log("nodes:");
-        /** @type {Record<string, THREE.Object3D>} */
-        this.nodes = {};
-        this.app.scene.add(this.generateSceneGraph(data));
+        this.app.scene.add(this.generateNode(data.nodes[data.rootId]));
     }
 
     /**
-     * @param {import("./types.js").SceneData} data
-     * @param {string} node
+     * @param {import("./types.js").NodeData} node
      * @param {boolean} pCastShadow
      * @param {boolean} pReceiveShadow
      * @param {THREE.Material | undefined} pMaterial
      *
      * @returns {THREE.Object3D}
      */
-    generateSceneGraph(
-        data,
-        node = data.rootId,
+    generateNode(
+        node,
         pCastShadow = false,
         pReceiveShadow = false,
         pMaterial = undefined
     ) {
-        const nodeData = data.nodes[node];
-
-        const castShadow = nodeData.castShadows || pCastShadow;
-        const receiveShadow = nodeData.receiveShadows || pReceiveShadow;
-        const material = this.materials?.[nodeData.materialIds[0]] ?? pMaterial;
+        const castShadow = node.castShadows || pCastShadow;
+        const receiveShadow = node.receiveShadows || pReceiveShadow;
+        const material = this.materials?.[node.materialIds[0]] ?? pMaterial;
 
         const group = new THREE.Group();
 
         group.add(
-            ...nodeData.children.map((child) =>
-                this.generateNode(
-                    data,
-                    child,
-                    castShadow,
-                    receiveShadow,
-                    material
-                )
+            ...node.children.map((child) =>
+                this.generateChild(child, castShadow, receiveShadow, material)
             )
         );
 
         group.castShadow = castShadow;
         group.receiveShadow = receiveShadow;
 
-        nodeData.transformations.forEach((transformation) => {
+        node.transformations.forEach((transformation) => {
             switch (transformation.type) {
                 case "T":
                     group.translateX(transformation.translate[0]);
@@ -332,7 +319,28 @@ class MyContents {
     }
 
     /**
-     * @param {import("./types.js").SceneData} data
+     *
+     * @param {import("./types.js").LodData} lod
+     * @param {boolean} castShadow
+     * @param {boolean} receiveShadow
+     * @param {THREE.Material | undefined} material
+     *
+     * @returns {THREE.Object3D}
+     */
+    generateLod(lod, castShadow, receiveShadow, material) {
+        const lod3 = new THREE.LOD();
+
+        lod.children.forEach((c) =>
+            lod3.addLevel(
+                this.generateNode(c.node, castShadow, receiveShadow, material),
+                c.mindist
+            )
+        );
+
+        return lod3;
+    }
+
+    /**
      * @param {import("./types.js").ChildData} node
      * @param {boolean} castShadow
      * @param {boolean} receiveShadow
@@ -340,7 +348,7 @@ class MyContents {
      *
      * @returns {THREE.Object3D}
      */
-    generateNode(data, node, castShadow, receiveShadow, material) {
+    generateChild(node, castShadow, receiveShadow, material) {
         switch (node.type) {
             case "primitive":
                 return this.generatePrimitive(
@@ -350,9 +358,15 @@ class MyContents {
                     material
                 );
             case "node":
-                return this.generateSceneGraph(
-                    data,
-                    node.id,
+                return this.generateNode(
+                    node,
+                    castShadow,
+                    receiveShadow,
+                    material
+                );
+            case "lod":
+                return this.generateLod(
+                    node,
                     castShadow,
                     receiveShadow,
                     material
