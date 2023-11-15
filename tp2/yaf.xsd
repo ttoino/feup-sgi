@@ -149,9 +149,7 @@
   </xs:element>
   <xs:element name="lod">
     <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="lodnoderef"/>
-      </xs:sequence>
+      <xs:group maxOccurs="unbounded" ref="lodnoderef"/>
       <xs:attribute name="id" use="required" type="xs:ID"/>
     </xs:complexType>
   </xs:element>
@@ -191,7 +189,7 @@
         <xs:element ref="pointlight"/>
         <xs:element ref="spotlight"/>
         <xs:element ref="directionallight"/>
-        <xs:element ref="noderef"/>
+        <xs:group ref="noderef"/>
         <xs:element ref="lodref"/>
       </xs:choice>
     </xs:complexType>
@@ -330,22 +328,30 @@
       <xs:attribute name="shadowmapsize" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="noderef">
-    <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:IDREF"/>
-    </xs:complexType>
-  </xs:element>
+  <xs:group name="noderef">
+    <xs:sequence>
+      <xs:element name="noderef">
+        <xs:complexType>
+          <xs:attribute name="id" use="required" type="xs:IDREF"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
   <xs:element name="lodref">
     <xs:complexType>
       <xs:attribute name="id" use="required" type="xs:IDREF"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="lodnoderef">
-    <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:IDREF"/>
-      <xs:attribute name="mindist" use="required" type="xs:double"/>
-    </xs:complexType>
-  </xs:element>
+  <xs:group name="lodnoderef">
+    <xs:sequence>
+      <xs:element name="noderef">
+        <xs:complexType>
+          <xs:attribute name="id" use="required" type="xs:IDREF"/>
+          <xs:attribute name="mindist" use="required" type="xs:double"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
   <xs:simpleType name="vec2">
     <xs:restriction>
       <xs:simpleType>

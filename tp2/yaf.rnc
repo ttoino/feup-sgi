@@ -292,7 +292,7 @@ lodref = element lodref {
     attribute id { xsd:IDREF }
 }
 
-lodnoderef = element lodnoderef {
+lodnoderef = element noderef {
     attribute id { xsd:IDREF },
     attribute mindist { xsd:double }
 }
