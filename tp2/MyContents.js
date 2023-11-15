@@ -192,7 +192,7 @@ class MyContents {
             let material = data.materials[id];
             this.output(material, 1);
 
-            // TODO: texlength_s, texlength_t, shading = none
+            // TODO: shading = none
             this.materials[id] = new THREE.MeshPhongMaterial({
                 name: `Material ${id}`,
                 color: material.color,
@@ -215,16 +215,16 @@ class MyContents {
             });
 
             this.materials[id].map?.repeat.set(
-                material.texlength_s,
-                material.texlength_t
+                1 / material.texlength_s,
+                1 / material.texlength_t
             );
             this.materials[id].bumpMap?.repeat.set(
-                material.texlength_s,
-                material.texlength_t
+                1 / material.texlength_s,
+                1 / material.texlength_t
             );
             this.materials[id].specularMap?.repeat.set(
-                material.texlength_s,
-                material.texlength_t
+                1 / material.texlength_s,
+                1 / material.texlength_t
             );
         }
 
@@ -471,15 +471,22 @@ class MyContents {
                 const width = representation.xy2[0] - representation.xy1[0];
                 const height = representation.xy2[1] - representation.xy1[1];
 
-                mesh = new THREE.Mesh(
-                    new THREE.PlaneGeometry(
-                        width,
-                        height,
-                        representation.parts_x,
-                        representation.parts_y
-                    ),
-                    material
+                const geometry = new THREE.PlaneGeometry(
+                    width,
+                    height,
+                    representation.parts_x,
+                    representation.parts_y
                 );
+                const uvs = geometry.getAttribute("uv").array;
+                geometry.setAttribute(
+                    "uv",
+                    new THREE.Float32BufferAttribute(
+                        uvs.map((uv, i) => (i % 2 ? uv * height : uv * width)),
+                        2
+                    )
+                );
+
+                mesh = new THREE.Mesh(geometry, material);
 
                 mesh.position.set(x, y, 0);
 
@@ -583,6 +590,11 @@ class MyContents {
                     representation.degree_v,
                     material
                 );
+
+                break;
+            }
+            case "polygon": {
+                // TODO
 
                 break;
             }

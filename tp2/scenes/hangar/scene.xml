@@ -66,8 +66,8 @@
             textureref="groundTex"
             bumpref="groundBump"
             specularref="groundGloss"
-            texlength_s="10"
-            texlength_t="10"
+            texlength_s="20"
+            texlength_t="20"
         />
 
         <material id="floorMat"
@@ -85,16 +85,23 @@
             emissive="0.0 0.0 0.0 1"
             color="0.8 0.8 0.8 1"
             specular=".2 .2 .2 1"
-            shininess="50"
+            shininess="100"
             textureref="metalTex"
             bumpref="metalBump"
             specularref="metalGloss"
-            texlength_s="4"
-            texlength_t="2"
+            texlength_s="60"
+            texlength_t="20"
             twosided="true"
         />
 
         <material id="planeMat"
+            emissive="0.0 0.0 0.0 1.0"
+            color="0.85 0.85 0.85 1.0"
+            specular="0.9 0.9 0.9 1.0"
+            shininess="10"
+        />
+
+        <material id="planeWingMat"
             emissive="0.0 0.0 0.0 1.0"
             color="0.85 0.85 0.85 1.0"
             specular="0.9 0.9 0.9 1.0"
@@ -115,7 +122,6 @@
             specular="0.9 0.9 0.9 1.0"
             shininess="10"
             textureref="planeWindowTex"
-            twosided="true"
         />
 
         <material id="planeNoseMat"
@@ -124,7 +130,6 @@
             specular="0.9 0.9 0.9 1"
             shininess="10"
             textureref="planeNoseTex"
-            twosided="true"
         />
 
         <material id="crateMat"
@@ -339,7 +344,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="3" top="3" height="20" slices="100" stacks="100" />
+                    <cylinder base="3" top="3" height="20" slices="50" stacks="1" capsclose="true" />
                 </primitive>
             </children>
         </node>
@@ -357,8 +362,8 @@
                 <primitive>
                     <sphere
                         radius="3.0"
-                        slices="100"
-                        stacks="100"
+                        slices="50"
+                        stacks="25"
                         thetastart="0"
                         thetalength="1.57"
                     />
@@ -391,7 +396,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="1" top="1" height="3" slices="100" stacks="100" />
+                    <cylinder base="1" top="1" height="3" slices="20" stacks="1" />
                 </primitive>
                 <noderef id="planeWingSupportFrontEnd" />
                 <noderef id="planeWingSupportBackEnd" />
@@ -407,8 +412,8 @@
                 <primitive>
                     <sphere
                         radius="1.0"
-                        slices="100"
-                        stacks="100"
+                        slices="20"
+                        stacks="20"
                         thetastart="0"
                         thetalength="1.57"
                     />
@@ -438,7 +443,7 @@
                 <scale value3="1.5 1.5 1.5" />
             </transforms>
 
-            <materialref id="planeMat" />
+            <materialref id="planeWingMat" />
 
             <children>
                 <primitive>
@@ -518,7 +523,6 @@
         </node>
 
         <node id="planeTail">
-
             <transforms>
                 <rotate value3="0 0 90" />
                 <rotate value3="0 -90 0" />
@@ -540,15 +544,15 @@
             <children>
                 <primitive>
                     <nurbs degree_u="1" degree_v="3" parts_u="32" parts_v="32">
-                        <controlpoint xx="1" yy="0" zz="0" />
-                        <controlpoint xx="1" yy="0.55228474983" zz="0" />
-                        <controlpoint xx="0.55228474983" yy="1" zz="0" />
                         <controlpoint xx="0" yy="1" zz="0" />
+                        <controlpoint xx="0.55228474983" yy="1" zz="0" />
+                        <controlpoint xx="1" yy="0.55228474983" zz="0" />
+                        <controlpoint xx="1" yy="0" zz="0" />
 
-                        <controlpoint xx="0.3" yy="0.8" zz="2" />
-                        <controlpoint xx="0.3" yy="1.01045694997" zz="2" />
-                        <controlpoint xx="0.16568542494" yy="1.1" zz="2" />
                         <controlpoint xx="0" yy="1.1" zz="2" />
+                        <controlpoint xx="0.16568542494" yy="1.1" zz="2" />
+                        <controlpoint xx="0.3" yy="1.01045694997" zz="2" />
+                        <controlpoint xx="0.3" yy="0.8" zz="2" />
                     </nurbs>
                 </primitive>
             </children>
@@ -559,6 +563,7 @@
                 <noderef id="planeTailTopHalf" />
             </children>
         </node>
+
         <node id="planeTailTopHalf2">
             <transforms>
                 <scale value3="-1 1 1" />
@@ -577,7 +582,6 @@
         </node>
 
         <node id="planeTailBottomHalf">
-
             <transforms>
                 <scale value3="1 -1 1" />
             </transforms>
@@ -585,15 +589,15 @@
             <children>
                 <primitive>
                     <nurbs degree_u="1" degree_v="3" parts_u="32" parts_v="32">
-                        <controlpoint xx="1" yy="0" zz="0" />
-                        <controlpoint xx="1" yy="0.55228474983" zz="0" />
-                        <controlpoint xx="0.55228474983" yy="1" zz="0" />
                         <controlpoint xx="0" yy="1" zz="0" />
+                        <controlpoint xx="0.55228474983" yy="1" zz="0" />
+                        <controlpoint xx="1" yy="0.55228474983" zz="0" />
+                        <controlpoint xx="1" yy="0" zz="0" />
 
-                        <controlpoint xx="0.3" yy="-0.8" zz="2" />
-                        <controlpoint xx="0.3" yy="-0.55228474983" zz="2" />
-                        <controlpoint xx="0.16568542494" yy="-.5" zz="2" />
                         <controlpoint xx="0" yy="-.5" zz="2" />
+                        <controlpoint xx="0.16568542494" yy="-.5" zz="2" />
+                        <controlpoint xx="0.3" yy="-0.55228474983" zz="2" />
+                        <controlpoint xx="0.3" yy="-0.8" zz="2" />
                     </nurbs>
                 </primitive>
             </children>
@@ -636,6 +640,7 @@
         </node>
 
         <node id="planeTailTipFlaps">
+            <materialref id="planeWingMat" />
 
             <transforms>
                 <translate value3="0 1 .7" />
@@ -649,9 +654,6 @@
         </node>
 
         <node id="planeTailTipFlapsBody">
-
-            <materialref id="planeMat" />
-
             <children>
                 <primitive>
                     <nurbs degree_u="1" degree_v="1" parts_u="20" parts_v="20">
@@ -664,9 +666,6 @@
             </children>
         </node>
         <node id="planeTailTipFlapsArmHalf">
-
-            <materialref id="planeMat" />
-
             <children>
                 <primitive>
                     <nurbs degree_u="1" degree_v="1" parts_u="20" parts_v="20">
@@ -705,7 +704,6 @@
         </node>
 
         <node id="planeWheelTire">
-
             <materialref id="tireMat" />
 
             <children>
@@ -716,7 +714,6 @@
         </node>
 
         <node id="planeWhellSupportArm">
-
             <transforms>
                 <translate value3="0 1 0" />
             </transforms>
@@ -725,13 +722,12 @@
 
             <children>
                 <primitive>
-                    <cylinder base="0.1" top="0.1" height="1.5" slices="32" stacks="32" />
+                    <cylinder base="0.1" top="0.1" height="1.5" slices="10" stacks="1" />
                 </primitive>
             </children>
         </node>
 
         <node id="planeWhellSupportHold">
-
             <transforms>
                 <rotate value3="90 0 0" />
             </transforms>
@@ -740,7 +736,7 @@
 
             <children>
                 <primitive>
-                    <cylinder base="0.3" top="0.3" height=".71" slices="32" stacks="32" />
+                    <cylinder base="0.3" top="0.3" height=".71" slices="10" stacks="1" />
                 </primitive>
             </children>
         </node>
