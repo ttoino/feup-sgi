@@ -192,7 +192,8 @@ type PrimitiveData =
     | BoxData
     | CylinderData
     | SphereData
-    | NurbsData;
+    | NurbsData
+    | PolygonData;
 
 interface BasePrimitiveData<R, T extends string = string>
     extends Data<"primitive"> {
@@ -277,6 +278,17 @@ interface ControlPointData {
     yy: number;
     zz: number;
 }
+
+type PolygonData = BasePrimitiveData<
+    {
+        radius: number;
+        stacks: number;
+        slices: number;
+        color_c: THREE.Color;
+        color_p: THREE.Color;
+    },
+    "polygon"
+>;
 
 type TransformationData = TranslationData | RotationData | ScaleData;
 

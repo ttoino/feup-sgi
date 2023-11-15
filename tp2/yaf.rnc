@@ -170,7 +170,8 @@ primitive = element primitive {
     \box |
     \cylinder |
     \sphere |
-    \nurbs
+    \nurbs |
+    \polygon
 }
 
 rectangle = element rectangle {
@@ -221,6 +222,14 @@ nurbs = element nurbs {
     attribute parts_u { xsd:integer },
     attribute parts_v { xsd:integer },
     \controlpoint*
+}
+
+polygon = element polygon {
+    attribute radius { xsd:double },
+    attribute stacks { xsd:integer },
+    attribute slices { xsd:integer },
+    attribute color_c { \vec4 },
+    attribute color_p { \vec4 }
 }
 
 controlpoint = element controlpoint {

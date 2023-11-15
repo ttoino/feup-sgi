@@ -143,7 +143,7 @@ class MySceneData  {
 			{name: "slices", type: "integer"},
 			{name: "stacks", type: "integer"},
             {name: "thetastart", type: "float", required: false, default: 0.0},
-            {name: "thetalength", type: "float", required: false, default: 2 * Math.PI},
+            {name: "thetalength", type: "float", required: false, default: Math.PI},
             {name: "phistart", type: "float", required: false, default: 0.0},
             {name: "philength", type: "float", required: false, default: 2 * Math.PI},
             {name: "distance", type: "float", required: false, default: 0.0}, // The distance at which to display this level of detail. Default 0.0.  
@@ -185,6 +185,14 @@ class MySceneData  {
 			{name: "front", type: "string"},
 			{name: "back", type: "string"}, 
         ]
+
+        this.descriptors["polygon"] = [
+			{name: "radius", type: "float"},
+			{name: "stacks", type: "integer"},
+			{name: "slices", type: "integer"},
+            {name: "color_c", type: "rgba"},
+            {name: "color_p", type: "rgba"} 
+		]
 
 		this.descriptors["spotlight"] = [
 			{name: "id", type: "string" },
@@ -232,7 +240,7 @@ class MySceneData  {
 
         this.primaryNodeIds = ["globals", "fog", "skybox" ,"textures", "materials", "cameras", "graph"]
 
-        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs" , "box", "model3d", "skybox", "lod" ]
+        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs" , "box", "model3d", "skybox", "lod", "polygon" ]
     }
 
     createCustomAttributeIfNotExists(obj) {

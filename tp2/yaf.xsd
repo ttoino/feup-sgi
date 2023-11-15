@@ -205,6 +205,7 @@
         <xs:element ref="cylinder"/>
         <xs:element ref="sphere"/>
         <xs:element ref="nurbs"/>
+        <xs:element ref="polygon"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -264,6 +265,15 @@
       <xs:attribute name="degree_v" use="required" type="xs:integer"/>
       <xs:attribute name="parts_u" use="required" type="xs:integer"/>
       <xs:attribute name="parts_v" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="polygon">
+    <xs:complexType>
+      <xs:attribute name="radius" use="required" type="xs:double"/>
+      <xs:attribute name="stacks" use="required" type="xs:integer"/>
+      <xs:attribute name="slices" use="required" type="xs:integer"/>
+      <xs:attribute name="color_c" use="required" type="vec4"/>
+      <xs:attribute name="color_p" use="required" type="vec4"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="controlpoint">
