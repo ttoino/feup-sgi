@@ -43,18 +43,18 @@
         <texture id="groundBump" filepath="scenes/hangar/textures/ground/bump.png" />
         <texture id="groundGloss" filepath="scenes/hangar/textures/ground/gloss.jpg" />
 
-        <texture id="metalTex" filepath="scenes/hangar/textures/metal/color.jpg"/>
-        <texture id="metalBump" filepath="scenes/hangar/textures/metal/bump.jpg"/>
-        <texture id="metalGloss" filepath="scenes/hangar/textures/metal/gloss.jpg"/>
+        <texture id="metalTex" filepath="scenes/hangar/textures/metal/color.jpg" />
+        <texture id="metalBump" filepath="scenes/hangar/textures/metal/bump.jpg" />
+        <texture id="metalGloss" filepath="scenes/hangar/textures/metal/gloss.jpg" />
 
         <texture id="crateTex" filepath="scenes/hangar/textures/crate/color.jpg" />
         <texture id="crateBump" filepath="scenes/hangar/textures/crate/bump.png" />
         <texture id="crateGloss" filepath="scenes/hangar/textures/crate/gloss.jpg" />
 
-        <texture id="floorTex" filepath="scenes/hangar/textures/floor.jpg" />
         <texture id="wallTex" filepath="scenes/hangar/textures/wall.jpg" />
+        <texture id="floorTex" filepath="scenes/hangar/textures/floor.jpg" />
+        <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.png" />
         <texture id="planeWindowTex" filepath="scenes/hangar/textures/window.png" />
-        <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.jpg" />
     </textures>
 
     <materials>
@@ -330,7 +330,7 @@
             </transforms>
 
             <children>
-                <noderef id="planeWheel" />
+                <lodref id="planeWheel" />
             </children>
         </node>
 
@@ -495,7 +495,7 @@
             </transforms>
 
             <children>
-                <noderef id="planeWheel" />
+                <lodref id="planeWheel" />
             </children>
         </node>
 
@@ -762,8 +762,35 @@
             </children>
         </node>
 
-        <node id="planeWheel">
+        <node id="planeWheelTireSimple">
 
+            <transforms>
+                <scale value3="1 3 1" />
+                <rotate value3="90 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWheelTire" />
+            </children>
+        </node>
+
+        <lod id="planeWheel">
+            <noderef id="planeWheelDetailed" mindist="0" />
+            <noderef id="planeWheelSimple" mindist="160" />
+        </lod>
+
+        <node id="planeWheelSimple">
+            <transforms>
+                <translate value3="0 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWhellSupportArm" />
+                <noderef id="planeWheelTireSimple" />
+            </children>
+        </node>
+
+        <node id="planeWheelDetailed">
             <transforms>
                 <translate value3="0 0 0" />
             </transforms>
@@ -868,7 +895,8 @@
         <node id="ceilingLightHead">
             <children>
                 <primitive>
-                    <cylinder base="0.5" top="0.8" height="1" slices="10" stacks="10" capsclose="true" />
+                    <cylinder base="0.5" top="0.8" height="1" slices="10" stacks="10"
+                        capsclose="true" />
                 </primitive>
                 <spotlight id="ceilingLightSource"
                     enabled="true"
