@@ -314,7 +314,7 @@
             <children>
                 <noderef id="planeBody" />
                 <noderef id="planeNose" />
-                <noderef id="planeTail" />
+                <lodref id="planeTail" />
                 <noderef id="planeFrontWheel" />
                 <lodref id="planeWingSupport" />
             </children>
@@ -539,7 +539,41 @@
             </children>
         </node>
 
-        <node id="planeTail">
+        <lod id="planeTail">
+            <noderef id="planeTailDetailed" mindist="0" />
+            <noderef id="planeTailSimple" mindist="50" />
+        </lod>
+
+        <node id="planeTailSimpleTipFlaps">
+
+            <transforms>
+                <rotate value3="0 -90 0" />
+                <rotate value3="110 0 0" />
+                <scale value3="3 3 3" />
+                <translate value3="0 -1.5 -3.5" />
+            </transforms>
+
+            <children>
+                <lodref id="planeTailTipFlaps" />
+            </children>
+        </node>
+
+        <node id="planeTailSimple">
+
+            <transforms>
+                <translate value3="-1.625 -13.5 0" />
+                <rotate value3="0 0 -20" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <cylinder base="0" top="3.03" height="10" slices="60" stacks="10" />
+                </primitive>
+                <noderef id="planeTailSimpleTipFlaps" />
+            </children>
+        </node>
+
+        <node id="planeTailDetailed">
             <transforms>
                 <rotate value3="0 0 90" />
                 <rotate value3="0 -90 0" />
@@ -553,7 +587,7 @@
                 <noderef id="planeTailTop" />
                 <noderef id="planeTailBottom" />
                 <noderef id="planeTailTip" />
-                <noderef id="planeTailTipFlaps" />
+                <lodref id="planeTailTipFlaps" />
             </children>
         </node>
 
@@ -656,7 +690,25 @@
             </children>
         </node>
 
-        <node id="planeTailTipFlaps">
+        <lod id="planeTailTipFlaps">
+            <noderef id="planeTailTipFlapsDetailed" mindist="0" />
+            <noderef id="planeTailTipFlapsSimple" mindist="200" />
+        </lod>
+
+        <node id="planeTailTipFlapsSimple">
+            <materialref id="planeWingMat" />
+
+            <transforms>
+                <translate value3="0 1 .7" />
+                <scale value3="1 .7 1" />
+            </transforms>
+
+            <children>
+                <noderef id="planeTailTipFlapsBody" />
+            </children>
+        </node>
+
+        <node id="planeTailTipFlapsDetailed">
             <materialref id="planeWingMat" />
 
             <transforms>
