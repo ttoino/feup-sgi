@@ -316,7 +316,7 @@
                 <noderef id="planeNose" />
                 <noderef id="planeTail" />
                 <noderef id="planeFrontWheel" />
-                <noderef id="planeWingSupport" />
+                <lodref id="planeWingSupport" />
             </children>
         </node>
 
@@ -371,7 +371,24 @@
             </children>
         </node>
 
-        <node id="planeWingSupport">
+        <lod id="planeWingSupport">
+            <noderef id="planeWingSupportDetailed" mindist="0" />
+            <noderef id="planeWingSupportSimple" mindist="160" />
+        </lod>
+
+        <node id="planeWingSupportSimple">
+            <transforms>
+                <rotate value3="-90 0 90" />
+                <translate value3="0 -2.2 0" />
+            </transforms>
+
+            <children>
+                <noderef id="planeWingL" />
+                <noderef id="planeWingR" />
+            </children>
+        </node>
+
+        <node id="planeWingSupportDetailed">
 
             <transforms>
                 <rotate value3="-90 0 90" />
