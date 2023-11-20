@@ -716,6 +716,8 @@ class MyContents {
                     const nextCos = Math.cos(nextAngle);
                     const nextSin = Math.sin(nextAngle);
 
+                    // add "- 1" to account for the center stacks
+                    // Even though we can just run the loop in the "usual" manner, this is a small optimization that can be done to render less vertices at the center stacks
                     for (let stack = 0; stack < stacks; stack++) {
 
                         // These ratios tell us how far from the center we are
@@ -728,42 +730,62 @@ class MyContents {
                         const color = color_c.lerp(color_p, ratio);
                         const nextColor = color_c.lerp(color_p, nextRatio);
 
+                        if (stack + 1 !== stacks) {
 
-                        // This probably isn't the most efficient way to do this, but brain no work - Nuno + GH Copilot
+                            // This probably isn't the most efficient way to do this, but brain no work - Nuno + GH Copilot
 
-                        /*
-                         * The following configuration is something like this
-                         *
-                         * B---A
-                         * |  /|
-                         * | / |
-                         * |/  |
-                         * C---D
-                         */
-                        const pointA = [cos * currentRadius, 0, sin * currentRadius];
-                        const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
-                        const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
-                        const pointD = [cos * nextRadius, 0, sin * nextRadius];
+                            /*
+                             * The following configuration is something like this
+                             *
+                             * B---A
+                             * |  /|
+                             * | / |
+                             * |/  |
+                             * C---D
+                             */
+                            const pointA = [cos * currentRadius, 0, sin * currentRadius];
+                            const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
+                            const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
+                            const pointD = [cos * nextRadius, 0, sin * nextRadius];
 
-                        // First triangle
-                        vertexCoords.push(...pointA);
-                        colorCoords.push(...color);
+                            // First triangle
+                            vertexCoords.push(...pointA);
+                            colorCoords.push(...color);
 
-                        vertexCoords.push(...pointC);
-                        colorCoords.push(...nextColor);
+                            vertexCoords.push(...pointC);
+                            colorCoords.push(...nextColor);
 
-                        vertexCoords.push(...pointB);
-                        colorCoords.push(...color);
+                            vertexCoords.push(...pointB);
+                            colorCoords.push(...color);
 
-                        // Second triangle
-                        vertexCoords.push(...pointA);
-                        colorCoords.push(...color);
+                            // Second triangle
+                            vertexCoords.push(...pointA);
+                            colorCoords.push(...color);
 
-                        vertexCoords.push(...pointD);
-                        colorCoords.push(...nextColor);
+                            vertexCoords.push(...pointD);
+                            colorCoords.push(...nextColor);
 
-                        vertexCoords.push(...pointC);
-                        colorCoords.push(...nextColor);
+                            vertexCoords.push(...pointC);
+                            colorCoords.push(...nextColor);
+                        } else {
+
+                            console.log("BVoas")
+
+                            // last stack, create less points since this will always be a triangle
+
+                            const pointA = [cos * currentRadius, 0, sin * currentRadius];
+                            const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
+                            const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
+
+                            vertexCoords.push(...pointA);
+                            colorCoords.push(...color);
+
+                            vertexCoords.push(...pointC);
+                            colorCoords.push(...nextColor);
+
+                            vertexCoords.push(...pointB);
+                            colorCoords.push(...color);
+                        }
                     }
                 }
 
