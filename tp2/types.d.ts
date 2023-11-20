@@ -50,6 +50,8 @@ interface SkyboxData extends Data<"skybox"> {
 
 type MagFilter = "LinearFilter" | "NearestFilter";
 type MinFilter =
+    | "LinearFilter"
+    | "NearestFilter"
     | "LinearMipMapLinearFilter"
     | "LinearMipMapNearestFilter"
     | "NearestMipMapLinearFilter"

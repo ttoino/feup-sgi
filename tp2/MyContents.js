@@ -61,7 +61,6 @@ class MyContents {
     }
 
     updateWireframeAll() {
-
         this.showPlaneWireframes = this.showAllWireframes;
         this.showHangarWireframes = this.showAllWireframes;
         this.showCratesWireframes = this.showAllWireframes;
@@ -71,7 +70,6 @@ class MyContents {
         const helperRegex = /.*[Hh]elper.*/;
 
         this.app.scene.traverse((node) => {
-
             console.log(node);
 
             if (helperRegex.test(node.type)) return;
@@ -83,7 +81,6 @@ class MyContents {
     }
 
     updateWireframePlane() {
-
         if (!this.showPlaneWireframes) this.showAllWireframes = false;
 
         const nameRegex = /.*plane.*/;
@@ -97,10 +94,9 @@ class MyContents {
     }
 
     updateWireframeHangar() {
-
         if (!this.showHangarWireframes) this.showAllWireframes = false;
 
-        const nameRegex = /.*hangar.*/
+        const nameRegex = /.*hangar.*/;
 
         this.app.scene.traverse((node) => {
             if (node instanceof THREE.Mesh) {
@@ -111,10 +107,9 @@ class MyContents {
     }
 
     updateWireframeCrates() {
-
         if (!this.showCratesWireframes) this.showAllWireframes = false;
 
-        const nameRegex = /.*crate.*/
+        const nameRegex = /.*crate.*/;
 
         this.app.scene.traverse((node) => {
             if (node instanceof THREE.Mesh) {
@@ -125,10 +120,9 @@ class MyContents {
     }
 
     updateWireframeGround() {
-
         if (!this.showGroundWireframes) this.showAllWireframes = false;
 
-        const nameRegex = /.*ground.*/
+        const nameRegex = /.*ground.*/;
 
         this.app.scene.traverse((node) => {
             if (node instanceof THREE.Mesh) {
@@ -139,7 +133,6 @@ class MyContents {
     }
 
     updateWireframeSkybox() {
-
         if (!this.showSkyboxWireframes) this.showAllWireframes = false;
 
         Object.values(this.skyboxes).forEach((skybox) => {
@@ -396,23 +389,30 @@ class MyContents {
         group.castShadow = castShadow;
         group.receiveShadow = receiveShadow;
 
-        node.transformations.forEach((transformation) => {
+        const mat = node.transformations.reduce((mat, transformation) => {
             switch (transformation.type) {
                 case "T":
-                    group.translateX(transformation.translate[0]);
-                    group.translateY(transformation.translate[1]);
-                    group.translateZ(transformation.translate[2]);
-                    break;
+                    return mat.multiply(
+                        new THREE.Matrix4().makeTranslation(
+                            ...transformation.translate
+                        )
+                    );
                 case "R":
-                    group.rotateX(degreesToRadians(transformation.rotation[0]));
-                    group.rotateY(degreesToRadians(transformation.rotation[1]));
-                    group.rotateZ(degreesToRadians(transformation.rotation[2]));
-                    break;
+                    return mat.multiply(
+                        new THREE.Matrix4().makeRotationFromEuler(
+                            new THREE.Euler(
+                                ...transformation.rotation.map(degreesToRadians)
+                            )
+                        )
+                    );
                 case "S":
-                    group.scale.set(...transformation.scale);
-                    break;
+                    return mat.multiply(
+                        new THREE.Matrix4().makeScale(...transformation.scale)
+                    );
             }
-        });
+        }, new THREE.Matrix4());
+
+        group.applyMatrix4(mat);
 
         return group;
     }
@@ -644,7 +644,7 @@ class MyContents {
                         representation.height,
                         representation.slices,
                         representation.stacks,
-                        representation.capsclose,
+                        !representation.capsclose,
                         representation.thetastart,
                         representation.thetalength
                     ),
@@ -693,7 +693,7 @@ class MyContents {
                 break;
             }
             case "polygon": {
-                const representation = primitive.representations[0]
+                const representation = primitive.representations[0];
 
                 const radius = representation.radius;
                 const slices = representation.slices;
@@ -701,7 +701,7 @@ class MyContents {
                 const color_c = representation.color_c;
                 const color_p = representation.color_p;
 
-                // Cannot use indexed geometry because of the custom color 
+                // Cannot use indexed geometry because of the custom color
 
                 const vertexCoords = [];
                 const colorCoords = [];
@@ -719,16 +719,17 @@ class MyContents {
                     // add "- 1" to account for the center stacks
                     // Even though we can just run the loop in the "usual" manner, this is a small optimization that can be done to render less vertices at the center stacks
                     for (let stack = 1; stack < stacks; stack++) {
-
                         // These ratios tell us how far from the center we are
-                        const ratio = 1 - (stack / stacks);
-                        const nextRatio = 1 - ((stack + 1) / stacks);
+                        const ratio = 1 - stack / stacks;
+                        const nextRatio = 1 - (stack + 1) / stacks;
 
                         const currentRadius = radius * ratio;
                         const nextRadius = radius * nextRatio;
 
                         const color = color_c.clone().lerp(color_p, ratio);
-                        const nextColor = color_c.clone().lerp(color_p, nextRatio);
+                        const nextColor = color_c
+                            .clone()
+                            .lerp(color_p, nextRatio);
 
                         // This probably isn't the most efficient way to do this, but brain no work - Nuno + GH Copilot
 
@@ -741,9 +742,21 @@ class MyContents {
                          * |/  |
                          * C---D
                          */
-                        const pointA = [cos * currentRadius, 0, sin * currentRadius];
-                        const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
-                        const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
+                        const pointA = [
+                            cos * currentRadius,
+                            0,
+                            sin * currentRadius,
+                        ];
+                        const pointB = [
+                            nextCos * currentRadius,
+                            0,
+                            nextSin * currentRadius,
+                        ];
+                        const pointC = [
+                            nextCos * nextRadius,
+                            0,
+                            nextSin * nextRadius,
+                        ];
                         const pointD = [cos * nextRadius, 0, sin * nextRadius];
 
                         // First triangle
@@ -774,11 +787,20 @@ class MyContents {
                 const colors = new Float32Array(colorCoords);
 
                 const geom = new THREE.BufferGeometry()
-                    .setAttribute('position', new THREE.BufferAttribute(vertices, 3))
-                    .setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                    .setAttribute(
+                        "position",
+                        new THREE.BufferAttribute(vertices, 3)
+                    )
+                    .setAttribute(
+                        "color",
+                        new THREE.BufferAttribute(colors, 3)
+                    );
                 geom.computeVertexNormals();
 
-                mesh = new THREE.Mesh(geom, new THREE.MeshPhongMaterial({ vertexColors: true }));
+                mesh = new THREE.Mesh(
+                    geom,
+                    new THREE.MeshPhongMaterial({ vertexColors: true })
+                );
 
                 break;
             }
@@ -848,7 +870,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() { }
+    update() {}
 }
 
 export { MyContents };
