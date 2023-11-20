@@ -43,6 +43,80 @@ class MyGuiInterface {
             .onChange((value) => {
                 this.contents.updateHelpers();
             });
+
+        const objectsFolder = this.datgui.addFolder("Objects");
+
+        const subObjects = [];
+
+        const allWireframe = objectsFolder
+            .add(this.contents, "showAllWireframes")
+            .name("Show All Wireframes")
+            .onChange((value) => {
+                this.contents.updateWireframeAll();
+
+                if (value)
+                    subObjects.forEach((o) => {
+                        o.updateDisplay();
+                        this.contents[o.property] = value
+                    });
+            }).listen();
+
+        const resetAll = () => {
+            this.contents[allWireframe.property] = subObjects.every((o) => this.contents[o.property] === true);
+            allWireframe.updateDisplay();
+        }
+
+        const planeFolder = objectsFolder.addFolder("Plane");
+        subObjects.push(planeFolder
+            .add(this.contents, "showPlaneWireframes")
+            .name("Show Plane Wireframes")
+            .onChange((value) => {
+                this.contents.updateWireframePlane();
+
+                resetAll();
+            }).listen());
+
+
+        const hangarFolder = objectsFolder.addFolder("Hangar");
+        subObjects.push(hangarFolder
+            .add(this.contents, "showHangarWireframes")
+            .name("Show Hangar Wireframes")
+            .onChange((value) => {
+                this.contents.updateWireframeHangar();
+
+                resetAll();
+            }).listen());
+
+        const cratesFolder = objectsFolder.addFolder("Crates");
+        subObjects.push(cratesFolder
+            .add(this.contents, "showCratesWireframes")
+            .name("Show Crates Wireframes")
+            .onChange((value) => {
+                this.contents.updateWireframeCrates();
+
+                resetAll();
+            }).listen());
+
+        const groundFolder = objectsFolder.addFolder("Ground");
+        subObjects.push(groundFolder
+            .add(this.contents, "showGroundWireframes")
+            .name("Show Ground Wireframes")
+            .onChange((value) => {
+                this.contents.updateWireframeGround();
+
+                resetAll();
+            }).listen());
+
+        const skyboxFolder = objectsFolder.addFolder("Skybox");
+        subObjects.push(skyboxFolder
+            .add(this.contents, "showSkyboxWireframes")
+            .name("Show Skybox Wireframes")
+            .onChange((value) => {
+                this.contents.updateWireframeSkybox();
+
+                resetAll();
+            }).listen());
+
     }
 }
 

@@ -70,7 +70,7 @@
             texlength_t="20"
         />
 
-        <material id="floorMat"
+        <material id="hangarFloorMat"
             emissive="0.0 0.0 0.0 1"
             color="0.8 0.8 0.8 1.0"
             specular="0 0 0 0"
@@ -81,7 +81,7 @@
             twosided="true"
         />
 
-        <material id="wallMat"
+        <material id="hangarWallMat"
             emissive="0.0 0.0 0.0 1"
             color="0.8 0.8 0.8 1"
             specular=".2 .2 .2 1"
@@ -217,7 +217,7 @@
                 <rotate value3="-90.0 0.0 0.0" />
             </transforms>
 
-            <materialref id="floorMat" />
+            <materialref id="hangarFloorMat" />
 
             <children>
                 <primitive>
@@ -231,7 +231,7 @@
                 <translate value3="0.0 0.0 -50.0" />
             </transforms>
 
-            <materialref id="wallMat" />
+            <materialref id="hangarWallMat" />
 
             <children>
                 <primitive>
@@ -245,7 +245,7 @@
                 <rotate value3="0.0 90.0 0.0" />
             </transforms>
 
-            <materialref id="wallMat" />
+            <materialref id="hangarWallMat" />
 
             <children>
                 <primitive>
@@ -260,7 +260,7 @@
                 <translate value3="-60.0 0.0 0.0" />
             </transforms>
 
-            <materialref id="wallMat" />
+            <materialref id="hangarWallMat" />
 
             <children>
                 <primitive>
@@ -275,7 +275,7 @@
                 <translate value3="0.0 20.0 -50.0" />
             </transforms>
 
-            <materialref id="wallMat" />
+            <materialref id="hangarWallMat" />
 
             <children>
                 <primitive>

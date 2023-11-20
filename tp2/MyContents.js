@@ -27,6 +27,16 @@ class MyContents {
         this.showHelpers = true;
         this.helpers = [];
 
+        this.showAllWireframes = false;
+        this.showPlaneWireframes = false;
+        this.showHangarWireframes = false;
+        this.showCratesWireframes = false;
+        this.showGroundWireframes = false;
+        this.showSkyboxWireframes = false;
+
+        /** @type {Record<string, THREE.Object3D>} */
+        this.skyboxes = {};
+
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/hangar/scene.xml");
     }
@@ -48,6 +58,97 @@ class MyContents {
      */
     updateHelpers() {
         this.helpers.forEach((h) => (h.visible = this.showHelpers));
+    }
+
+    updateWireframeAll() {
+
+        this.showPlaneWireframes = this.showAllWireframes;
+        this.showHangarWireframes = this.showAllWireframes;
+        this.showCratesWireframes = this.showAllWireframes;
+        this.showGroundWireframes = this.showAllWireframes;
+        this.showSkyboxWireframes = this.showAllWireframes;
+
+        const helperRegex = /.*[Hh]elper.*/;
+
+        this.app.scene.traverse((node) => {
+
+            console.log(node);
+
+            if (helperRegex.test(node.type)) return;
+
+            if (node instanceof THREE.Mesh) {
+                node.material.wireframe = this.showAllWireframes;
+            }
+        });
+    }
+
+    updateWireframePlane() {
+
+        if (!this.showPlaneWireframes) this.showAllWireframes = false;
+
+        const nameRegex = /.*plane.*/;
+
+        this.app.scene.traverse((node) => {
+            if (node instanceof THREE.Mesh) {
+                if (nameRegex.test(node.material.name))
+                    node.material.wireframe = this.showPlaneWireframes;
+            }
+        });
+    }
+
+    updateWireframeHangar() {
+
+        if (!this.showHangarWireframes) this.showAllWireframes = false;
+
+        const nameRegex = /.*hangar.*/
+
+        this.app.scene.traverse((node) => {
+            if (node instanceof THREE.Mesh) {
+                if (nameRegex.test(node.material.name))
+                    node.material.wireframe = this.showHangarWireframes;
+            }
+        });
+    }
+
+    updateWireframeCrates() {
+
+        if (!this.showCratesWireframes) this.showAllWireframes = false;
+
+        const nameRegex = /.*crate.*/
+
+        this.app.scene.traverse((node) => {
+            if (node instanceof THREE.Mesh) {
+                if (nameRegex.test(node.material.name))
+                    node.material.wireframe = this.showCratesWireframes;
+            }
+        });
+    }
+
+    updateWireframeGround() {
+
+        if (!this.showGroundWireframes) this.showAllWireframes = false;
+
+        const nameRegex = /.*ground.*/
+
+        this.app.scene.traverse((node) => {
+            if (node instanceof THREE.Mesh) {
+                if (nameRegex.test(node.material.name))
+                    node.material.wireframe = this.showGroundWireframes;
+            }
+        });
+    }
+
+    updateWireframeSkybox() {
+
+        if (!this.showSkyboxWireframes) this.showAllWireframes = false;
+
+        Object.values(this.skyboxes).forEach((skybox) => {
+            skybox.children.forEach((child) => {
+                if (child instanceof THREE.Mesh) {
+                    child.material.wireframe = this.showSkyboxWireframes;
+                }
+            });
+        });
     }
 
     /**
@@ -89,8 +190,6 @@ class MyContents {
 
         const textureLoader = new THREE.TextureLoader();
 
-        /** @type {Record<string, THREE.Object3D>} */
-        this.skyboxes = {};
         for (let id in data.skyboxes) {
             let skybox = data.skyboxes[id];
 
@@ -664,7 +763,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() {}
+    update() { }
 }
 
 export { MyContents };
