@@ -306,7 +306,7 @@
 
             <transforms>
                 <rotate value3="0 0 -91" />
-                <translate value3="-5.2 0 0" />
+                <translate value3="-5.2 5 0" />
             </transforms>
 
             <materialref id="planeMat" />
@@ -407,7 +407,7 @@
         <node id="planeWingSupportBody">
 
             <transforms>
-                <scale value3="3.5 2.5 1.5" />
+                <scale value3="3.5 1.5 2.5" />
                 <rotate value3="90 0 0" />
             </transforms>
 
@@ -550,7 +550,7 @@
                 <rotate value3="0 -90 0" />
                 <rotate value3="110 0 0" />
                 <scale value3="3 3 3" />
-                <translate value3="0 -1.5 -3.5" />
+                <translate value3="0 -0.6 -1.3" />
             </transforms>
 
             <children>
@@ -579,7 +579,7 @@
                 <rotate value3="0 0 90" />
                 <rotate value3="0 -90 0" />
                 <scale value3="3 3 3" />
-                <translate value3="0 0 10" />
+                <translate value3="0 0 3.3325" />
             </transforms>
 
             <materialref id="planeMat" />
@@ -839,7 +839,7 @@
         <node id="planeWheelTireSimple">
 
             <transforms>
-                <scale value3="1 3 1" />
+                <scale value3="1 1 3" />
                 <rotate value3="90 0 0" />
             </transforms>
 
