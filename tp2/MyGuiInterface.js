@@ -30,12 +30,31 @@ class MyGuiInterface {
      */
     init() {
 
+        // CAMERAS /////////////////////////////////////////////////
+
         const cameraFolder = this.datgui.addFolder("Camera");
         cameraFolder
             .add(this.app, "activeCameraName", Object.keys(this.app.cameras))
             .name("active camera");
         cameraFolder.open();
 
+        // FOG /////////////////////////////////////////////////
+
+        const fogFolder = this.datgui.addFolder("Fog");
+
+        fogFolder
+            .add(this.app.scene.fog, "far", 300, 1000)
+            .name("Far distance");
+
+        fogFolder
+            .add(this.app.scene.fog, "near", 0, 300)
+            .name("Near distance");
+
+        fogFolder.addColor(this.app.scene.fog, "color").name("Fog Color")
+
+        // LIGHTS /////////////////////////////////////////////////
+
+        const lightTypeMap = {}
         const lightFolder = this.datgui.addFolder("Lights");
         lightFolder
             .add(this.contents, "showHelpers")
@@ -43,6 +62,23 @@ class MyGuiInterface {
             .onChange((value) => {
                 this.contents.updateHelpers();
             });
+
+        for (const helper of this.contents.helpers) {
+
+            const lightType = helper.type.replace('Helper', '');
+            if (lightTypeMap[lightType] === undefined) {
+                lightTypeMap[lightType] = 0;
+            }
+            lightTypeMap[lightType]++;
+
+            const helperFolder = lightFolder.addFolder(`${lightType} ${lightTypeMap[lightType]}`);
+
+            helperFolder
+                .add(helper.light, "visible")
+                .name("Toggle light");
+        }
+
+        // SCENE OBJECTS /////////////////////////////////////////////////
 
         const objectsFolder = this.datgui.addFolder("Objects");
 
@@ -116,7 +152,6 @@ class MyGuiInterface {
 
                 resetAll();
             }).listen());
-
     }
 }
 

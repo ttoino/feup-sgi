@@ -295,8 +295,8 @@ class MyContents {
                 const mipmap =
                     texture[
                         /** @type {keyof import('./types').TextureData & `mipmap${number}`} */ (
-                            `mipmap${i}`
-                        )
+                        `mipmap${i}`
+                    )
                     ];
                 if (!mipmap) break;
                 this.textures[id].mipmaps[i] = imageLoader.load(mipmap);
@@ -901,7 +901,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() {}
+    update() { }
 }
 
 export { MyContents };

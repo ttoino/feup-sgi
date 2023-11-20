@@ -316,7 +316,7 @@
                 <noderef id="planeNose" />
                 <lodref id="planeTail" />
                 <noderef id="planeFrontWheel" />
-                <lodref id="planeWingSupport" />
+                <noderef id="planeWingSupport" />
             </children>
         </node>
 
@@ -371,24 +371,24 @@
             </children>
         </node>
 
-        <lod id="planeWingSupport">
-            <noderef id="planeWingSupportDetailed" mindist="0" />
-            <noderef id="planeWingSupportSimple" mindist="160" />
+        <lod id="planeWingSupportBody">
+            <noderef id="planeWingSupportBodyDetailed" mindist="0" />
+            <noderef id="planeWingSupportBodySimple" mindist="160" />
         </lod>
 
-        <node id="planeWingSupportSimple">
+        <node id="planeWingSupportBodySimple">
             <transforms>
-                <rotate value3="-90 0 90" />
-                <translate value3="0 -2.2 0" />
+                <scale value3="4 1.5 8" />
             </transforms>
 
             <children>
-                <noderef id="planeWingL" />
-                <noderef id="planeWingR" />
+                <primitive>
+                    <sphere radius="1" slices="20" stacks="10" />
+                </primitive>
             </children>
         </node>
 
-        <node id="planeWingSupportDetailed">
+        <node id="planeWingSupport">
 
             <transforms>
                 <rotate value3="-90 0 90" />
@@ -398,13 +398,13 @@
             <materialref id="planeMat" />
 
             <children>
-                <noderef id="planeWingSupportBody" />
+                <lodref id="planeWingSupportBody" />
                 <noderef id="planeWingL" />
                 <noderef id="planeWingR" />
             </children>
         </node>
 
-        <node id="planeWingSupportBody">
+        <node id="planeWingSupportBodyDetailed">
 
             <transforms>
                 <scale value3="3.5 1.5 2.5" />
