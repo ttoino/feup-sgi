@@ -8,13 +8,18 @@
 
     <fog color=".33 .33 .33 1.0" near="0.0" far="400.0" />
 
-    <skybox size="500 500 500" center="0 0 0" emissive="1 1 1 1" intensity=".5"
+    <skybox
+        size="500 500 500"
+        center="0 0 0"
+        emissive="1 1 1 1"
+        intensity=".5"
         front="scenes/hangar/textures/skybox/front.jpg"
         back="scenes/hangar/textures/skybox/back.jpg"
         up="scenes/hangar/textures/skybox/up.jpg"
         down="scenes/hangar/textures/skybox/down.jpg"
         left="scenes/hangar/textures/skybox/left.jpg"
-        right="scenes/hangar/textures/skybox/right.jpg" />
+        right="scenes/hangar/textures/skybox/right.jpg"
+    />
 
     <cameras initial="cam1">
         <perspective id="cam1"
@@ -181,10 +186,13 @@
     <graph rootid="scene">
         <node id="scene" castshadows="true" receiveshadows="true">
             <children>
-
-                <primitive>
-                    <polygon radius="20" stacks="3" slices="5" color_c="0 0 0 1" color_p="1 1 1 1" />
-                </primitive>
+                <noderef id="ground" />
+                <noderef id="hangar" />
+                <noderef id="plane" />
+                <noderef id="crate1" />
+                <noderef id="crate2" />
+                <noderef id="crate3" />
+                <noderef id="crate4" />
 
                 <directionallight id="light5"
                     enabled="true"
@@ -495,7 +503,12 @@
         <lod id="planeWingSupportBody">
             <noderef id="planeWingSupportBodyDetailed" mindist="0" />
             <noderef id="planeWingSupportBodySimple" mindist="160" />
+            <noderef id="planeWingSupportBodyNone" mindist="320" />
         </lod>
+
+        <node id="planeWingSupportBodyNone">
+            <children></children>
+        </node>
 
         <node id="planeWingSupportBodySimple">
             <transforms>
@@ -540,6 +553,7 @@
                 <noderef id="planeWingSupportBackEnd" />
             </children>
         </node>
+
         <node id="planeWingSupportEnd">
 
             <transforms>
@@ -558,11 +572,13 @@
                 </primitive>
             </children>
         </node>
+
         <node id="planeWingSupportFrontEnd">
             <children>
                 <noderef id="planeWingSupportEnd" />
             </children>
         </node>
+
         <node id="planeWingSupportBackEnd">
 
             <transforms>
@@ -857,6 +873,7 @@
                 </primitive>
             </children>
         </node>
+
         <node id="planeTailTipFlapsArmHalf">
             <children>
                 <primitive>
@@ -869,6 +886,7 @@
                 </primitive>
             </children>
         </node>
+
         <node id="planeTailTipFlapsArmHalf1">
             <transforms>
                 <translate value3="0 2 1.1" />
@@ -878,6 +896,7 @@
                 <noderef id="planeTailTipFlapsArmHalf" />
             </children>
         </node>
+
         <node id="planeTailTipFlapsArmHalf2">
             <transforms>
                 <rotate value3="0 0 180" />
@@ -888,6 +907,7 @@
                 <noderef id="planeTailTipFlapsArmHalf" />
             </children>
         </node>
+
         <node id="planeTailTipFlapsArms">
             <children>
                 <noderef id="planeTailTipFlapsArmHalf1" />
@@ -921,6 +941,45 @@
             </children>
         </node>
 
+        <node id="wheelSupportNail">
+            <transforms>
+                <rotate value3="-90 0 0" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <polygon
+                        radius="-.1"
+                        stacks="6"
+                        slices="6"
+                        color_c="0.9 0.9 0.9 1"
+                        color_p="0.4 0.4 0.4 1"
+                    />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="wheelSupportNail1">
+            <transforms>
+                <translate value3="0 0.356 0" />
+            </transforms>
+
+            <children>
+                <noderef id="wheelSupportNail" />
+            </children>
+        </node>
+
+        <node id="wheelSupportNail2">
+            <transforms>
+                <rotate value3="0 0 180" />
+                <translate value3="0 0.356 0" />
+            </transforms>
+
+            <children>
+                <noderef id="wheelSupportNail" />
+            </children>
+        </node>
+
         <node id="planeWhellSupportHold">
             <transforms>
                 <rotate value3="90 0 0" />
@@ -933,8 +992,9 @@
                     <cylinder base="0.3" top="0.3" height=".71" slices="10" stacks="1"
                         capsclose="true" />
                 </primitive>
-            </children>
-        </node>
+                <noderef id="wheelSupportNail1" />
+                <noderef id="wheelSupportNail2" />
+            </children>2 </node>
 
         <node id="planeWheelTire1">
             <transforms>
@@ -946,6 +1006,7 @@
                 <noderef id="planeWheelTire" />
             </children>
         </node>
+
         <node id="planeWheelTire2">
             <transforms>
                 <rotate value3="90 0 0" />
@@ -999,7 +1060,6 @@
         </node>
 
         <node id="crate">
-
             <materialref id="crateMat" />
 
             <children>
@@ -1108,4 +1168,4 @@
             </children>
         </node>
     </graph>
-</yaf> 
+</yaf>
