@@ -25,6 +25,7 @@ class MyContents {
         this.axis = null;
 
         this.showHelpers = true;
+        /** @type {(THREE.SpotLightHelper|THREE.PointLightHelper|THREE.DirectionalLightHelper)[]} */
         this.helpers = [];
 
         this.showAllWireframes = false;
@@ -358,6 +359,7 @@ class MyContents {
         this.app.setActiveCamera(data.activeCameraId);
 
         this.app.scene.add(this.generateNode(data.nodes[data.rootId]));
+        this.helpers.forEach((h) => h.update());
     }
 
     /**
@@ -502,7 +504,12 @@ class MyContents {
                     node.decay
                 );
                 light.position.set(...node.position);
-                light.target.position.set(...node.target);
+                light.add(light.target);
+                light.target.position.set(
+                    ...new THREE.Vector3(...node.target)
+                        .sub(light.position)
+                        .toArray()
+                );
                 light.castShadow = node.castshadow;
                 light.shadow.camera.far = node.shadowfar;
                 light.shadow.mapSize.set(
