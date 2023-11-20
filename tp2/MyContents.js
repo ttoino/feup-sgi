@@ -749,7 +749,7 @@ class MyContents {
 
                     // add "- 1" to account for the center stacks
                     // Even though we can just run the loop in the "usual" manner, this is a small optimization that can be done to render less vertices at the center stacks
-                    for (let stack = 1; stack < stacks; stack++) {
+                    for (let stack = 0; stack < stacks; stack++) {
                         // These ratios tell us how far from the center we are
                         const ratio = 1 - stack / stacks;
                         const nextRatio = 1 - (stack + 1) / stacks;
@@ -774,21 +774,25 @@ class MyContents {
                          * C---D
                          */
                         const pointA = [
+                            sin * currentRadius,
                             cos * currentRadius,
                             0,
-                            sin * currentRadius,
                         ];
                         const pointB = [
+                            nextSin * currentRadius,
                             nextCos * currentRadius,
                             0,
-                            nextSin * currentRadius,
                         ];
                         const pointC = [
+                            nextSin * nextRadius,
                             nextCos * nextRadius,
                             0,
-                            nextSin * nextRadius,
                         ];
-                        const pointD = [cos * nextRadius, 0, sin * nextRadius];
+                        const pointD = [
+                            sin * nextRadius,
+                            cos * nextRadius,
+                            0,
+                        ];
 
                         // First triangle
                         vertexCoords.push(...pointA);
