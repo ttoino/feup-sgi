@@ -693,7 +693,88 @@ class MyContents {
                 break;
             }
             case "polygon": {
-                // TODO
+                const representation = primitive.representations[0]
+
+                const radius = representation.radius;
+                const slices = representation.slices;
+                const stacks = representation.stacks;
+                const color_c = representation.color_c;
+                const color_p = representation.color_p;
+
+                // Cannot use indexed geometry because of the custom color 
+
+                const vertexCoords = [];
+                const colorCoords = [];
+
+                for (let slice = 0; slice < slices; slice++) {
+                    const angle = (2 * Math.PI * slice) / slices;
+                    const nextAngle = (2 * Math.PI * (slice + 1)) / slices;
+
+                    const cos = Math.cos(angle);
+                    const sin = Math.sin(angle);
+
+                    const nextCos = Math.cos(nextAngle);
+                    const nextSin = Math.sin(nextAngle);
+
+                    for (let stack = 0; stack < stacks; stack++) {
+
+                        // These ratios tell us how far from the center we are
+                        const ratio = 1 - (stack / stacks);
+                        const nextRatio = 1 - ((stack + 1) / stacks);
+
+                        const currentRadius = radius * ratio;
+                        const nextRadius = radius * nextRatio;
+
+                        const color = color_c.lerp(color_p, ratio);
+                        const nextColor = color_c.lerp(color_p, nextRatio);
+
+
+                        // This probably isn't the most efficient way to do this, but brain no work - Nuno + GH Copilot
+
+                        /*
+                         * The following configuration is something like this
+                         *
+                         * B---A
+                         * |  /|
+                         * | / |
+                         * |/  |
+                         * C---D
+                         */
+                        const pointA = [cos * currentRadius, 0, sin * currentRadius];
+                        const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
+                        const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
+                        const pointD = [cos * nextRadius, 0, sin * nextRadius];
+
+                        // First triangle
+                        vertexCoords.push(...pointA);
+                        colorCoords.push(...color);
+
+                        vertexCoords.push(...pointC);
+                        colorCoords.push(...nextColor);
+
+                        vertexCoords.push(...pointB);
+                        colorCoords.push(...color);
+
+                        // Second triangle
+                        vertexCoords.push(...pointA);
+                        colorCoords.push(...color);
+
+                        vertexCoords.push(...pointD);
+                        colorCoords.push(...nextColor);
+
+                        vertexCoords.push(...pointC);
+                        colorCoords.push(...nextColor);
+                    }
+                }
+
+                const vertices = new Float32Array(vertexCoords);
+                const colors = new Float32Array(colorCoords);
+
+                const geom = new THREE.BufferGeometry()
+                    .setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+                    .setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+                mesh = new THREE.Mesh(geom);
 
                 break;
             }

@@ -161,13 +161,10 @@
     <graph rootid="scene">
         <node id="scene" castshadows="true" receiveshadows="true">
             <children>
-                <noderef id="ground" />
-                <noderef id="hangar" />
-                <noderef id="plane" />
-                <noderef id="crate1" />
-                <noderef id="crate2" />
-                <noderef id="crate3" />
-                <noderef id="crate4" />
+                <primitive>
+                    <polygon radius="20.0" slices="12" stacks="3" color_c="1 0 0 1"
+                        color_p="1 1 0 1" />
+                </primitive>
 
                 <directionallight id="light5"
                     enabled="true"
