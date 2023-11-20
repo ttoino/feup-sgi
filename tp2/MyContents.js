@@ -718,7 +718,7 @@ class MyContents {
 
                     // add "- 1" to account for the center stacks
                     // Even though we can just run the loop in the "usual" manner, this is a small optimization that can be done to render less vertices at the center stacks
-                    for (let stack = 0; stack < stacks; stack++) {
+                    for (let stack = 1; stack < stacks; stack++) {
 
                         // These ratios tell us how far from the center we are
                         const ratio = 1 - (stack / stacks);
@@ -727,38 +727,37 @@ class MyContents {
                         const currentRadius = radius * ratio;
                         const nextRadius = radius * nextRatio;
 
-                        const color = color_c.lerp(color_p, ratio);
-                        const nextColor = color_c.lerp(color_p, nextRatio);
+                        const color = color_c.clone().lerp(color_p, ratio);
+                        const nextColor = color_c.clone().lerp(color_p, nextRatio);
+
+                        // This probably isn't the most efficient way to do this, but brain no work - Nuno + GH Copilot
+
+                        /*
+                         * The following configuration is something like this
+                         *
+                         * B---A
+                         * |  /|
+                         * | / |
+                         * |/  |
+                         * C---D
+                         */
+                        const pointA = [cos * currentRadius, 0, sin * currentRadius];
+                        const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
+                        const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
+                        const pointD = [cos * nextRadius, 0, sin * nextRadius];
+
+                        // First triangle
+                        vertexCoords.push(...pointA);
+                        colorCoords.push(...color);
+
+                        vertexCoords.push(...pointC);
+                        colorCoords.push(...nextColor);
+
+                        vertexCoords.push(...pointB);
+                        colorCoords.push(...color);
 
                         if (stack + 1 !== stacks) {
-
-                            // This probably isn't the most efficient way to do this, but brain no work - Nuno + GH Copilot
-
-                            /*
-                             * The following configuration is something like this
-                             *
-                             * B---A
-                             * |  /|
-                             * | / |
-                             * |/  |
-                             * C---D
-                             */
-                            const pointA = [cos * currentRadius, 0, sin * currentRadius];
-                            const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
-                            const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
-                            const pointD = [cos * nextRadius, 0, sin * nextRadius];
-
-                            // First triangle
-                            vertexCoords.push(...pointA);
-                            colorCoords.push(...color);
-
-                            vertexCoords.push(...pointC);
-                            colorCoords.push(...nextColor);
-
-                            vertexCoords.push(...pointB);
-                            colorCoords.push(...color);
-
-                            // Second triangle
+                            // Second triangle, we are not in the center stack yet
                             vertexCoords.push(...pointA);
                             colorCoords.push(...color);
 
@@ -767,24 +766,6 @@ class MyContents {
 
                             vertexCoords.push(...pointC);
                             colorCoords.push(...nextColor);
-                        } else {
-
-                            console.log("BVoas")
-
-                            // last stack, create less points since this will always be a triangle
-
-                            const pointA = [cos * currentRadius, 0, sin * currentRadius];
-                            const pointB = [nextCos * currentRadius, 0, nextSin * currentRadius];
-                            const pointC = [nextCos * nextRadius, 0, nextSin * nextRadius];
-
-                            vertexCoords.push(...pointA);
-                            colorCoords.push(...color);
-
-                            vertexCoords.push(...pointC);
-                            colorCoords.push(...nextColor);
-
-                            vertexCoords.push(...pointB);
-                            colorCoords.push(...color);
                         }
                     }
                 }
@@ -795,8 +776,9 @@ class MyContents {
                 const geom = new THREE.BufferGeometry()
                     .setAttribute('position', new THREE.BufferAttribute(vertices, 3))
                     .setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                geom.computeVertexNormals();
 
-                mesh = new THREE.Mesh(geom);
+                mesh = new THREE.Mesh(geom, new THREE.MeshPhongMaterial({ vertexColors: true }));
 
                 break;
             }
