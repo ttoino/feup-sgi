@@ -183,6 +183,7 @@ class MyContents {
         );
 
         const textureLoader = new THREE.TextureLoader();
+        const imageLoader = new THREE.ImageLoader();
 
         for (let id in data.skyboxes) {
             let skybox = data.skyboxes[id];
@@ -270,12 +271,36 @@ class MyContents {
             let texture = data.textures[id];
             this.output(texture, 1);
 
-            // TODO: isVideo, mipmaps, anisotropy
-            this.textures[id] = textureLoader.load(texture.filepath);
+            if (texture.isVideo) {
+                const video = document.createElement("video");
+                video.src = texture.filepath;
+                video.loop = true;
+                video.muted = true;
+                video.play();
+                document.body.append(video);
+
+                this.textures[id] = new THREE.VideoTexture(video);
+            } else {
+                this.textures[id] = textureLoader.load(texture.filepath);
+            }
+
             this.textures[id].magFilter = THREE[texture.magFilter];
             this.textures[id].minFilter = THREE[texture.minFilter];
+            this.textures[id].anisotropy = texture.anisotropy;
             this.textures[id].wrapS = THREE.RepeatWrapping;
             this.textures[id].wrapT = THREE.RepeatWrapping;
+
+            this.textures[id].generateMipmaps = !texture.mipmap0;
+            for (let i = 0; i < 8; i++) {
+                const mipmap =
+                    texture[
+                        /** @type {keyof import('./types').TextureData & `mipmap${number}`} */ (
+                            `mipmap${i}`
+                        )
+                    ];
+                if (!mipmap) break;
+                this.textures[id].mipmaps[i] = imageLoader.load(mipmap);
+            }
         }
 
         console.log("materials:");
@@ -285,7 +310,6 @@ class MyContents {
             let material = data.materials[id];
             this.output(material, 1);
 
-            // TODO: shading = none
             this.materials[id] = new THREE.MeshPhongMaterial({
                 name: `Material ${id}`,
                 color: material.color,
