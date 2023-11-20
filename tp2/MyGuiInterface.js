@@ -71,11 +71,14 @@ class MyGuiInterface {
             }
             lightTypeMap[lightType]++;
 
+
             const helperFolder = lightFolder.addFolder(`${lightType} ${lightTypeMap[lightType]}`);
 
             helperFolder
                 .add(helper.light, "visible")
                 .name("Toggle light");
+
+            helperFolder.addColor(helper.light, "color").name("Color")
         }
 
         // SCENE OBJECTS /////////////////////////////////////////////////

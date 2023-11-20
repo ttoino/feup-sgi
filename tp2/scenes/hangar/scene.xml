@@ -55,6 +55,9 @@
         <texture id="floorTex" filepath="scenes/hangar/textures/floor.jpg" />
         <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.png" />
         <texture id="planeWindowTex" filepath="scenes/hangar/textures/window.png" />
+
+        <texture id="oceanTex" filepath="scenes/hangar/videos/airport.mp4" isVideo="true"
+            minFilter="LinearFilter" magFilter="NearestFilter" />
     </textures>
 
     <materials>
@@ -156,6 +159,15 @@
             shininess="0"
             emissive="1 .2 .3 1"
         />
+
+        <material id="screenMat"
+            emissive="0.0 0.0 0.0 1"
+            color="0.8 0.8 0.8 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="oceanTex"
+            texlength_s="16"
+            texlength_t="9" />
     </materials>
 
     <graph rootid="scene">
@@ -226,6 +238,22 @@
             </children>
         </node>
 
+        <node id="screen">
+
+            <transforms>
+                <translate value3="25 8 0.01" />
+            </transforms>
+
+            <materialref id="screenMat" />
+
+            <children>
+                <primitive>
+                    <rectangle xy1="0 0" xy2="16 9" />
+                </primitive>
+            </children>
+
+        </node>
+
         <node id="leftWall">
             <transforms>
                 <translate value3="0.0 0.0 -50.0" />
@@ -237,6 +265,7 @@
                 <primitive>
                     <rectangle xy1="0 0" xy2="60 20" />
                 </primitive>
+                <noderef id="screen" />
             </children>
         </node>
 
