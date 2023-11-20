@@ -160,6 +160,14 @@
             emissive="1 .2 .3 1"
         />
 
+        <material id="screenFrameMat"
+            color="0 0 0 1"
+            specular="1 1 1 0.5"
+            shininess="5"
+            emissive="0 0 0 0"
+            twosided="false"
+        />
+
         <material id="screenMat"
             emissive="0.0 0.0 0.0 1"
             color="0.8 0.8 0.8 1.0"
@@ -250,8 +258,95 @@
                 <primitive>
                     <rectangle xy1="0 0" xy2="16 9" />
                 </primitive>
+                <noderef id="screenFrame" />
             </children>
+        </node>
 
+        <node id="screenFrameEdge">
+            <transforms>
+                <scale value3="0.5 1 0.5" />
+            </transforms>
+
+            <materialref id="screenFrameMat" />
+
+            <children>
+                <primitive>
+                    <box xyz1="0 0 0" xyz2="1 1 1" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="screenFrameEdgeVertical">
+            <transforms>
+                <scale value3="1 9 1" />
+            </transforms>
+
+            <children>
+                <noderef id="screenFrameEdge" />
+            </children>
+        </node>
+
+        <node id="screenFrameEdgeHorizontal">
+            <transforms>
+                <scale value3="16 1 1" />
+                <rotate value3="0 0 90" />
+            </transforms>
+
+            <children>
+                <noderef id="screenFrameEdge" />
+            </children>
+        </node>
+
+        <node id="screenFrameEdgeHorizontalBottom">
+            <transforms>
+                <translate value3="16 0 0" />
+            </transforms>
+
+            <children>
+                <noderef id="screenFrameEdgeHorizontal" />
+            </children>
+        </node>
+
+        <node id="screenFrameEdgeHorizontalTop">
+
+            <transforms>
+                <translate value3="16 9 0" />
+            </transforms>
+
+            <children>
+                <noderef id="screenFrameEdgeHorizontal" />
+            </children>
+        </node>
+
+        <node id="screenFrameEdgeVerticalLeft">
+
+            <transforms>
+                <translate value3="0 0.5 0" />
+            </transforms>
+
+            <children>
+                <noderef id="screenFrameEdgeVertical" />
+            </children>
+        </node>
+
+        <node id="screenFrameEdgeVerticalRight">
+
+            <transforms>
+                <translate value3="15.5 0.5 0" />
+            </transforms>
+
+            <children>
+                <noderef id="screenFrameEdgeVertical" />
+            </children>
+        </node>
+
+        <node id="screenFrame">
+            <children>
+                <noderef id="screenFrameEdgeVerticalLeft" />
+                <noderef id="screenFrameEdgeVerticalRight" />
+                <noderef id="screenFrameEdgeHorizontalTop" />
+                <noderef id="screenFrameEdgeHorizontalBottom" />
+            </children>
         </node>
 
         <node id="leftWall">
