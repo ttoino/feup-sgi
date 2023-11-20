@@ -747,7 +747,6 @@ class MyContents {
                     const nextCos = Math.cos(nextAngle);
                     const nextSin = Math.sin(nextAngle);
 
-                    // add "- 1" to account for the center stacks
                     // Even though we can just run the loop in the "usual" manner, this is a small optimization that can be done to render less vertices at the center stacks
                     for (let stack = 0; stack < stacks; stack++) {
                         // These ratios tell us how far from the center we are
