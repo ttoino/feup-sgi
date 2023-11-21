@@ -65,6 +65,16 @@ textures = element textures {
     element texture {
         attribute id { xsd:ID },
         attribute filepath { xsd:anyURI },
+        attribute isVideo { xsd:boolean }?,
+        attribute magFilter { "LinearFilter" | "NearestFilter" }?,
+        attribute minFilter { 
+            "LinearFilter"
+          | "NearestFilter"
+          | "LinearMipMapLinearFilter"
+          | "LinearMipMapNearestFilter"
+          | "NearestMipMapLinearFilter"
+          | "NearestMipMapNearestFilter"
+        }?,
         (
             attribute mipmap0 { xsd:anyURI },
             (
