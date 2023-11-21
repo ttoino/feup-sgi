@@ -181,7 +181,8 @@ primitive = element primitive {
     \cylinder |
     \sphere |
     \nurbs |
-    \polygon
+    \polygon |
+    \model3d
 }
 
 rectangle = element rectangle {
@@ -240,6 +241,10 @@ polygon = element polygon {
     attribute slices { xsd:integer },
     attribute color_c { \vec4 },
     attribute color_p { \vec4 }
+}
+
+model3d = element model3d {
+    attribute filepath { xsd:anyURI }
 }
 
 controlpoint = element controlpoint {

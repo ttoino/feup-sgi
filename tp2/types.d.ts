@@ -195,7 +195,8 @@ type PrimitiveData =
     | CylinderData
     | SphereData
     | NurbsData
-    | PolygonData;
+    | PolygonData
+    | Model3DData;
 
 interface BasePrimitiveData<R, T extends string = string>
     extends Data<"primitive"> {
@@ -290,6 +291,13 @@ type PolygonData = BasePrimitiveData<
         color_p: THREE.Color;
     },
     "polygon"
+>;
+
+type Model3DData = BasePrimitiveData<
+    {
+        filepath: string;
+    },
+    "model3d"
 >;
 
 type TransformationData = TranslationData | RotationData | ScaleData;

@@ -225,6 +225,7 @@
         <xs:element ref="sphere"/>
         <xs:element ref="nurbs"/>
         <xs:element ref="polygon"/>
+        <xs:element ref="model3d"/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -293,6 +294,11 @@
       <xs:attribute name="slices" use="required" type="xs:integer"/>
       <xs:attribute name="color_c" use="required" type="vec4"/>
       <xs:attribute name="color_p" use="required" type="vec4"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="model3d">
+    <xs:complexType>
+      <xs:attribute name="filepath" use="required" type="xs:anyURI"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="controlpoint">

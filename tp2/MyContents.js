@@ -12,6 +12,12 @@ import { NURBSSurface } from "three/addons/curves/NURBSSurface.js";
 // @ts-expect-error
 import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
 
+// 3D Model loaders
+// @ts-expect-error
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+// @ts-expect-error
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+
 /**
  *  This class contains the contents of out application
  */
@@ -295,8 +301,8 @@ class MyContents {
                 const mipmap =
                     texture[
                         /** @type {keyof import('./types').TextureData & `mipmap${number}`} */ (
-                        `mipmap${i}`
-                    )
+                            `mipmap${i}`
+                        )
                     ];
                 if (!mipmap) break;
                 this.textures[id].mipmaps[i] = imageLoader.load(mipmap);
@@ -787,11 +793,7 @@ class MyContents {
                             nextCos * nextRadius,
                             0,
                         ];
-                        const pointD = [
-                            sin * nextRadius,
-                            cos * nextRadius,
-                            0,
-                        ];
+                        const pointD = [sin * nextRadius, cos * nextRadius, 0];
 
                         // First triangle
                         vertexCoords.push(...pointA);
@@ -835,6 +837,53 @@ class MyContents {
                     geom,
                     new THREE.MeshPhongMaterial({ vertexColors: true })
                 );
+
+                break;
+            }
+            case "model3d": {
+                const representation = primitive.representations[0];
+
+                const modelUrl = representation.filepath;
+                const format = modelUrl.split(".").pop();
+
+                const loaderClass = {
+                    gltf: GLTFLoader,
+                    obj: OBJLoader,
+                }[format];
+
+                if (!loaderClass) {
+                    console.error(
+                        `Unsupported model format: ${format} (${modelUrl})`
+                    );
+                    break;
+                }
+
+                const loader = new loaderClass();
+
+                mesh = new THREE.Object3D();
+
+                const loaderFn = {
+                    gltf: (gltf) => {
+                        console.log(gltf);
+                        mesh.add(gltf.scene);
+                    },
+                    obj: (object) => {
+                        console.log(object);
+                        object.traverse((child) => {
+                            if (child.isMesh) {
+                                if (material) child.material = material;
+                                child.castShadow = castShadow;
+                                child.receiveShadow = receiveShadow;
+                            
+                                console.log(child);
+                            }
+                        });
+
+                        mesh.add(object);
+                    },
+                }[format];
+
+                loader.load(modelUrl, loaderFn);
 
                 break;
             }
@@ -904,7 +953,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() { }
+    update() {}
 }
 
 export { MyContents };
