@@ -52,7 +52,13 @@
         <texture id="metalBump" filepath="scenes/hangar/textures/metal/bump.png" />
         <texture id="metalGloss" filepath="scenes/hangar/textures/metal/gloss.jpg" />
 
-        <texture id="crateTex" filepath="scenes/hangar/textures/crate/color.jpg" />
+        <texture id="crateTex" filepath="scenes/hangar/textures/crate/color.jpg"
+            mipmap0="scenes/hangar/textures/crate/color.512.jpg"
+            mipmap1="scenes/hangar/textures/crate/color.256.jpg"
+            mipmap2="scenes/hangar/textures/crate/color.128.jpg"
+            mipmap3="scenes/hangar/textures/crate/color.64.jpg"
+            mipmap4="scenes/hangar/textures/crate/color.32.jpg"
+            mipmap5="scenes/hangar/textures/crate/color.16.jpg" />
         <texture id="crateBump" filepath="scenes/hangar/textures/crate/bump.png" />
         <texture id="crateGloss" filepath="scenes/hangar/textures/crate/gloss.jpg" />
 
@@ -61,7 +67,7 @@
         <texture id="planeNoseTex" filepath="scenes/hangar/textures/nose.png" />
         <texture id="planeWindowTex" filepath="scenes/hangar/textures/window.png" />
 
-        <texture id="oceanTex" filepath="scenes/hangar/videos/airport.mp4" isVideo="true"
+        <texture id="screenTex" filepath="scenes/hangar/videos/airport.mp4" isVideo="true"
             minFilter="LinearFilter" magFilter="NearestFilter" />
     </textures>
 
@@ -178,7 +184,7 @@
             color="0.8 0.8 0.8 1.0"
             specular="0 0 0 0"
             shininess="0"
-            textureref="oceanTex"
+            textureref="screenTex"
             texlength_s="16"
             texlength_t="9" />
     </materials>
