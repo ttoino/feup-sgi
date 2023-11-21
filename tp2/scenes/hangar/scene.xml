@@ -1000,7 +1000,8 @@
                 </primitive>
                 <noderef id="wheelSupportNail1" />
                 <noderef id="wheelSupportNail2" />
-            </children>2 </node>
+            </children>
+        </node>
 
         <node id="planeWheelTire1">
             <transforms>
