@@ -19,6 +19,7 @@ Strong Points:
 Scene:
 - The scene features a hangar with a plane inside. There are also some cargo crates inside and a big TV Plasma playing footage from a plane landing.
 - [scene](/tp2/scenes/hangar/scene.xml)
+- [screenshots](/tp2/screenshots/)
 
 ----
 
