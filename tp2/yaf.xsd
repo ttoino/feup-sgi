@@ -97,10 +97,10 @@
           <xs:restriction base="xs:token">
             <xs:enumeration value="LinearFilter"/>
             <xs:enumeration value="NearestFilter"/>
-            <xs:enumeration value="LinearMipMapLinearFilter"/>
-            <xs:enumeration value="LinearMipMapNearestFilter"/>
-            <xs:enumeration value="NearestMipMapLinearFilter"/>
-            <xs:enumeration value="NearestMipMapNearestFilter"/>
+            <xs:enumeration value="LinearMipmapLinearFilter"/>
+            <xs:enumeration value="LinearMipmapNearestFilter"/>
+            <xs:enumeration value="NearestMipmapLinearFilter"/>
+            <xs:enumeration value="NearestMipmapNearestFilter"/>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>

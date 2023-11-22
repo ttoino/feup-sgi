@@ -52,10 +52,10 @@ type MagFilter = "LinearFilter" | "NearestFilter";
 type MinFilter =
     | "LinearFilter"
     | "NearestFilter"
-    | "LinearMipMapLinearFilter"
-    | "LinearMipMapNearestFilter"
-    | "NearestMipMapLinearFilter"
-    | "NearestMipMapNearestFilter";
+    | "LinearMipmapLinearFilter"
+    | "LinearMipmapNearestFilter"
+    | "NearestMipmapLinearFilter"
+    | "NearestMipmapNearestFilter";
 
 interface TextureData extends Data<"texture"> {
     id: string;

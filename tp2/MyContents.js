@@ -17,6 +17,8 @@ import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.j
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 // @ts-expect-error
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+// @ts-expect-error
+import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
 
 /**
  *  This class contains the contents of out application
@@ -846,44 +848,59 @@ class MyContents {
                 const modelUrl = representation.filepath;
                 const format = modelUrl.split(".").pop();
 
-                const loaderClass = {
-                    gltf: GLTFLoader,
-                    obj: OBJLoader,
-                }[format];
-
-                if (!loaderClass) {
-                    console.error(
-                        `Unsupported model format: ${format} (${modelUrl})`
-                    );
-                    break;
-                }
-
-                const loader = new loaderClass();
-
                 mesh = new THREE.Object3D();
 
-                const loaderFn = {
-                    gltf: (gltf) => {
-                        console.log(gltf);
-                        mesh.add(gltf.scene);
-                    },
-                    obj: (object) => {
-                        console.log(object);
-                        object.traverse((child) => {
-                            if (child.isMesh) {
-                                if (material) child.material = material;
-                                child.castShadow = castShadow;
-                                child.receiveShadow = receiveShadow;
-                            
-                                console.log(child);
+                switch (format) {
+                    case "obj":
+                        const mtlLoader = new MTLLoader();
+                        mtlLoader.load(
+                            modelUrl.replace(".obj", ".mtl"),
+                            (materials) => {
+                                materials.preload();
+
+                                const objLoader = new OBJLoader();
+                                objLoader.setMaterials(materials);
+                                objLoader.load(modelUrl, (object) => {
+                                    object.traverse((child) => {
+                                        if (child.isMesh) {
+                                            child.castShadow = castShadow;
+                                            child.receiveShadow = receiveShadow;
+                                        }
+                                    });
+
+                                    mesh.add(object);
+                                });
+                            },
+                            undefined,
+                            () => {
+                                const objLoader = new OBJLoader();
+                                objLoader.load(modelUrl, (object) => {
+                                    object.traverse((child) => {
+                                        if (child.isMesh) {
+                                            if (material)
+                                                child.material = material;
+                                            child.castShadow = castShadow;
+                                            child.receiveShadow = receiveShadow;
+                                        }
+                                    });
+
+                                    mesh.add(object);
+                                });
                             }
+                        );
+                        break;
+                    case "gltf":
+                        const gltfLoader = new GLTFLoader();
+                        gltfLoader.load(modelUrl, (gltf) => {
+                            mesh.add(gltf.scene);
                         });
-
-                        mesh.add(object);
-                    },
-                }[format];
-
-                loader.load(modelUrl, loaderFn);
+                        break;
+                    default:
+                        console.error(
+                            `Unsupported model format: ${format} (${modelUrl})`
+                        );
+                        break;
+                }
 
                 break;
             }

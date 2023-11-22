@@ -70,10 +70,10 @@ textures = element textures {
         attribute minFilter { 
             "LinearFilter"
           | "NearestFilter"
-          | "LinearMipMapLinearFilter"
-          | "LinearMipMapNearestFilter"
-          | "NearestMipMapLinearFilter"
-          | "NearestMipMapNearestFilter"
+          | "LinearMipmapLinearFilter"
+          | "LinearMipmapNearestFilter"
+          | "NearestMipmapLinearFilter"
+          | "NearestMipmapNearestFilter"
         }?,
         (
             attribute mipmap0 { xsd:anyURI },

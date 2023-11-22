@@ -1,35 +1,32 @@
-import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-import { MyApp } from './MyApp.js';
-import { MyContents } from './MyContents.js';
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { MyApp } from "./MyApp.js";
+import { MyContents } from "./MyContents.js";
 
 /**
     This class customizes the gui interface for the app
 */
 class MyGuiInterface {
-
     /**
-     * 
-     * @param {MyApp} app The application object 
+     * @param {MyApp} app The application object
      */
     constructor(app) {
-        this.app = app
+        this.app = app;
         this.datgui = new GUI();
-        this.contents = null
+        this.contents = null;
     }
 
     /**
      * Set the contents object
-     * @param {MyContents} contents the contents objects 
+     * @param {MyContents} contents the contents objects
      */
     setContents(contents) {
-        this.contents = contents
+        this.contents = contents;
     }
 
     /**
      * Initialize the gui interface
      */
     init() {
-
         // CAMERAS /////////////////////////////////////////////////
 
         const cameraFolder = this.datgui.addFolder("Camera");
@@ -46,15 +43,13 @@ class MyGuiInterface {
             .add(this.app.scene.fog, "far", 300, 1000)
             .name("Far distance");
 
-        fogFolder
-            .add(this.app.scene.fog, "near", 0, 300)
-            .name("Near distance");
+        fogFolder.add(this.app.scene.fog, "near", 0, 300).name("Near distance");
 
-        fogFolder.addColor(this.app.scene.fog, "color").name("Fog Color")
+        fogFolder.addColor(this.app.scene.fog, "color").name("Fog Color");
 
         // LIGHTS /////////////////////////////////////////////////
 
-        const lightTypeMap = {}
+        const lightTypeMap = {};
         const lightFolder = this.datgui.addFolder("Lights");
         lightFolder
             .add(this.contents, "showHelpers")
@@ -64,21 +59,19 @@ class MyGuiInterface {
             });
 
         for (const helper of this.contents.helpers) {
-
-            const lightType = helper.type.replace('Helper', '');
+            const lightType = helper.type.replace("Helper", "");
             if (lightTypeMap[lightType] === undefined) {
                 lightTypeMap[lightType] = 0;
             }
             lightTypeMap[lightType]++;
 
+            const helperFolder = lightFolder.addFolder(
+                `${lightType} ${lightTypeMap[lightType]}`
+            );
 
-            const helperFolder = lightFolder.addFolder(`${lightType} ${lightTypeMap[lightType]}`);
+            helperFolder.add(helper.light, "visible").name("Toggle light");
 
-            helperFolder
-                .add(helper.light, "visible")
-                .name("Toggle light");
-
-            helperFolder.addColor(helper.light, "color").name("Color")
+            helperFolder.addColor(helper.light, "color").name("Color");
         }
 
         // SCENE OBJECTS /////////////////////////////////////////////////
@@ -96,65 +89,82 @@ class MyGuiInterface {
                 if (value)
                     subObjects.forEach((o) => {
                         o.updateDisplay();
-                        this.contents[o.property] = value
+                        this.contents[o.property] = value;
                     });
-            }).listen();
+            })
+            .listen();
 
         const resetAll = () => {
-            this.contents[allWireframe.property] = subObjects.every((o) => this.contents[o.property] === true);
+            this.contents[allWireframe.property] = subObjects.every(
+                (o) => this.contents[o.property] === true
+            );
             allWireframe.updateDisplay();
-        }
+        };
 
         const planeFolder = objectsFolder.addFolder("Plane");
-        subObjects.push(planeFolder
-            .add(this.contents, "showPlaneWireframes")
-            .name("Show Plane Wireframes")
-            .onChange((value) => {
-                this.contents.updateWireframePlane();
+        subObjects.push(
+            planeFolder
+                .add(this.contents, "showPlaneWireframes")
+                .name("Show Plane Wireframes")
+                .onChange((value) => {
+                    this.contents.updateWireframePlane();
 
-                resetAll();
-            }).listen());
-
+                    resetAll();
+                })
+                .listen()
+        );
 
         const hangarFolder = objectsFolder.addFolder("Hangar");
-        subObjects.push(hangarFolder
-            .add(this.contents, "showHangarWireframes")
-            .name("Show Hangar Wireframes")
-            .onChange((value) => {
-                this.contents.updateWireframeHangar();
+        subObjects.push(
+            hangarFolder
+                .add(this.contents, "showHangarWireframes")
+                .name("Show Hangar Wireframes")
+                .onChange((value) => {
+                    this.contents.updateWireframeHangar();
 
-                resetAll();
-            }).listen());
+                    resetAll();
+                })
+                .listen()
+        );
 
         const cratesFolder = objectsFolder.addFolder("Crates");
-        subObjects.push(cratesFolder
-            .add(this.contents, "showCratesWireframes")
-            .name("Show Crates Wireframes")
-            .onChange((value) => {
-                this.contents.updateWireframeCrates();
+        subObjects.push(
+            cratesFolder
+                .add(this.contents, "showCratesWireframes")
+                .name("Show Crates Wireframes")
+                .onChange((value) => {
+                    this.contents.updateWireframeCrates();
 
-                resetAll();
-            }).listen());
+                    resetAll();
+                })
+                .listen()
+        );
 
         const groundFolder = objectsFolder.addFolder("Ground");
-        subObjects.push(groundFolder
-            .add(this.contents, "showGroundWireframes")
-            .name("Show Ground Wireframes")
-            .onChange((value) => {
-                this.contents.updateWireframeGround();
+        subObjects.push(
+            groundFolder
+                .add(this.contents, "showGroundWireframes")
+                .name("Show Ground Wireframes")
+                .onChange((value) => {
+                    this.contents.updateWireframeGround();
 
-                resetAll();
-            }).listen());
+                    resetAll();
+                })
+                .listen()
+        );
 
         const skyboxFolder = objectsFolder.addFolder("Skybox");
-        subObjects.push(skyboxFolder
-            .add(this.contents, "showSkyboxWireframes")
-            .name("Show Skybox Wireframes")
-            .onChange((value) => {
-                this.contents.updateWireframeSkybox();
+        subObjects.push(
+            skyboxFolder
+                .add(this.contents, "showSkyboxWireframes")
+                .name("Show Skybox Wireframes")
+                .onChange((value) => {
+                    this.contents.updateWireframeSkybox();
 
-                resetAll();
-            }).listen());
+                    resetAll();
+                })
+                .listen()
+        );
     }
 }
 
