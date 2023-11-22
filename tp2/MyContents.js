@@ -21,11 +21,13 @@ import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
 
 /**
- *  This class contains the contents of out application
+ *  This class contains the contents of our application
  */
 class MyContents {
+
     /**
-       constructs the object
+       Constructs the object
+       
        @param {MyApp} app The application object
     */
     constructor(app) {
@@ -69,6 +71,9 @@ class MyContents {
         this.helpers.forEach((h) => (h.visible = this.showHelpers));
     }
 
+    /**
+     * Updates the wireframe property for the materials of all objects on the scene.
+     */
     updateWireframeAll() {
         this.showPlaneWireframes = this.showAllWireframes;
         this.showHangarWireframes = this.showAllWireframes;
@@ -89,6 +94,11 @@ class MyContents {
         });
     }
 
+    // THE FOLLOWING FUNCTIONS ARE SCENE SPECIFIC AND ONLY WORK ON OUR SCENE UNLESS OTHER SCENES HAVE MATERIALS THAT MATCH THE NAME REGEX IN EACH FUNCTION
+
+    /**
+     * Updates the wireframe property of the plane's materials.
+     */
     updateWireframePlane() {
         if (!this.showPlaneWireframes) this.showAllWireframes = false;
 
@@ -102,6 +112,9 @@ class MyContents {
         });
     }
 
+    /**
+     * Updates the wireframe property of the hangar's (and children's) material.
+     */
     updateWireframeHangar() {
         if (!this.showHangarWireframes) this.showAllWireframes = false;
 
@@ -115,6 +128,9 @@ class MyContents {
         });
     }
 
+    /**
+     * Updates the wireframe property of the crates' material.
+     */
     updateWireframeCrates() {
         if (!this.showCratesWireframes) this.showAllWireframes = false;
 
@@ -128,6 +144,9 @@ class MyContents {
         });
     }
 
+    /**
+     * Updates the wireframe property of the ground's material.
+     */
     updateWireframeGround() {
         if (!this.showGroundWireframes) this.showAllWireframes = false;
 
@@ -141,6 +160,9 @@ class MyContents {
         });
     }
 
+    /**
+     * Updates the wireframe property of the skybox's material.
+     */
     updateWireframeSkybox() {
         if (!this.showSkyboxWireframes) this.showAllWireframes = false;
 
@@ -154,7 +176,8 @@ class MyContents {
     }
 
     /**
-     * Called when the scene xml file load is complete
+     * Called when the scene xml file is finished loading.
+     * 
      * @param {MySceneData} data the entire scene data object
      */
     onSceneLoaded(data) {
@@ -167,11 +190,21 @@ class MyContents {
         this.onAfterSceneLoadedAndBeforeRender(data);
     }
 
+    /**
+     * Outputs the given object to the console with the given indentation.
+     * 
+     * @param {unknown} obj the object to print
+     * @param {number} indent the indentation level to use. Defaults to 0.
+     */
     output(obj, indent = 0) {
         console.log(new Array(indent * 4).join(" "), "-", obj);
     }
 
     /**
+     * Callback that is executed after the scene is loaded and before the first render.
+     * 
+     * This can be seen as the main function in this class since it is responsible for loading everything about the scene, from material and texture information to all the nodes defined.
+     * 
      * @param {import("./types.js").SceneData} data
      */
     onAfterSceneLoadedAndBeforeRender(data) {
@@ -303,8 +336,8 @@ class MyContents {
                 const mipmap =
                     texture[
                         /** @type {keyof import('./types').TextureData & `mipmap${number}`} */ (
-                            `mipmap${i}`
-                        )
+                        `mipmap${i}`
+                    )
                     ];
                 if (!mipmap) break;
                 this.textures[id].mipmaps[i] = imageLoader.load(mipmap);
@@ -395,10 +428,14 @@ class MyContents {
     }
 
     /**
-     * @param {import("./types.js").NodeData} node
-     * @param {boolean} pCastShadow
-     * @param {boolean} pReceiveShadow
-     * @param {THREE.Material | undefined} pMaterial
+     * Generates the THREE.js code needed to render the given node using the given material and shadow settings.
+     * 
+     * This implementations renders all the children of this node and applies its transformations to them.
+     * 
+     * @param {import("./types.js").NodeData} node the node to render
+     * @param {boolean} pCastShadow whether the node should cast shadows
+     * @param {boolean} pReceiveShadow whether the node should receive shadows
+     * @param {THREE.Material | undefined} pMaterial the material to apply to the node
      *
      * @returns {THREE.Object3D}
      */
@@ -452,13 +489,14 @@ class MyContents {
     }
 
     /**
+     * Generates the THREE.js code needed to render the given LOD and its children nodes using the given material and shadow settings.
+     * 
+     * @param {import("./types.js").LodData} lod the lod to render
+     * @param {boolean} castShadow whether the nodes present in this lod should cast shadows
+     * @param {boolean} receiveShadow whether the nodes present in this lod should receive shadows
+     * @param {THREE.Material | undefined} material the material to apply to the nodes of this lod
      *
-     * @param {import("./types.js").LodData} lod
-     * @param {boolean} castShadow
-     * @param {boolean} receiveShadow
-     * @param {THREE.Material | undefined} material
-     *
-     * @returns {THREE.Object3D}
+     * @returns {THREE.LOD}
      */
     generateLod(lod, castShadow, receiveShadow, material) {
         const lod3 = new THREE.LOD();
@@ -474,10 +512,12 @@ class MyContents {
     }
 
     /**
-     * @param {import("./types.js").ChildData} node
-     * @param {boolean} castShadow
-     * @param {boolean} receiveShadow
-     * @param {THREE.Material | undefined} material
+     * Generates the THREE.js code needed to render a specific node type using the given material and shadow settings.
+     * 
+     * @param {import("./types.js").ChildData} node the node to render
+     * @param {boolean} castShadow whether the node should cast shadows
+     * @param {boolean} receiveShadow whether the node should receive shadows
+     * @param {THREE.Material | undefined} material the material to apply to the node
      *
      * @returns {THREE.Object3D}
      */
@@ -589,10 +629,12 @@ class MyContents {
     }
 
     /**
-     * @param {import("./types.js").PrimitiveData} primitive
-     * @param {boolean} castShadow
-     * @param {boolean} receiveShadow
-     * @param {THREE.Material | undefined} material
+     * Generates the THREE.js code needed to render a specific primitive type using the given material and shadow settings.
+     * 
+     * @param {import("./types.js").PrimitiveData} primitive the primitive to render
+     * @param {boolean} castShadow whether the primitive should cast shadows
+     * @param {boolean} receiveShadow whether the primitive should receive shadows
+     * @param {THREE.Material | undefined} material the material to apply to the primitive
      *
      * @returns {THREE.Object3D}
      */
@@ -919,7 +961,7 @@ class MyContents {
     }
 
     /**
-     * Builds the NURB  defined by the given control points using the given samples along the U and V directions.
+     * Builds the NURB defined by the given control points using the given samples along the U and V directions.
      * The material is applied to the resulting geometry and the resulting mesh is returned.
      *
      * @param {import("./types.js").Vector4[]} controlPoints the points that control the surface shape
@@ -970,7 +1012,7 @@ class MyContents {
         return new THREE.Mesh(geometry, material);
     }
 
-    update() {}
+    update() { }
 }
 
 export { MyContents };

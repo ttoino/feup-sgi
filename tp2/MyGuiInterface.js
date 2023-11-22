@@ -75,6 +75,7 @@ class MyGuiInterface {
         }
 
         // SCENE OBJECTS /////////////////////////////////////////////////
+        // FIXME: add gui controls for general scene objects, not just our scene
 
         const objectsFolder = this.datgui.addFolder("Objects");
 
