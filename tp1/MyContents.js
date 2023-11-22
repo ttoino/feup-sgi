@@ -335,12 +335,13 @@ class MyContents {
      * @param {NURBControlPoints} controlPoints the points that control the surface shape
      * @param {number} samples1 the number of samples along the U direction
      * @param {number} samples2 the number of samples along the V direction
-     * @param {number} degree1 the number of samples along the U direction
-     * @param {number} degree2 the number of samples along the V direction
      * @param {THREE.Material} material the material to apply to the computed geometry
      * @returns {THREE.Mesh}
      */
-    buildNURBS(controlPoints, samples1, samples2, degree1, degree2, material) {
+    buildNURBS(controlPoints, samples1, samples2, material) {
+        const degree1 = controlPoints.length - 1;
+        const degree2 = (controlPoints[0]?.length ?? 0) - 1;
+
         if (degree1 < 0 || degree2 < 0) return;
 
         const knots1 = new Array(degree1 + 1)
