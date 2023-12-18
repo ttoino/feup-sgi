@@ -10,13 +10,11 @@ import Stats from "three/addons/libs/stats.module.js";
 // @ts-expect-error
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 // @ts-expect-error
-import { TAARenderPass } from "three/addons/postprocessing/TAARenderPass.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 // @ts-expect-error
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 // @ts-expect-error
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
-// @ts-expect-error
-import { DotScreenPass } from "three/addons/postprocessing/DotScreenPass.js";
 // @ts-expect-error
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
@@ -89,19 +87,20 @@ class MyApp {
         // add effect composer
         this.composer = new EffectComposer(this.renderer);
 
-        this.renderPass = new TAARenderPass(this.scene, this.activeCamera);
+        this.renderPass = new RenderPass(this.scene, this.activeCamera);
         this.composer.addPass(this.renderPass);
 
         // this.dotScreenPass = new DotScreenPass();
         // this.composer.addPass(this.dotScreenPass);
 
-        this.bloomPass = new UnrealBloomPass(undefined, 1, 1, 0.1);
+        this.bloomPass = new UnrealBloomPass(this.renderer.getSize(new THREE.Vector2()), 0.25, 0, 1);
         this.composer.addPass(this.bloomPass);
 
         this.filmPass = new FilmPass();
         this.composer.addPass(this.filmPass);
 
         this.outputPass = new OutputPass();
+        this.outputPass.toneMapping = THREE.ACESFilmicToneMapping;
         this.composer.addPass(this.outputPass);
     }
 

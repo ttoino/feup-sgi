@@ -1,7 +1,6 @@
 /// @ts-check
 
 import * as THREE from "three";
-import { MyAxis } from "./MyAxis.js";
 import { MyApp } from "./MyApp.js";
 import { MyBackground } from "./background/MyBackground.js";
 import { MyDude } from "./MyDude.js";
@@ -25,6 +24,9 @@ class MyContents {
 
         this.updaters = [];
 
+        this.ambient = new THREE.AmbientLight(0xffffff);
+        this.app.scene.add(this.ambient);
+
         this.background = new MyBackground(this.app);
         this.app.scene.add(this.background);
 
@@ -43,7 +45,7 @@ class MyContents {
         // create once
         if (this.axis === null) {
             // create and attach the axis to the scene
-            this.axis = new MyAxis(this.app);
+            this.axis = new THREE.AxesHelper();
             this.app.scene.add(this.axis);
         }
     }

@@ -6,12 +6,17 @@ export class MyFloorMaterial extends THREE.MeshPhongMaterial {
     constructor({ divisions = 1 }) {
         super();
 
-        this.emissiveMap = new THREE.TextureLoader().load("textures/floor.png");
+        this.map = new THREE.TextureLoader().load("textures/floor.png");
+        this.map.wrapS = THREE.RepeatWrapping;
+        this.map.wrapT = THREE.RepeatWrapping;
+        this.map.repeat.set(divisions, divisions);
+
+        this.emissiveMap = new THREE.TextureLoader().load("textures/floor-emissive.png");
         this.emissiveMap.wrapS = THREE.RepeatWrapping;
         this.emissiveMap.wrapT = THREE.RepeatWrapping;
         this.emissiveMap.repeat.set(divisions, divisions);
         this.emissive = new THREE.Color(0xffffff);
-        this.emissiveIntensity = .8;
+        this.emissiveIntensity = 15;
 
         this.displacementMap = new THREE.TextureLoader().load(
             "textures/floor-disp.png"
@@ -48,7 +53,7 @@ export class MyFloorMaterial extends THREE.MeshPhongMaterial {
 uniform float time;
 uniform float noiseScale;
 uniform sampler2D noiseMap;
-            `.trim()
+                `.trim()
             )
             .replace(
                 /\t*#include <displacementmap_vertex>/,
@@ -63,7 +68,7 @@ uniform sampler2D noiseMap;
     );
 
 #endif
-            `.trim()
+                `.trim()
             );
 
         console.log(shader.vertexShader);
