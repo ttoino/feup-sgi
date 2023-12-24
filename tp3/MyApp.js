@@ -10,7 +10,11 @@ import Stats from "three/addons/libs/stats.module.js";
 // @ts-expect-error
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 // @ts-expect-error
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { SSAARenderPass as RenderPass } from "three/addons/postprocessing/SSAARenderPass.js";
+// @ts-expect-error
+import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+// @ts-expect-error
+import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
 // @ts-expect-error
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 // @ts-expect-error
@@ -31,13 +35,13 @@ class MyApp {
         this.stats = null;
 
         // camera related attributes
-        /** @type {THREE.Camera} */
+        /** @type {THREE.PerspectiveCamera | THREE.OrthographicCamera} */
         this.activeCamera = null;
         /** @type {string} */
         this.activeCameraName = null;
         /** @type {string} */
         this.lastCameraName = null;
-        /** @type {Record<string, THREE.Camera>} */
+        /** @type {Record<string, THREE.PerspectiveCamera | THREE.OrthographicCamera>} */
         this.cameras = {};
         /** @type {number} */
         this.frustumSize = 20;
@@ -90,10 +94,29 @@ class MyApp {
         this.renderPass = new RenderPass(this.scene, this.activeCamera);
         this.composer.addPass(this.renderPass);
 
+        // this.bokehPass = new BokehPass(this.scene, this.activeCamera, {
+        //     focus: 200,
+        //     aperture: 0.025,
+        //     maxblur: 0.01,
+        // });
+        // this.composer.addPass(this.bokehPass);
+
         // this.dotScreenPass = new DotScreenPass();
         // this.composer.addPass(this.dotScreenPass);
 
-        this.bloomPass = new UnrealBloomPass(this.renderer.getSize(new THREE.Vector2()), 0.25, 0, 1);
+        this.outlinePass = new OutlinePass(
+            this.renderer.getSize(new THREE.Vector2()),
+            this.scene,
+            this.activeCamera
+        );
+        this.composer.addPass(this.outlinePass);
+
+        this.bloomPass = new UnrealBloomPass(
+            this.renderer.getSize(new THREE.Vector2()),
+            0.25,
+            0,
+            1
+        );
         this.composer.addPass(this.bloomPass);
 
         this.filmPass = new FilmPass();
@@ -111,59 +134,9 @@ class MyApp {
         const aspect = window.innerWidth / window.innerHeight;
 
         // Create a basic perspective camera
-        const perspective1 = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-        perspective1.position.set(10, 10, 3);
-        this.cameras["Perspective"] = perspective1;
-
-        // defines the frustum size for the orthographic cameras
-        const left = (-this.frustumSize / 2) * aspect;
-        const right = (this.frustumSize / 2) * aspect;
-        const top = this.frustumSize / 2;
-        const bottom = -this.frustumSize / 2;
-        const near = -this.frustumSize / 2;
-        const far = this.frustumSize;
-
-        // create a left view orthographic camera
-        const orthoLeft = new THREE.OrthographicCamera(
-            left,
-            right,
-            top,
-            bottom,
-            near,
-            far
-        );
-        orthoLeft.up = new THREE.Vector3(0, 1, 0);
-        orthoLeft.position.set(-this.frustumSize / 4, 0, 0);
-        orthoLeft.lookAt(new THREE.Vector3(0, 0, 0));
-        this.cameras["Left"] = orthoLeft;
-
-        // create a top view orthographic camera
-        const orthoTop = new THREE.OrthographicCamera(
-            left,
-            right,
-            top,
-            bottom,
-            near,
-            far
-        );
-        orthoTop.up = new THREE.Vector3(0, 0, 1);
-        orthoTop.position.set(0, this.frustumSize / 4, 0);
-        orthoTop.lookAt(new THREE.Vector3(0, 0, 0));
-        this.cameras["Top"] = orthoTop;
-
-        // create a front view orthographic camera
-        const orthoFront = new THREE.OrthographicCamera(
-            left,
-            right,
-            top,
-            bottom,
-            near,
-            far
-        );
-        orthoFront.up = new THREE.Vector3(0, 1, 0);
-        orthoFront.position.set(0, 0, this.frustumSize / 4);
-        orthoFront.lookAt(new THREE.Vector3(0, 0, 0));
-        this.cameras["Front"] = orthoFront;
+        const perspective = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        perspective.position.set(10, 10, 3);
+        this.cameras["Perspective"] = perspective;
     }
 
     /**

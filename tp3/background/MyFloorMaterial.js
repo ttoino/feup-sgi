@@ -21,7 +21,7 @@ export class MyFloorMaterial extends THREE.MeshPhongMaterial {
         this.displacementMap = new THREE.TextureLoader().load(
             "textures/floor-disp.png"
         );
-        this.displacementScale = 200;
+        this.displacementScale = 250;
 
         this.noiseMap = new THREE.TextureLoader().load("textures/noise.png");
         this.noiseMap.wrapS = THREE.RepeatWrapping;
@@ -70,7 +70,5 @@ uniform sampler2D noiseMap;
 #endif
                 `.trim()
             );
-
-        console.log(shader.vertexShader);
     }
 }

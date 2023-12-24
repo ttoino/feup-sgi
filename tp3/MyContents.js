@@ -4,24 +4,29 @@ import * as THREE from "three";
 import { MyApp } from "./MyApp.js";
 import { MyBackground } from "./background/MyBackground.js";
 import { MyDude } from "./MyDude.js";
+import Picker from "./Picker.js";
+import { ALL, ALL_VEHICLES, HELPERS } from "./Layers.js";
 
 /**
  *  This class contains the contents of out application
  */
 class MyContents {
-
     /**
        constructs the object
        @param {MyApp} app The application object
     */
     constructor(app) {
         this.app = app;
-        this.axis = null;
+        
+        this.axis = new THREE.AxesHelper();
+        this.axis.layers.set(HELPERS);
+        this.app.scene.add(this.axis);
 
         this.showHelpers = true;
         /** @type {(THREE.SpotLightHelper|THREE.PointLightHelper|THREE.DirectionalLightHelper)[]} */
         this.helpers = [];
 
+        /** @type {{update(delta: number): unknown}[]} */
         this.updaters = [];
 
         this.ambient = new THREE.AmbientLight(0xffffff);
@@ -36,6 +41,9 @@ class MyContents {
         this.updaters.push(this.dude);
 
         this.timestamp = null;
+
+        this.vehiclePicker = new Picker(app, ALL_VEHICLES);
+        this.vehiclePicker.startPicking();
     }
 
     /**
@@ -58,7 +66,6 @@ class MyContents {
     }
 
     update() {
-
         if (this.timestamp === null) {
             this.timestamp = performance.now();
             return;

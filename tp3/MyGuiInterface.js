@@ -4,6 +4,7 @@
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { MyApp } from "./MyApp.js";
 import { MyContents } from "./MyContents.js";
+import { HELPERS } from "./Layers.js";
 
 /**
     This class customizes the gui interface for the app
@@ -11,18 +12,11 @@ import { MyContents } from "./MyContents.js";
 class MyGuiInterface {
     /**
      * @param {MyApp} app The application object
-     */
-    constructor(app) {
-        this.app = app;
-        this.datgui = new GUI();
-        this.contents = null;
-    }
-
-    /**
-     * Set the contents object
      * @param {MyContents} contents the contents objects
      */
-    setContents(contents) {
+    constructor(app, contents) {
+        this.app = app;
+        this.datgui = new GUI();
         this.contents = contents;
     }
 
@@ -40,30 +34,13 @@ class MyGuiInterface {
 
         // LIGHTS /////////////////////////////////////////////////
 
-        const lightTypeMap = {};
-        const lightFolder = this.datgui.addFolder("Lights");
-        lightFolder
-            .add(this.contents, "showHelpers")
+        this.datgui
+            .add({ showHelpers: false }, "showHelpers")
             .name("Show helpers")
             .onChange((value) => {
-                this.contents?.updateHelpers();
+                if (value) this.app.activeCamera.layers.enable(HELPERS);
+                else this.app.activeCamera.layers.disable(HELPERS);
             });
-
-        for (const helper of this.contents?.helpers ?? []) {
-            const lightType = helper.type.replace("Helper", "");
-            if (lightTypeMap[lightType] === undefined) {
-                lightTypeMap[lightType] = 0;
-            }
-            lightTypeMap[lightType]++;
-
-            const helperFolder = lightFolder.addFolder(
-                `${lightType} ${lightTypeMap[lightType]}`
-            );
-
-            helperFolder.add(helper.light, "visible").name("Toggle light");
-
-            helperFolder.addColor(helper.light, "color").name("Color");
-        }
     }
 }
 

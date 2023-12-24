@@ -1,3 +1,5 @@
+/// @ts-check
+
 import { MyApp } from './MyApp.js';
 import { MyGuiInterface } from './MyGuiInterface.js';
 import { MyContents } from './MyContents.js';
@@ -15,9 +17,7 @@ contents.init()
 app.setContents(contents);
 
 // create the gui interface object
-let gui = new MyGuiInterface(app)
-// set the contents object in the gui interface object
-gui.setContents(contents)
+let gui = new MyGuiInterface(app, contents)
 
 // we call the gui interface init 
 // after contents were created because

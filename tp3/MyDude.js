@@ -1,7 +1,13 @@
+/// @ts-check
+
 import * as THREE from "three";
+import { ALL_VEHICLES } from "./Layers.js";
+import { MyApp } from "./MyApp.js";
 
 export class MyDude extends THREE.Object3D {
-
+    /**
+     * @param {MyApp} app
+     */
     constructor(app) {
         super();
 
@@ -17,8 +23,16 @@ export class MyDude extends THREE.Object3D {
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.add(this.mesh);
 
-        document.addEventListener("keydown", this.movementKeyDownController.bind(this));
-        document.addEventListener("keyup", this.movementKeyUpController.bind(this));
+        this.layers.enable(ALL_VEHICLES);
+
+        document.addEventListener(
+            "keydown",
+            this.movementKeyDownController.bind(this)
+        );
+        document.addEventListener(
+            "keyup",
+            this.movementKeyUpController.bind(this)
+        );
     }
 
     #speedUp() {
@@ -26,7 +40,7 @@ export class MyDude extends THREE.Object3D {
     }
 
     #speedDown() {
-        this.acceleration = -1
+        this.acceleration = -1;
     }
 
     #resetAcceleration() {
@@ -38,7 +52,7 @@ export class MyDude extends THREE.Object3D {
     }
 
     #rotateRight() {
-        this.rotationRad -= 1;
+        this.rotationRad = -1;
     }
 
     #resetRotation() {
@@ -91,8 +105,14 @@ export class MyDude extends THREE.Object3D {
         }
     }
 
+    /**
+     * @param {number} delta
+     */
     update(delta) {
-        this.forwardSpeed = Math.max(this.forwardSpeed + this.acceleration * delta, 0);
+        this.forwardSpeed = Math.max(
+            this.forwardSpeed + this.acceleration * delta,
+            0
+        );
 
         console.log(this.forwardSpeed, this.rotationRad);
 
