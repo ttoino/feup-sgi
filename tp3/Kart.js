@@ -5,6 +5,8 @@ import { ALL_VEHICLES, HELPERS } from "./Layers.js";
 import { MyApp } from "./MyApp.js";
 
 const ACCEL = 5;
+const MIN_SPEED = 0
+const MAX_SPEED = 20
 
 export class Kart extends THREE.Object3D {
     /**
@@ -16,6 +18,7 @@ export class Kart extends THREE.Object3D {
         this.acceleration = 0;
 
         this.app = app;
+        this.maxSpeed = MAX_SPEED;
         this.forwardSpeed = 0;
         this.rotationSpeedRadS = 0;
         this.rotationRad = 0;
@@ -120,13 +123,22 @@ export class Kart extends THREE.Object3D {
     }
 
     /**
+     * Applies an effect to this kart's max speed.
+     * 
+     * @param {(previousMaxSpeed: number) => number} effect 
+     */
+    applySpeedEffect(effect) {
+        this.maxSpeed = effect(this.maxSpeed);
+    }
+
+    /**
      * @param {number} delta
      */
     update(delta) {
-        this.forwardSpeed = Math.max(
+        this.forwardSpeed = Math.min(Math.max(
             this.forwardSpeed + this.acceleration * delta,
-            0
-        );
+            MIN_SPEED
+        ), this.maxSpeed);
         this.helper.scale.z = this.forwardSpeed;
 
         console.log(this.forwardSpeed, this.rotationRad);
