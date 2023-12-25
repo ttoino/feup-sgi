@@ -4,6 +4,8 @@ import * as THREE from "three";
 import { ALL_VEHICLES, HELPERS } from "./Layers.js";
 import { MyApp } from "./MyApp.js";
 
+const ACCEL = 5;
+
 export class Kart extends THREE.Object3D {
     /**
      * @param {MyApp} app
@@ -48,11 +50,11 @@ export class Kart extends THREE.Object3D {
     }
 
     #speedUp() {
-        this.acceleration = 1;
+        this.acceleration = ACCEL;
     }
 
     #speedDown() {
-        this.acceleration = -1;
+        this.acceleration = -ACCEL;
     }
 
     #resetAcceleration() {
