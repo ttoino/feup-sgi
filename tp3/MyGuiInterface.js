@@ -9,7 +9,7 @@ import { HELPERS } from "./Layers.js";
 /**
     This class customizes the gui interface for the app
 */
-class MyGuiInterface {
+export class MyGuiInterface {
     /**
      * @param {MyApp} app The application object
      * @param {MyContents} contents the contents objects
@@ -43,5 +43,3 @@ class MyGuiInterface {
             });
     }
 }
-
-export { MyGuiInterface };

@@ -3,21 +3,22 @@
 import * as THREE from "three";
 import { MyApp } from "./MyApp.js";
 import { MyBackground } from "./background/MyBackground.js";
-import { MyDude } from "./MyDude.js";
-import Picker from "./Picker.js";
-import { ALL, ALL_VEHICLES, HELPERS } from "./Layers.js";
+import { Kart } from "./Kart.js";
+import { Picker } from "./Picker.js";
+import { ALL_VEHICLES, HELPERS } from "./Layers.js";
+import { FollowControls } from "./FollowControls.js";
 
 /**
  *  This class contains the contents of out application
  */
-class MyContents {
+export class MyContents {
     /**
        constructs the object
        @param {MyApp} app The application object
     */
     constructor(app) {
         this.app = app;
-        
+
         this.axis = new THREE.AxesHelper();
         this.axis.layers.set(HELPERS);
         this.app.scene.add(this.axis);
@@ -35,15 +36,20 @@ class MyContents {
         this.background = new MyBackground(this.app);
         this.app.scene.add(this.background);
 
-        this.dude = new MyDude(this.app);
-        this.app.scene.add(this.dude);
+        this.kart = new Kart(this.app);
+        this.app.scene.add(this.kart);
 
-        this.updaters.push(this.dude);
+        this.updaters.push(this.kart);
 
         this.timestamp = null;
 
         this.vehiclePicker = new Picker(app, ALL_VEHICLES);
         this.vehiclePicker.startPicking();
+
+        this.controls = new FollowControls(this.app.activeCamera, this.kart, {
+            targetRotation: Math.PI,
+        });
+        this.updaters.push(this.controls);
     }
 
     /**
@@ -81,5 +87,3 @@ class MyContents {
         this.timestamp = performance.now();
     }
 }
-
-export { MyContents };

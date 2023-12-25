@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { MyApp } from "./MyApp.js";
 import { ALL, HELPERS } from "./Layers.js";
 
-export default class Picker {
+export class Picker {
     /**
      *
      * @param {MyApp} app
