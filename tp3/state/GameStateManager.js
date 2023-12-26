@@ -1,22 +1,17 @@
 /// @ts-check
 
-import GameState from "./GameState";
+import GameState from "./GameState.js";
 
 /**
  * @extends {GameState}
  */
-export default class GameStateManager extends GameState {
-    /**
-     * @param {GameState} initial
-     */
-    constructor(initial) {
-        super();
-
+export default class GameStateManager {
+    constructor() {
         /**
          * @private
          * @type {GameState[]}
          */
-        this.stateStack = [initial];
+        this.stateStack = [];
     }
 
     get current() {

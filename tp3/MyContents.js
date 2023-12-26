@@ -6,7 +6,8 @@ import { MyBackground } from "./background/MyBackground.js";
 import { Kart } from "./Kart.js";
 import { Picker } from "./Picker.js";
 import { ALL_VEHICLES, HELPERS } from "./Layers.js";
-import { FollowControls } from "./FollowControls.js";
+import PlayState from "./state/PlayState.js";
+import GameStateManager from "./state/GameStateManager.js";
 
 /**
  *  This class contains the contents of out application
@@ -27,29 +28,25 @@ export class MyContents {
         /** @type {(THREE.SpotLightHelper|THREE.PointLightHelper|THREE.DirectionalLightHelper)[]} */
         this.helpers = [];
 
-        /** @type {{update(delta: number): unknown}[]} */
-        this.updaters = [];
-
         this.ambient = new THREE.AmbientLight(0xffffff);
         this.app.scene.add(this.ambient);
 
         this.background = new MyBackground(this.app);
         this.app.scene.add(this.background);
 
-        this.kart = new Kart(this.app);
-        this.app.scene.add(this.kart);
-
-        this.updaters.push(this.kart);
-
         this.timestamp = null;
+
+        this.stateManager = new GameStateManager();
+
+        this.kart = new Kart(this.app);
+        this.app.scene.add(this.kart); // TODO: move to state 'init' method
 
         this.vehiclePicker = new Picker(app, ALL_VEHICLES);
         this.vehiclePicker.startPicking();
 
-        this.controls = new FollowControls(this.app.activeCamera, this.kart, {
-            targetRotation: Math.PI,
-        });
-        this.updaters.push(this.controls);
+        // TODO: change initial state
+        const state = new PlayState(this.app, this.stateManager, this.kart, null);
+        this.stateManager.pushState(state);
     }
 
     /**
@@ -80,9 +77,7 @@ export class MyContents {
         const deltaMs = performance.now() - this.timestamp;
         const deltaS = deltaMs / 1000;
 
-        for (const updater of this.updaters) {
-            updater.update?.(deltaS);
-        }
+        this.stateManager.current.update(deltaS);
 
         this.timestamp = performance.now();
     }
