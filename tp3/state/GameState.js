@@ -9,6 +9,14 @@ export default class GameState {
         this.app = app;
     }
 
+    init() {
+        throw new Error("Not implemented");
+    }
+
+    destroy() {
+        throw new Error("Not implemented");
+    }
+
     update(delta) {
         throw new Error("Not implemented");
     }

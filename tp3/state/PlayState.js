@@ -24,20 +24,40 @@ export default class PlayState extends GameState {
         this.kart = kart;
         this.opponent = opponent;
 
-        const controls = new FollowControls(this.app.activeCamera, this.kart, {
-            targetRotation: Math.PI,
-        });
 
-        this.updaters = [controls];
-
-        this.#init();
+        this.updaters = [];
     }
 
-    #init() {
+    init() {
+        if (this.kart) {
+            this.app.scene.add(this.kart);
+
+            const controls = new FollowControls(this.app.activeCamera, this.kart, {
+                targetRotation: Math.PI,
+            });
+
+            this.updaters.push(controls);
+        }
+
+        if (this.opponent) {
+            this.app.scene.add(this.opponent);
+        }
+
         document.addEventListener("keydown", this.#onKeyDown);
     }
 
-    #destroy() {
+    destroy() {
+
+        if (this.kart) {
+            this.app.scene.remove(this.kart);
+        }
+
+        if (this.opponent) {
+            this.app.scene.remove(this.opponent);
+        }
+
+        this.updaters.length = 0;
+
         document.removeEventListener("keydown", this.#onKeyDown);
     }
 

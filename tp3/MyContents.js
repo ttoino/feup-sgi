@@ -39,7 +39,6 @@ export class MyContents {
         this.stateManager = new GameStateManager();
 
         this.kart = new Kart(this.app);
-        this.app.scene.add(this.kart); // TODO: move to state 'init' method
 
         this.vehiclePicker = new Picker(app, ALL_VEHICLES);
         this.vehiclePicker.startPicking();
