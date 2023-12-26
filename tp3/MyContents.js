@@ -2,17 +2,15 @@
 
 import * as THREE from "three";
 import { MyApp } from "./MyApp.js";
-import { MyBackground } from "./background/MyBackground.js";
+import { Background } from "./background/Background.js";
 import { Kart } from "./Kart.js";
 import { Picker } from "./Picker.js";
 import { ALL_VEHICLES, HELPERS, UI } from "./Layers.js";
-import PlayState from "./state/PlayState.js";
-import MainMenuState from "./state/MainMenuState.js";
-import GameStateManager from "./state/GameStateManager.js";
+import { MainMenuState } from "./state/MainMenuState.js";
+import { GameStateManager } from "./state/GameStateManager.js";
 import { FollowControls } from "./FollowControls.js";
 import { MainMenu } from "./menu/MainMenu.js";
 import { PauseMenu } from "./menu/PauseMenu.js";
-
 
 /**
  *  This class contains the contents of out application
@@ -33,10 +31,10 @@ export class MyContents {
         /** @type {(THREE.SpotLightHelper|THREE.PointLightHelper|THREE.DirectionalLightHelper)[]} */
         this.helpers = [];
 
-        this.ambient = new THREE.AmbientLight(0xffffff, .2);
+        this.ambient = new THREE.AmbientLight(0xffffff, 0.2);
         this.app.scene.add(this.ambient);
 
-        this.background = new MyBackground(this.app);
+        this.background = new Background(this.app);
         this.app.scene.add(this.background);
 
         this.timestamp = null;
@@ -54,17 +52,25 @@ export class MyContents {
 
         this.mainMenu = new MainMenu(this.app);
         this.app.scene.add(this.mainMenu);
-        this.mainMenuState = new MainMenuState(this.app, this.stateManager, this.mainMenu);
+        this.mainMenuState = new MainMenuState(
+            this.app,
+            this.stateManager,
+            this.mainMenu
+        );
         this.stateManager.pushState(this.mainMenuState);
 
         this.pauseMenu = new PauseMenu(this.app);
         this.pauseMenu.position.z = 10;
-        this.app.scene.add(this.pauseMenu)
+        this.app.scene.add(this.pauseMenu);
 
         // TODO: Update FollowControls interface to allow switching between targets
-        this.followControls = new FollowControls(this.app.activeCamera, this.mainMenu, {
-            targetRotation: Math.PI,
-        });
+        this.followControls = new FollowControls(
+            this.app.activeCamera,
+            this.mainMenu,
+            {
+                targetRotation: Math.PI,
+            }
+        );
     }
 
     /**

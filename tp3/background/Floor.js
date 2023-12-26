@@ -3,14 +3,14 @@
 import * as THREE from "three";
 // @ts-expect-error
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
-import { MyFloorMaterial } from "./MyFloorMaterial.js";
+import { FloorMaterial } from "./FloorMaterial.js";
 import { MyApp } from "../MyApp.js";
 import { HELPERS } from "../Layers.js";
 
 const size = 1000;
 const divisions = 100;
 
-export class MyFloor extends THREE.Mesh {
+export class Floor extends THREE.Mesh {
     /**
      * @param {MyApp} app
      */
@@ -24,7 +24,7 @@ export class MyFloor extends THREE.Mesh {
             divisions
         );
 
-        this.material = new MyFloorMaterial({
+        this.material = new FloorMaterial({
             divisions,
         });
         this.rotation.x = -Math.PI / 2;

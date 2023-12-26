@@ -1,16 +1,16 @@
 /// @ts-check
 
-import GameStateManager from "./GameStateManager.js";
+import { GameStateManager } from "./GameStateManager.js";
 
-import GameState from "./GameState.js";
-import PauseState from "./PauseState.js";
+import { GameState } from "./GameState.js";
+import { PauseState } from "./PauseState.js";
 import { Kart } from "../Kart.js";
 import { MyApp } from "../MyApp.js";
 
 /**
  * @abstract
  */
-export default class PlayState extends GameState {
+export class PlayState extends GameState {
     /**
      * @param {MyApp} app
      * @param {GameStateManager} stateManager
@@ -40,7 +40,11 @@ export default class PlayState extends GameState {
     #onKeyDown = (event) => {
         if (event.key === "p" || event.key === "P") {
             this.stateManager.pushState(
-                new PauseState(this.app, this.stateManager, this.app.contents.pauseMenu)
+                new PauseState(
+                    this.app,
+                    this.stateManager,
+                    this.app.contents.pauseMenu
+                )
             );
         }
     };

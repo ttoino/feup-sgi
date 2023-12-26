@@ -1,11 +1,11 @@
 /// @ts-check
 
-import GameState from "./GameState.js";
+import { GameState } from "./GameState.js";
 
 /**
  * @extends {GameState}
  */
-export default class GameStateManager {
+export class GameStateManager {
     constructor() {
         /**
          * @private

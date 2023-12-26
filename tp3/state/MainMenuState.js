@@ -1,18 +1,17 @@
 /// @ts-check
 
-import GameStateManager from "./GameStateManager.js";
-
-import GameState from "./GameState.js";
+import { GameStateManager } from "./GameStateManager.js";
+import { GameState } from "./GameState.js";
 import { MyApp } from "../MyApp.js";
 import { MainMenu } from "../menu/MainMenu.js";
 import { Picker } from "../Picker.js";
 import { MAIN_MENU } from "../Layers.js";
-import PlayState from "./PlayState.js";
+import { PlayState } from "./PlayState.js";
 
 /**
  * @abstract
  */
-export default class MainMenuState extends GameState {
+export class MainMenuState extends GameState {
     /**
      * @param {MyApp} app
      * @param {GameStateManager} stateManager

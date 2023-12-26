@@ -2,9 +2,9 @@
 
 import * as THREE from "three";
 import { MyApp } from "../MyApp.js";
-import { MyFloor} from "./MyFloor.js";
+import { Floor} from "./Floor.js";
 
-export class MyBackground extends THREE.Object3D {
+export class Background extends THREE.Object3D {
     /**
      * @param {MyApp} app
      */
@@ -13,7 +13,7 @@ export class MyBackground extends THREE.Object3D {
 
         this.app = app;
 
-        this.floor = new MyFloor(app)
+        this.floor = new Floor(app)
         this.add(this.floor);
     }
 }

@@ -2,7 +2,7 @@
 
 import * as THREE from "three";
 
-export class MyFloorMaterial extends THREE.MeshPhongMaterial {
+export class FloorMaterial extends THREE.MeshPhongMaterial {
     constructor({ divisions = 1 }) {
         super();
 

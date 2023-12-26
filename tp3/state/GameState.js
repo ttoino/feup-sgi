@@ -1,12 +1,12 @@
 /// @ts-check
 
 import { MyApp } from "../MyApp.js";
-import GameStateManager from "./GameStateManager.js";
+import { GameStateManager } from "./GameStateManager.js";
 
 /**
  * @abstract
  */
-export default class GameState {
+export class GameState {
     /**
      * @param {MyApp} app
      * @param {GameStateManager} stateManager
