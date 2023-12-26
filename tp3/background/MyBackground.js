@@ -13,11 +13,7 @@ export class MyBackground extends THREE.Object3D {
 
         this.app = app;
 
-        this.init();
-    }
-
-    init() {
-        this.floor = new MyFloor()
+        this.floor = new MyFloor(app)
         this.add(this.floor);
     }
 }
