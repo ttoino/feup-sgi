@@ -8,6 +8,8 @@ import { Picker } from "./Picker.js";
 import { ALL_VEHICLES, HELPERS } from "./Layers.js";
 import PlayState from "./state/PlayState.js";
 import GameStateManager from "./state/GameStateManager.js";
+import { FollowControls } from "./FollowControls.js";
+
 
 /**
  *  This class contains the contents of out application
@@ -39,6 +41,12 @@ export class MyContents {
         this.stateManager = new GameStateManager();
 
         this.kart = new Kart(this.app);
+        this.app.scene.add(this.kart);
+
+        // TODO: Update FollowControls interface to allow switching between targets
+        this.followControls = new FollowControls(this.app.activeCamera, this.kart, {
+            targetRotation: Math.PI,
+        });
 
         this.vehiclePicker = new Picker(app, ALL_VEHICLES);
         this.vehiclePicker.startPicking();
@@ -77,6 +85,7 @@ export class MyContents {
         const deltaS = deltaMs / 1000;
 
         this.stateManager.current.update(deltaS);
+        this.followControls.update(deltaS);
 
         this.timestamp = performance.now();
     }

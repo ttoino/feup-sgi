@@ -22,14 +22,16 @@ export default class GameStateManager {
      * @param {GameState} state
      */
     pushState(state) {
-        state.init();
+        this.current?.destroy();
         this.stateStack.push(state);
+        this.current?.init();
     }
 
     popState() {
         if (this.stateStack.length > 1) {
-            this.current.destroy();
+            this.current?.destroy();
             this.stateStack.pop();
+            this.current?.init();
         }
     }
 
