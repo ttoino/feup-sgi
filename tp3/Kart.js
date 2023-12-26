@@ -42,7 +42,7 @@ export class Kart extends THREE.Object3D {
         loader.load(
             "models/light_cycle.glb",
             (gltf) => {
-                console.debug(gltf);
+                // console.debug(gltf);
                 this.add(gltf.scene);
 
                 gltf.scene.traverse((child) => {

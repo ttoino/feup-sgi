@@ -11,6 +11,7 @@ import MainMenuState from "./state/MainMenuState.js";
 import GameStateManager from "./state/GameStateManager.js";
 import { FollowControls } from "./FollowControls.js";
 import { MainMenu } from "./menu/MainMenu.js";
+import { PauseMenu } from "./menu/PauseMenu.js";
 
 
 /**
@@ -52,8 +53,13 @@ export class MyContents {
         this.menuPicker.startPicking();
 
         this.mainMenu = new MainMenu(this.app);
+        this.app.scene.add(this.mainMenu);
         this.mainMenuState = new MainMenuState(this.app, this.stateManager, this.mainMenu);
         this.stateManager.pushState(this.mainMenuState);
+
+        this.pauseMenu = new PauseMenu(this.app);
+        this.pauseMenu.position.z = 10;
+        this.app.scene.add(this.pauseMenu)
 
         // TODO: Update FollowControls interface to allow switching between targets
         this.followControls = new FollowControls(this.app.activeCamera, this.mainMenu, {

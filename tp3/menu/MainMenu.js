@@ -14,6 +14,9 @@ export class MainMenu extends Menu {
     }
 
     #init() {
+
+        const mainMenu = new THREE.Group();
+
         const playButtonGeometry = new THREE.BoxGeometry(2, 4, 2);
 
         const playButton = new THREE.Mesh(
@@ -23,6 +26,9 @@ export class MainMenu extends Menu {
         playButton.name = "play_button";
         playButton.layers.enable(UI);
         playButton.layers.enable(MAIN_MENU);
-        this.app.scene.add(playButton);
+
+        mainMenu.add(playButton);
+
+        this.add(mainMenu)
     }
 }

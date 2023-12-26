@@ -35,8 +35,8 @@ export class MyFloorMaterial extends THREE.MeshPhongMaterial {
      * @param {THREE.Shader} shader
      */
     onBeforeCompile(shader) {
-        console.log(shader);
-        console.log(shader.vertexShader);
+        // console.log(shader);
+        // console.log(shader.vertexShader);
 
         shader.uniforms.time = { value: 0 };
         shader.uniforms.noiseScale = { value: this.noiseScale };

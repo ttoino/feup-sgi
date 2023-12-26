@@ -40,7 +40,7 @@ export default class PlayState extends GameState {
     #onKeyDown = (event) => {
         if (event.key === "p" || event.key === "P") {
             this.stateManager.pushState(
-                new PauseState(this.app, this.stateManager)
+                new PauseState(this.app, this.stateManager, this.app.contents.pauseMenu)
             );
         }
     };
