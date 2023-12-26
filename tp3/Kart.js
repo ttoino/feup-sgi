@@ -77,6 +77,7 @@ export class Kart extends THREE.Object3D {
     }
 
     movementKeyDownController(event) {
+
         switch (event.key) {
             case "ArrowUp":
             case "w":
@@ -140,8 +141,6 @@ export class Kart extends THREE.Object3D {
             MIN_SPEED
         ), this.maxSpeed);
         this.helper.scale.z = this.forwardSpeed;
-
-        console.log(this.forwardSpeed, this.rotationRad);
 
         this.rotation.y += this.rotationRad * delta;
 

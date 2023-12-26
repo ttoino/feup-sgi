@@ -44,7 +44,7 @@ export class Picker {
     pick() {
         const intersections = this.raycaster.intersectObject(this.app.scene);
 
-        console.debug(intersections);
+        // console.debug(intersections);
 
         let found = false;
 

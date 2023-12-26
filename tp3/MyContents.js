@@ -5,10 +5,12 @@ import { MyApp } from "./MyApp.js";
 import { MyBackground } from "./background/MyBackground.js";
 import { Kart } from "./Kart.js";
 import { Picker } from "./Picker.js";
-import { ALL_VEHICLES, HELPERS } from "./Layers.js";
+import { ALL_VEHICLES, HELPERS, UI } from "./Layers.js";
 import PlayState from "./state/PlayState.js";
+import MainMenuState from "./state/MainMenuState.js";
 import GameStateManager from "./state/GameStateManager.js";
 import { FollowControls } from "./FollowControls.js";
+import { MainMenu } from "./menu/MainMenu.js";
 
 
 /**
@@ -43,17 +45,23 @@ export class MyContents {
         this.kart = new Kart(this.app);
         this.app.scene.add(this.kart);
 
+        this.vehiclePicker = new Picker(app, ALL_VEHICLES);
+        // this.vehiclePicker.startPicking();
+
+        this.menuPicker = new Picker(app, UI);
+        this.menuPicker.startPicking();
+
+        this.mainMenu = new MainMenu(this.app);
+        this.mainMenuState = new MainMenuState(this.app, this.stateManager, this.mainMenu);
+        this.stateManager.pushState(this.mainMenuState);
+
+        const playState = new PlayState(this.app, this.stateManager, this.kart, null);
+        this.stateManager.pushState(playState);
+
         // TODO: Update FollowControls interface to allow switching between targets
-        this.followControls = new FollowControls(this.app.activeCamera, this.kart, {
+        this.followControls = new FollowControls(this.app.activeCamera, this.mainMenu, {
             targetRotation: Math.PI,
         });
-
-        this.vehiclePicker = new Picker(app, ALL_VEHICLES);
-        this.vehiclePicker.startPicking();
-
-        // TODO: change initial state
-        const state = new PlayState(this.app, this.stateManager, this.kart, null);
-        this.stateManager.pushState(state);
     }
 
     /**

@@ -13,26 +13,26 @@ export default class PlayState extends GameState {
      * 
      * @param {GameStateManager} stateManager 
      */
-    constructor(app, stateManager) {
+    constructor(app, stateManager, mainMenu) {
         super(app);
 
         this.stateManager = stateManager;
 
         this.updaters = [];
+
+        this.mainMenu = mainMenu;
     }
 
     init() {
-        document.addEventListener("keydown", this.#onKeyDown);
+        document.addEventListener("mouseenter", this.#onKeyDown);
     }
 
     destroy() {
-        document.removeEventListener("keydown", this.#onKeyDown);
+        document.removeEventListener("mouseenter", this.#onKeyDown);
     }
 
     #onKeyDown = (event) => {
-        if (event.key === "p" || event.key === "P") {
-            this.stateManager.popState();
-        }
+        console.log(event);
     }
 
     update(delta) {
