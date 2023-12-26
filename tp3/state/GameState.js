@@ -1,23 +1,32 @@
 /// @ts-check
 
+import { MyApp } from "../MyApp.js";
+import GameStateManager from "./GameStateManager.js";
+
 /**
  * @abstract
  */
 export default class GameState {
-
-    constructor(app) {
+    /**
+     * @param {MyApp} app
+     * @param {GameStateManager} stateManager
+     */
+    constructor(app, stateManager) {
         this.app = app;
+        this.stateManager = stateManager;
+
+        /** @type {{update(delta: number): unknown}[]} */
+        this.updaters = [];
     }
 
-    init() {
-        throw new Error("Not implemented");
-    }
+    init() {}
 
-    destroy() {
-        throw new Error("Not implemented");
-    }
+    destroy() {}
 
+    /**
+     * @param {number} delta
+     */
     update(delta) {
-        throw new Error("Not implemented");
+        this.updaters.forEach((updater) => updater?.update(delta));
     }
 }

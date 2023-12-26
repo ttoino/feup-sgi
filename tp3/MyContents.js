@@ -32,7 +32,7 @@ export class MyContents {
         /** @type {(THREE.SpotLightHelper|THREE.PointLightHelper|THREE.DirectionalLightHelper)[]} */
         this.helpers = [];
 
-        this.ambient = new THREE.AmbientLight(0xffffff);
+        this.ambient = new THREE.AmbientLight(0xffffff, .2);
         this.app.scene.add(this.ambient);
 
         this.background = new MyBackground(this.app);
@@ -54,9 +54,6 @@ export class MyContents {
         this.mainMenu = new MainMenu(this.app);
         this.mainMenuState = new MainMenuState(this.app, this.stateManager, this.mainMenu);
         this.stateManager.pushState(this.mainMenuState);
-
-        const playState = new PlayState(this.app, this.stateManager, this.kart, null);
-        this.stateManager.pushState(playState);
 
         // TODO: Update FollowControls interface to allow switching between targets
         this.followControls = new FollowControls(this.app.activeCamera, this.mainMenu, {

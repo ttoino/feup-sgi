@@ -3,41 +3,52 @@
 import GameStateManager from "./GameStateManager.js";
 
 import GameState from "./GameState.js";
+import { MyApp } from "../MyApp.js";
+import { MainMenu } from "../menu/MainMenu.js";
+import { Picker } from "../Picker.js";
+import { MAIN_MENU } from "../Layers.js";
+import PlayState from "./PlayState.js";
 
 /**
  * @abstract
  */
-export default class PlayState extends GameState {
-
+export default class MainMenuState extends GameState {
     /**
-     * 
-     * @param {GameStateManager} stateManager 
+     * @param {MyApp} app
+     * @param {GameStateManager} stateManager
+     * @param {MainMenu} mainMenu
      */
     constructor(app, stateManager, mainMenu) {
-        super(app);
-
-        this.stateManager = stateManager;
-
-        this.updaters = [];
+        super(app, stateManager);
 
         this.mainMenu = mainMenu;
-    }
 
-    init() {
-        document.addEventListener("mouseenter", this.#onKeyDown);
+        this.picker = new Picker(app, MAIN_MENU);
+        this.picker.pickOnClick().then((object) => this.onPick(object));
     }
 
     destroy() {
-        document.removeEventListener("mouseenter", this.#onKeyDown);
+        this.picker.finishPicking();
     }
 
-    #onKeyDown = (event) => {
-        console.log(event);
-    }
+    /**
+     * @param {THREE.Object3D} object
+     */
+    onPick(object) {
+        switch (object.name) {
+            case "play_button":
+                this.stateManager.pushState(
+                    new PlayState(
+                        this.app,
+                        this.stateManager,
+                        this.app.contents.kart,
+                        this.app.contents.kart
+                    )
+                );
+                break;
+        }
 
-    update(delta) {
-        this.updaters.forEach((updater) => {
-            updater?.update(delta);
-        });
+        if (!this.picker.picking)
+            this.picker.pickOnClick().then((object) => this.onPick(object));
     }
 }

@@ -21,6 +21,8 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 // @ts-expect-error
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+// @ts-expect-error
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
 /**
  * This class contains the application object
@@ -125,6 +127,8 @@ class MyApp {
         this.outputPass = new OutputPass();
         this.outputPass.toneMapping = THREE.ACESFilmicToneMapping;
         this.composer.addPass(this.outputPass);
+
+        RectAreaLightUniformsLib.init();
     }
 
     /**
