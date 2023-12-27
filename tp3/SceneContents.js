@@ -32,14 +32,21 @@ export class SceneContents {
         this.game.scene.add(this.background);
 
         // Mario kart
-        this.kart = new Kart(this.game);
-        this.game.scene.add(this.kart);
+        this.cycle = new Kart(this.game, {
+            model: "light_cycle",
+        });
+        this.game.scene.add(this.cycle);
+
+        this.car = new Kart(this.game, {
+            model: "light_car",
+        });
+        this.game.scene.add(this.car);
+
+        this.kart = this.car;
 
         this.powerups = [];
         const powerup = new Powerup(this.game);
-        this.powerups.push(
-            powerup
-        );
+        this.powerups.push(powerup);
         this.powerups.forEach((powerup) => {
             powerup.position.y = 3;
             this.game.scene.add(powerup);

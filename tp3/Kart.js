@@ -12,8 +12,11 @@ const MAX_SPEED = 20;
 export class Kart extends THREE.Object3D {
     /**
      * @param {Game} game
+     * @param {{
+     *     model: string;
+     * }} params
      */
-    constructor(game) {
+    constructor(game, params) {
         super();
 
         this.acceleration = 0;
@@ -32,7 +35,7 @@ export class Kart extends THREE.Object3D {
         this.wheels = [];
 
         const loader = new GLTFLoader();
-        loader.load("models/light_cycle.glb", (gltf) => {
+        loader.load(`models/${params.model}.glb`, (gltf) => {
             console.debug(gltf);
             this.add(gltf.scene);
 
