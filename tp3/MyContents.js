@@ -51,6 +51,12 @@ export class MyContents {
         this.menuPicker.startPicking();
 
         this.mainMenu = new MainMenu(this.app);
+        this.mainMenu.position.z = 170;
+        this.mainMenu.position.x = 377;
+        this.mainMenu.position.y = 140;
+
+        this.mainMenu.rotateY(Math.PI);
+
         this.app.scene.add(this.mainMenu);
         this.mainMenuState = new MainMenuState(
             this.app,
