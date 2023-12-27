@@ -27,6 +27,9 @@ export class MainMenuState extends MenuState {
                     )
                 );
                 return;
+            case "exit_button":
+                window.close();
+                return;
         }
     }
 }

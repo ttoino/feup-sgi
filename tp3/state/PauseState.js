@@ -1,5 +1,6 @@
 import { Game } from "../Game.js";
 import { PAUSE_MENU } from "../Layers.js";
+import { MainMenuState } from "./MainMenuState.js";
 import { MenuState } from "./MenuState.js";
 import { PlayState } from "./PlayState.js";
 
@@ -18,6 +19,9 @@ export class PauseState extends MenuState {
         switch (object.name) {
             case "resume_button":
                 this.stateManager.popUntil(PlayState);
+                break;
+            case "main_menu_button":
+                this.stateManager.popUntil(MainMenuState);
                 break;
         }
     }

@@ -44,7 +44,10 @@ export class SceneContents {
 
         // Pause menu UI
         this.pauseMenu = new PauseMenu(this.game);
-        this.pauseMenu.position.z = 10;
+        this.pauseMenu.position.z = 170;
+        this.pauseMenu.position.x = -377;
+        this.pauseMenu.position.y = 140;
+        this.pauseMenu.rotateY(Math.PI);
         this.game.scene.add(this.pauseMenu);
     }
 }

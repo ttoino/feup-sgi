@@ -82,7 +82,7 @@ export class MainMenu extends Menu {
                 new THREE.MeshStandardMaterial({ color: 0xffff00 })
             );
 
-            frame.name = "frame";
+            frame.name = "main_menu_frame";
 
             frame.position.y = -1.5;
             frame.rotation.z = Math.PI / 4;
