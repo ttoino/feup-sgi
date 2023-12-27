@@ -5,7 +5,8 @@ export class FollowControls {
      * @param {THREE.Camera} camera
      * @param {THREE.Object3D} target
      * @param {{
-     *   speed?: number,
+     *   positionSpeed?: number,
+     *   rotationSpeed?: number,
      *   targetHeight?: number,
      *   targetDistance?: number,
      *   targetRotation?: number
@@ -15,7 +16,8 @@ export class FollowControls {
         this.camera = camera;
         this.target = target;
 
-        this.speed = options.speed ?? 5;
+        this.positionSpeed = options.positionSpeed ?? 5;
+        this.rotationSpeed = options.rotationSpeed ?? 20;
 
         this.targetHeight = options.targetHeight ?? 5;
         this.targetDistance = options.targetDistance ?? 10;
@@ -45,9 +47,19 @@ export class FollowControls {
                 this.targetHeight
             )
             .add(this.target.position);
-
-        this.camera.position.lerp(targetPos, Math.min(1, this.speed * delta));
-
+        
+        const prevPos = this.camera.position.clone();
+        this.camera.position.set(targetPos.x, targetPos.y, targetPos.z);
+        const prevRotation = this.camera.quaternion.clone();
         this.camera.lookAt(this.target.position);
+        
+        this.camera.position.lerp(
+            prevPos,
+            1 - Math.min(1, this.positionSpeed * delta)
+        );
+        this.camera.quaternion.slerp(
+            prevRotation,
+            1 - Math.min(1, this.rotationSpeed * delta)
+        );
     }
 }
