@@ -6,7 +6,8 @@
         "strict": true,
         "checkJs": true,
         "paths": {
-            "lil-gui": ["https://cdn.jsdelivr.net/npm/lil-gui@0.19/+esm"]
+            "lil-gui": ["https://unpkg.com/lil-gui@0.19/dist/lil-gui.esm.d.ts"]
+            // "lil-gui": ["https://unpkg.com/lil-gui@0.19"]
         }
     }
 }
