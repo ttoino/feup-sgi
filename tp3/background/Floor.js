@@ -1,5 +1,3 @@
-/// @ts-check
-
 import * as THREE from "three";
 // @ts-expect-error
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";

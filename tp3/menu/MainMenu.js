@@ -1,5 +1,3 @@
-/// @ts-check
-
 import * as THREE from "three";
 import Menu from "./Menu.js";
 import { MAIN_MENU, UI } from "../Layers.js";

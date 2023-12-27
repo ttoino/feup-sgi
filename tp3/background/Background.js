@@ -1,5 +1,3 @@
-/// @ts-check
-
 import * as THREE from "three";
 import { Game } from "../Game.js";
 import { Floor } from "./Floor.js";

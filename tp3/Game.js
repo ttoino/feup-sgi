@@ -39,7 +39,9 @@ export class Game {
         this._activeCamera = this.cameras.default;
 
         // Init controls
-        this.controls = new FollowControls(this.activeCamera, this.scene);
+        this.controls = new FollowControls(this.activeCamera, this.scene, {
+            targetRotation: Math.PI,
+        });
 
         // Init contents
         this.contents = new SceneContents(this);
@@ -88,9 +90,7 @@ export class Game {
     update() {
         this.stats.update();
 
-        const deltaMs = this.timestamp
-            ? (Date.now() - this.timestamp)
-            : 16;
+        const deltaMs = this.timestamp ? Date.now() - this.timestamp : 16;
         this.timestamp = Date.now();
         const delta = deltaMs / 1000;
 

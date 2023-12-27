@@ -1,5 +1,3 @@
-/// @ts-check
-
 import * as THREE from "three";
 
 export class FloorMaterial extends THREE.MeshPhongMaterial {
@@ -11,7 +9,9 @@ export class FloorMaterial extends THREE.MeshPhongMaterial {
         this.map.wrapT = THREE.RepeatWrapping;
         this.map.repeat.set(divisions, divisions);
 
-        this.emissiveMap = new THREE.TextureLoader().load("textures/floor-emissive.png");
+        this.emissiveMap = new THREE.TextureLoader().load(
+            "textures/floor-emissive.png"
+        );
         this.emissiveMap.wrapS = THREE.RepeatWrapping;
         this.emissiveMap.wrapT = THREE.RepeatWrapping;
         this.emissiveMap.repeat.set(divisions, divisions);

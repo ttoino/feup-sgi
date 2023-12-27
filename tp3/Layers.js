@@ -1,5 +1,3 @@
-/// @ts-check
-
 export const ALL = 0;
 export const ALL_VEHICLES = 1;
 export const PLAYER_VEHICLES = 2;

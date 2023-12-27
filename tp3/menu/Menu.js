@@ -1,5 +1,3 @@
-/// @ts-check
-
 import * as THREE from "three";
 import { UI } from "../Layers.js";
 

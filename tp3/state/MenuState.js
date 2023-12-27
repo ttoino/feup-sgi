@@ -1,5 +1,3 @@
-/// @ts-check
-
 import { Game } from "../Game.js";
 import { Picker } from "../Picker.js";
 import { GameState } from "./GameState.js";
