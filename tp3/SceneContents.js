@@ -5,6 +5,7 @@ import { HELPERS } from "./Layers.js";
 import { MainMenu } from "./menu/MainMenu.js";
 import { PauseMenu } from "./menu/PauseMenu.js";
 import { Game } from "./Game.js";
+import Powerup from "./powerup/Powerup.js";
 
 /**
  *  This class contains the contents of our application
@@ -33,6 +34,16 @@ export class SceneContents {
         // Mario kart
         this.kart = new Kart(this.game);
         this.game.scene.add(this.kart);
+
+        this.powerups = [];
+        const powerup = new Powerup(this.game);
+        this.powerups.push(
+            powerup
+        );
+        this.powerups.forEach((powerup) => {
+            powerup.position.y = 3;
+            this.game.scene.add(powerup);
+        });
 
         // Main menu UI
         this.mainMenu = new MainMenu(this.game);

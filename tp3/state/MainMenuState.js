@@ -23,7 +23,8 @@ export class MainMenuState extends MenuState {
                     new PlayState(
                         this.game,
                         this.game.contents.kart,
-                        this.game.contents.kart
+                        this.game.contents.kart,
+                        this.game.contents.powerups
                     )
                 );
                 return;
