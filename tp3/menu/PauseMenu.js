@@ -5,10 +5,10 @@ import Menu from "./Menu.js";
 import { PAUSE_MENU, UI } from "../Layers.js";
 
 export class PauseMenu extends Menu {
-    constructor(app) {
+    constructor(game) {
         super();
 
-        this.app = app;
+        this.game = game;
 
         this.#init();
     }

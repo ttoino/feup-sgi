@@ -17,7 +17,7 @@ export class FollowControls {
         this.camera = camera;
         this.target = target;
 
-        this.speed = options.speed ?? 2;
+        this.speed = options.speed ?? 5;
 
         this.targetHeight = options.targetHeight ?? 5;
         this.targetDistance = options.targetDistance ?? 10;

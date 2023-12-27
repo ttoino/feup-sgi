@@ -1,19 +1,19 @@
 /// @ts-check
 
 import * as THREE from "three";
-import { MyApp } from "../MyApp.js";
-import { Floor} from "./Floor.js";
+import { Game } from "../Game.js";
+import { Floor } from "./Floor.js";
 
 export class Background extends THREE.Object3D {
     /**
-     * @param {MyApp} app
+     * @param {Game} game
      */
-    constructor(app) {
+    constructor(game) {
         super();
 
-        this.app = app;
+        this.game = game;
 
-        this.floor = new Floor(app)
+        this.floor = new Floor(game);
         this.add(this.floor);
     }
 }

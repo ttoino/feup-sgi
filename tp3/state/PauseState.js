@@ -1,32 +1,14 @@
-/// @ts-check
-
-import { GameStateManager } from "./GameStateManager.js";
-import { GameState } from "./GameState.js";
-import { MyApp } from "../MyApp.js";
-import { Picker } from "../Picker.js";
+import { Game } from "../Game.js";
 import { PAUSE_MENU } from "../Layers.js";
+import { MenuState } from "./MenuState.js";
 import { PlayState } from "./PlayState.js";
 
-/**
- * @abstract
- */
-export class PauseState extends GameState {
+export class PauseState extends MenuState {
     /**
-     * @param {MyApp} app
-     * @param {GameStateManager} stateManager
+     * @param {Game} game
      */
-    constructor(app, stateManager, pauseMenu) {
-        super(app, stateManager);
-
-        this.pauseMenu = pauseMenu;
-
-        this.picker = new Picker(app, PAUSE_MENU);
-        this.picker.pickOnClick().then((object) => this.onPick(object));
-    }
-
-    destroy() {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        this.picker.finishPicking();
+    constructor(game) {
+        super(game, game.contents.pauseMenu, PAUSE_MENU);
     }
 
     /**
@@ -38,12 +20,5 @@ export class PauseState extends GameState {
                 this.stateManager.popUntil(PlayState);
                 break;
         }
-
-        if (!this.picker.picking)
-            this.picker.pickOnClick().then((object) => this.onPick(object));
-    }
-
-    init() {
-        this.app.contents.followControls.target = this.pauseMenu;
     }
 }

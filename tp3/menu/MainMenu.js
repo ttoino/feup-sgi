@@ -5,16 +5,15 @@ import Menu from "./Menu.js";
 import { MAIN_MENU, UI } from "../Layers.js";
 
 export class MainMenu extends Menu {
-    constructor(app) {
+    constructor(game) {
         super();
 
-        this.app = app;
+        this.game = game;
 
         this.#init();
     }
 
     #init() {
-
         const mainMenu = new THREE.Group();
 
         const mainMenuButtonGeometry = new THREE.BoxGeometry(4, 2, 2);
@@ -48,12 +47,11 @@ export class MainMenu extends Menu {
         frame.position.y = -1.5;
         frame.rotation.z = Math.PI / 4;
 
-
         mainMenu.add(frame);
 
         mainMenu.add(playButton);
         mainMenu.add(exitButton);
 
-        this.add(mainMenu)
+        this.add(mainMenu);
     }
 }

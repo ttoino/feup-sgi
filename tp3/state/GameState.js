@@ -1,19 +1,17 @@
 /// @ts-check
 
-import { MyApp } from "../MyApp.js";
-import { GameStateManager } from "./GameStateManager.js";
+import { Game } from "../Game.js";
 
 /**
  * @abstract
  */
 export class GameState {
     /**
-     * @param {MyApp} app
-     * @param {GameStateManager} stateManager
+     * @param {Game} game
      */
-    constructor(app, stateManager) {
-        this.app = app;
-        this.stateManager = stateManager;
+    constructor(game) {
+        this.game = game;
+        this.stateManager = game.stateManager;
 
         /** @type {{update(delta: number): unknown}[]} */
         this.updaters = [];

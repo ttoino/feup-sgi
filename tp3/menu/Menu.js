@@ -7,9 +7,9 @@ import { UI } from "../Layers.js";
  * @abstract
  */
 export default class Menu extends THREE.Object3D {
-    constructor(app) {
+    constructor(game) {
         super();
 
-        this.app = app;
+        this.game = game;
     }
 }

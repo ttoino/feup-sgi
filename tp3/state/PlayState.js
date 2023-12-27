@@ -1,24 +1,16 @@
-/// @ts-check
-
-import { GameStateManager } from "./GameStateManager.js";
-
 import { GameState } from "./GameState.js";
 import { PauseState } from "./PauseState.js";
 import { Kart } from "../Kart.js";
-import { MyApp } from "../MyApp.js";
+import { Game } from "../Game.js";
 
-/**
- * @abstract
- */
 export class PlayState extends GameState {
     /**
-     * @param {MyApp} app
-     * @param {GameStateManager} stateManager
+     * @param {Game} game
      * @param {Kart} kart
      * @param {Kart} opponent
      */
-    constructor(app, stateManager, kart, opponent) {
-        super(app, stateManager);
+    constructor(game, kart, opponent) {
+        super(game);
 
         this.kart = kart;
         this.opponent = opponent;
@@ -28,7 +20,7 @@ export class PlayState extends GameState {
     }
 
     init() {
-        this.app.contents.followControls.target = this.kart;
+        this.game.controls.target = this.kart;
 
         document.addEventListener("keydown", this.#onKeyDown);
     }
@@ -37,15 +29,12 @@ export class PlayState extends GameState {
         document.removeEventListener("keydown", this.#onKeyDown);
     }
 
-    #onKeyDown = (event) => {
+    /**
+     * @param {KeyboardEvent} event
+     */
+    #onKeyDown(event) {
         if (event.key === "p" || event.key === "P") {
-            this.stateManager.pushState(
-                new PauseState(
-                    this.app,
-                    this.stateManager,
-                    this.app.contents.pauseMenu
-                )
-            );
+            this.stateManager.pushState(new PauseState(this.game));
         }
-    };
+    }
 }

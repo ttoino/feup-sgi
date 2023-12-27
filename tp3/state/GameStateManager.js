@@ -1,10 +1,5 @@
-/// @ts-check
-
 import { GameState } from "./GameState.js";
 
-/**
- * @extends {GameState}
- */
 export class GameStateManager {
     constructor() {
         /**

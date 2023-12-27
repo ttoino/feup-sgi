@@ -1,36 +1,19 @@
-/// @ts-check
-
-import { GameStateManager } from "./GameStateManager.js";
-import { GameState } from "./GameState.js";
-import { MyApp } from "../MyApp.js";
-import { MainMenu } from "../menu/MainMenu.js";
-import { Picker } from "../Picker.js";
+import { Game } from "../Game.js";
 import { MAIN_MENU } from "../Layers.js";
 import { PlayState } from "./PlayState.js";
+import { MenuState } from "./MenuState.js";
 
-/**
- * @abstract
- */
-export class MainMenuState extends GameState {
+export class MainMenuState extends MenuState {
     /**
-     * @param {MyApp} app
-     * @param {GameStateManager} stateManager
-     * @param {MainMenu} mainMenu
+     * @param {Game} game
      */
-    constructor(app, stateManager, mainMenu) {
-        super(app, stateManager);
-
-        this.mainMenu = mainMenu;
-
-        this.picker = new Picker(app, MAIN_MENU);
-        this.picker.pickOnClick().then((object) => this.onPick(object));
-    }
-
-    destroy() {
-        this.picker.finishPicking();
+    constructor(game) {
+        super(game, game.contents.mainMenu, MAIN_MENU);
     }
 
     /**
+     * @override
+     *
      * @param {THREE.Object3D} object
      */
     onPick(object) {
@@ -38,16 +21,12 @@ export class MainMenuState extends GameState {
             case "play_button":
                 this.stateManager.pushState(
                     new PlayState(
-                        this.app,
-                        this.stateManager,
-                        this.app.contents.kart,
-                        this.app.contents.kart
+                        this.game,
+                        this.game.contents.kart,
+                        this.game.contents.kart
                     )
                 );
-                break;
+                return;
         }
-
-        if (!this.picker.picking)
-            this.picker.pickOnClick().then((object) => this.onPick(object));
     }
 }

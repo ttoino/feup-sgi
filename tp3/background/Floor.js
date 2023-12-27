@@ -4,7 +4,7 @@ import * as THREE from "three";
 // @ts-expect-error
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { FloorMaterial } from "./FloorMaterial.js";
-import { MyApp } from "../MyApp.js";
+import { Game } from "../Game.js";
 import { HELPERS } from "../Layers.js";
 
 const size = 1000;
@@ -12,9 +12,9 @@ const divisions = 100;
 
 export class Floor extends THREE.Mesh {
     /**
-     * @param {MyApp} app
+     * @param {Game} game
      */
-    constructor(app) {
+    constructor(game) {
         super();
 
         this.geometry = new THREE.PlaneGeometry(
@@ -29,8 +29,8 @@ export class Floor extends THREE.Mesh {
         });
         this.rotation.x = -Math.PI / 2;
 
-        this.light = new THREE.RectAreaLight(0xffffff, .3, size, size);
-        this.light.rotateY(Math.PI)
+        this.light = new THREE.RectAreaLight(0xffffff, 0.3, size, size);
+        this.light.rotateY(Math.PI);
         this.add(this.light);
 
         const helper = new RectAreaLightHelper(this.light);
@@ -38,6 +38,6 @@ export class Floor extends THREE.Mesh {
         helper.traverse((child) => {
             child.layers.set(HELPERS);
         });
-        app.scene.add(helper);
+        game.scene.add(helper);
     }
 }

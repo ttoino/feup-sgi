@@ -2,25 +2,25 @@
 
 import * as THREE from "three";
 import { ALL_VEHICLES, HELPERS } from "./Layers.js";
-import { MyApp } from "./MyApp.js";
+import { Game } from "./Game.js";
 
 // @ts-expect-error
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const ACCEL = 5;
-const MIN_SPEED = 0
-const MAX_SPEED = 20
+const MIN_SPEED = 0;
+const MAX_SPEED = 20;
 
 export class Kart extends THREE.Object3D {
     /**
-     * @param {MyApp} app
+     * @param {Game} game
      */
-    constructor(app) {
+    constructor(game) {
         super();
 
         this.acceleration = 0;
 
-        this.app = app;
+        this.game = game;
         this.maxSpeed = MAX_SPEED;
         this.forwardSpeed = 0;
         this.rotationSpeedRadS = 0;
@@ -39,21 +39,18 @@ export class Kart extends THREE.Object3D {
         this.wheels = [];
 
         const loader = new GLTFLoader();
-        loader.load(
-            "models/light_cycle.glb",
-            (gltf) => {
-                // console.debug(gltf);
-                this.add(gltf.scene);
+        loader.load("models/light_cycle.glb", (gltf) => {
+            // console.debug(gltf);
+            this.add(gltf.scene);
 
-                gltf.scene.traverse((child) => {
-                    if (child.name.includes("steer")) {
-                        this.steers.push(child);
-                    } else if (child.name.includes("wheel")) {
-                        this.wheels.push(child);
-                    }
-                });
-            },
-        );
+            gltf.scene.traverse((child) => {
+                if (child.name.includes("steer")) {
+                    this.steers.push(child);
+                } else if (child.name.includes("wheel")) {
+                    this.wheels.push(child);
+                }
+            });
+        });
 
         this.layers.enable(ALL_VEHICLES);
 
@@ -102,7 +99,6 @@ export class Kart extends THREE.Object3D {
     }
 
     movementKeyDownController(event) {
-
         switch (event.key) {
             case "ArrowUp":
             case "w":
@@ -150,8 +146,8 @@ export class Kart extends THREE.Object3D {
 
     /**
      * Applies an effect to this kart's max speed.
-     * 
-     * @param {(previousMaxSpeed: number) => number} effect 
+     *
+     * @param {(previousMaxSpeed: number) => number} effect
      */
     applySpeedEffect(effect) {
         this.maxSpeed = effect(this.maxSpeed);
@@ -161,21 +157,27 @@ export class Kart extends THREE.Object3D {
      * @param {number} delta
      */
     update(delta) {
-        this.forwardSpeed = Math.min(Math.max(
-            this.forwardSpeed + this.acceleration * delta,
-            MIN_SPEED
-        ), this.maxSpeed);
+        this.forwardSpeed = Math.min(
+            Math.max(this.forwardSpeed + this.acceleration * delta, MIN_SPEED),
+            this.maxSpeed
+        );
         this.helper.scale.z = this.forwardSpeed;
 
         // TODO: Kart rotation should be based on the speed
         this.rotation.y += this.rotationRad * delta;
 
         // TODO: Max speed, maybe using drag
-        this.position.x += this.forwardSpeed * Math.sin(this.rotation.y) * delta;
-        this.position.z += this.forwardSpeed * Math.cos(this.rotation.y) * delta;
+        this.position.x +=
+            this.forwardSpeed * Math.sin(this.rotation.y) * delta;
+        this.position.z +=
+            this.forwardSpeed * Math.cos(this.rotation.y) * delta;
 
         this.steers.forEach((steer) => {
-            steer.rotation.y = THREE.MathUtils.lerp(steer.rotation.y, this.rotationRad * Math.PI / 6, Math.min(1, delta * 4));
+            steer.rotation.y = THREE.MathUtils.lerp(
+                steer.rotation.y,
+                (this.rotationRad * Math.PI) / 6,
+                Math.min(1, delta * 4)
+            );
         });
 
         this.wheels.forEach((wheel) => {

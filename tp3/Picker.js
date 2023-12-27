@@ -1,17 +1,17 @@
 /// @ts-check
 
 import * as THREE from "three";
-import { MyApp } from "./MyApp.js";
+import { Game } from "./Game.js";
 import { ALL, HELPERS } from "./Layers.js";
 
 export class Picker {
     /**
      *
-     * @param {MyApp} app
+     * @param {Game} game
      * @param {number} [layer=0]
      */
-    constructor(app, layer = ALL) {
-        this.app = app;
+    constructor(game, layer = ALL) {
+        this.game = game;
         this.raycaster = new THREE.Raycaster();
         this.pointer = new THREE.Vector2();
         this.layers = new THREE.Layers();
@@ -42,20 +42,27 @@ export class Picker {
     }
 
     pick() {
-        const intersections = this.raycaster.intersectObject(this.app.scene);
+        const intersections = this.raycaster.intersectObject(this.game.scene);
 
         // console.debug(intersections);
 
         let found = false;
 
         for (const intersection of intersections) {
-            if (this.layers.test(intersection.object.layers) && !this.helperLayers.test(intersection.object.layers)) {
+            if (
+                this.layers.test(intersection.object.layers) &&
+                !this.helperLayers.test(intersection.object.layers)
+            ) {
                 this.picked = intersection.object;
                 found = true;
             }
 
             intersection.object.traverseAncestors((parent) => {
-                if (!found && this.layers.test(parent.layers) && !this.helperLayers.test(parent.layers)) {
+                if (
+                    !found &&
+                    this.layers.test(parent.layers) &&
+                    !this.helperLayers.test(parent.layers)
+                ) {
                     this.picked = parent;
                     found = true;
                 }
@@ -94,12 +101,12 @@ export class Picker {
         this.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
         this.pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-        this.raycaster.setFromCamera(this.pointer, this.app.activeCamera);
+        this.raycaster.setFromCamera(this.pointer, this.game.activeCamera);
 
         if (this.picking) {
             this.pick();
 
-            this.app.outlinePass.selectedObjects = this.picked
+            this.game.outlinePass.selectedObjects = this.picked
                 ? [this.picked]
                 : [];
         }
