@@ -36,7 +36,7 @@ export class GameStateManager {
     }
 
     /**
-     * @param {{new(): GameState}} type
+     * @param {{new(...params: any[]): GameState}} type
      */
     popUntil(type) {
         while (!(this.current instanceof type) && this.stateStack.length > 1)

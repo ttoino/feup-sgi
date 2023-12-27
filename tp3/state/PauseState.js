@@ -5,6 +5,7 @@ import { GameState } from "./GameState.js";
 import { MyApp } from "../MyApp.js";
 import { Picker } from "../Picker.js";
 import { PAUSE_MENU } from "../Layers.js";
+import { PlayState } from "./PlayState.js";
 
 /**
  * @abstract
@@ -34,7 +35,7 @@ export class PauseState extends GameState {
     onPick(object) {
         switch (object.name) {
             case "resume_button":
-                this.stateManager.popState();
+                this.stateManager.popUntil(PlayState);
                 break;
         }
 
