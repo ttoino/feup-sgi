@@ -1,8 +1,13 @@
 import * as THREE from "three";
 import Menu from "./Menu.js";
 import { PAUSE_MENU, UI } from "../Layers.js";
+import { Game } from "../Game.js";
 
 export class PauseMenu extends Menu {
+    /**
+     * 
+     * @param {Game} game 
+     */
     constructor(game) {
         super();
 

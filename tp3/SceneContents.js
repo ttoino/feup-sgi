@@ -7,13 +7,13 @@ import { PauseMenu } from "./menu/PauseMenu.js";
 import { Game } from "./Game.js";
 
 /**
- *  This class contains the contents of out application
+ *  This class contains the contents of our application
  */
 export class SceneContents {
     /**
-       constructs the object
-       @param {Game} game The application object
-    */
+     * Constructs the object
+     * @param {Game} game The application object
+     */
     constructor(game) {
         this.game = game;
 
@@ -30,7 +30,7 @@ export class SceneContents {
         this.background = new Background(this.game);
         this.game.scene.add(this.background);
 
-        // Main kart
+        // Mario kart
         this.kart = new Kart(this.game);
         this.game.scene.add(this.kart);
 

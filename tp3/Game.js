@@ -10,6 +10,7 @@ import { DebugInterface } from "./DebugInterface.js";
 import { FollowControls } from "./FollowControls.js";
 import { GameStateManager } from "./state/GameStateManager.js";
 import { MainMenuState } from "./state/MainMenuState.js";
+import FontManager from "./fonts/FontManager.js";
 
 export class Game {
     /**
@@ -42,6 +43,8 @@ export class Game {
         this.controls = new FollowControls(this.activeCamera, this.scene, {
             targetRotation: Math.PI,
         });
+
+        this.fontManager = new FontManager();
 
         // Init contents
         this.contents = new SceneContents(this);

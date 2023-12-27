@@ -14,3 +14,17 @@ declare module "three/addons/loaders/GLTFLoader.js" {
         constructor(manager?: THREE.LoadingManager);
     }
 }
+
+declare module "three/addons/loaders/FontLoader.js" {
+    import * as THREE from "three";
+
+    export interface Font {
+        isFont: true;
+        type: 'Font';
+        data: unknown
+    }
+
+    export class FontLoader extends THREE.Loader<Font, string> {
+        constructor(manager?: THREE.LoadingManager);
+    }
+}

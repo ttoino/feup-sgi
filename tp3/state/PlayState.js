@@ -22,11 +22,11 @@ export class PlayState extends GameState {
     init() {
         this.game.controls.target = this.kart;
 
-        document.addEventListener("keydown", this.#onKeyDown);
+        document.addEventListener("keydown", this.#onKeyDown.bind(this));
     }
 
     destroy() {
-        document.removeEventListener("keydown", this.#onKeyDown);
+        document.removeEventListener("keydown", this.#onKeyDown.bind(this));
     }
 
     /**

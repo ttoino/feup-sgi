@@ -15,9 +15,9 @@ export class GameState {
         this.updaters = [];
     }
 
-    init() {}
+    init() { }
 
-    destroy() {}
+    destroy() { }
 
     /**
      * @param {number} delta
