@@ -1,11 +1,9 @@
-/// @ts-check
+/// <reference path="./types/three/addons/loaders.d.ts"/>
 
 import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ALL_VEHICLES, HELPERS } from "./Layers.js";
 import { Game } from "./Game.js";
-
-// @ts-expect-error
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const ACCEL = 5;
 const MIN_SPEED = 0;
@@ -28,11 +26,6 @@ export class Kart extends THREE.Object3D {
 
         this.position.set(0, 1, 0);
 
-        // this.material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-        // this.geometry = new THREE.BoxGeometry(2, 2, 2);
-        // this.mesh = new THREE.Mesh(this.geometry, this.material);
-        // this.add(this.mesh);
-
         /** @type {THREE.Object3D[]} */
         this.steers = [];
         /** @type {THREE.Object3D[]} */
@@ -40,7 +33,7 @@ export class Kart extends THREE.Object3D {
 
         const loader = new GLTFLoader();
         loader.load("models/light_cycle.glb", (gltf) => {
-            // console.debug(gltf);
+            console.debug(gltf);
             this.add(gltf.scene);
 
             gltf.scene.traverse((child) => {
@@ -98,6 +91,9 @@ export class Kart extends THREE.Object3D {
         this.rotationRad = 0;
     }
 
+    /**
+     * @param {KeyboardEvent} event
+     */
     movementKeyDownController(event) {
         switch (event.key) {
             case "ArrowUp":
@@ -123,6 +119,9 @@ export class Kart extends THREE.Object3D {
         }
     }
 
+    /**
+     * @param {KeyboardEvent} event
+     */
     movementKeyUpController(event) {
         switch (event.key) {
             case "ArrowUp":

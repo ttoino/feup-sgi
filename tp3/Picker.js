@@ -1,5 +1,3 @@
-/// @ts-check
-
 import * as THREE from "three";
 import { Game } from "./Game.js";
 import { ALL, HELPERS } from "./Layers.js";
@@ -44,8 +42,6 @@ export class Picker {
     pick() {
         const intersections = this.raycaster.intersectObject(this.game.scene);
 
-        // console.debug(intersections);
-
         let found = false;
 
         for (const intersection of intersections) {
@@ -74,11 +70,17 @@ export class Picker {
         if (!found) this.picked = null;
     }
 
+    /**
+     * 
+     * @param {boolean} [cancelable=false] 
+     * 
+     * @returns {Promise<THREE.Object3D>}
+     */
     pickOnClick(cancelable = false) {
         return new Promise((resolve, reject) => {
             this.startPicking();
 
-            const clickListener = (e) => {
+            const clickListener = () => {
                 if (this.picked) {
                     this.finishPicking();
                     document.removeEventListener("click", clickListener);
@@ -106,7 +108,7 @@ export class Picker {
         if (this.picking) {
             this.pick();
 
-            this.game.outlinePass.selectedObjects = this.picked
+            this.game.renderer.outlinePass.selectedObjects = this.picked
                 ? [this.picked]
                 : [];
         }

@@ -1,6 +1,5 @@
-import * as THREE from "three";
-
 declare module "three/addons/postprocessing/EffectComposer.js" {
+    import * as THREE from "three";
     import { Pass } from "three/addons/postprocessing/Pass.js";
     import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
@@ -49,6 +48,7 @@ declare module "three/addons/postprocessing/EffectComposer.js" {
 }
 
 declare module "three/addons/postprocessing/FilmPass.js" {
+    import * as THREE from "three";
     import { Pass, FullscreenQuad } from "three/addons/postprocessing/Pass.js";
 
     export class FilmPass extends Pass {
@@ -71,6 +71,7 @@ declare module "three/addons/postprocessing/FilmPass.js" {
 }
 
 declare module "three/addons/postprocessing/OutlinePass.js" {
+    import * as THREE from "three";
     import { Pass, FullscreenQuad } from "three/addons/postprocessing/Pass.js";
 
     export class OutlinePass extends Pass {
@@ -136,6 +137,7 @@ declare module "three/addons/postprocessing/OutlinePass.js" {
 }
 
 declare module "three/addons/postprocessing/OutputPass.js" {
+    import * as THREE from "three";
     import { Pass, FullscreenQuad } from "three/addons/postprocessing/Pass.js";
 
     export class OutputPass extends Pass {
@@ -158,6 +160,8 @@ declare module "three/addons/postprocessing/OutputPass.js" {
 }
 
 declare module "three/addons/postprocessing/Pass.js" {
+    import * as THREE from "three";
+
     export abstract class Pass {
         constructor();
 
@@ -190,6 +194,7 @@ declare module "three/addons/postprocessing/Pass.js" {
 }
 
 declare module "three/addons/postprocessing/ShaderPass.js" {
+    import * as THREE from "three";
     import { Pass, FullscreenQuad } from "three/addons/postprocessing/Pass.js";
 
     export class ShaderPass extends Pass {
@@ -214,6 +219,7 @@ declare module "three/addons/postprocessing/ShaderPass.js" {
 }
 
 declare module "three/addons/postprocessing/SSAARenderPass.js" {
+    import * as THREE from "three";
     import { Pass, FullscreenQuad } from "three/addons/postprocessing/Pass.js";
 
     export class SSAARenderPass extends Pass {
@@ -249,6 +255,7 @@ declare module "three/addons/postprocessing/SSAARenderPass.js" {
 }
 
 declare module "three/addons/postprocessing/UnrealBloomPass.js" {
+    import * as THREE from "three";
     import { Pass, FullscreenQuad } from "three/addons/postprocessing/Pass.js";
 
     export class UnrealBloomPass extends Pass {

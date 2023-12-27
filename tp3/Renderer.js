@@ -20,6 +20,7 @@ export class Renderer {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor("#000000");
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -65,13 +66,12 @@ export class Renderer {
         this.composer.addPass(this.filmPass);
 
         this.outputPass = new OutputPass();
-        this.outputPass.toneMapping = THREE.ACESFilmicToneMapping;
         this.composer.addPass(this.outputPass);
     }
 
     updateCamera() {
         this.renderPass.camera = this.game.activeCamera;
-        this.outlinePass.camera = this.game.activeCamera;
+        this.outlinePass.renderCamera = this.game.activeCamera;
     }
 
     /**
