@@ -20,6 +20,9 @@ export default class Vehicle extends THREE.Object3D {
         this.acceleration = 0;
         this.maxSpeed = MAX_SPEED;
 
+        /** @type {THREE.Object3D | undefined} */
+        this.center = undefined;
+
         this.game = game
     }
 

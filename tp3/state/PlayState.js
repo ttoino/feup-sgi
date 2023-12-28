@@ -1,14 +1,14 @@
 import { GameState } from "./GameState.js";
 import { PauseState } from "./PauseState.js";
-import { Kart } from "../Kart.js";
 import { Game } from "../Game.js";
 import Powerup from "../powerup/Powerup.js";
+import Vehicle from "../vehicles/Vehicle.js";
 
 export class PlayState extends GameState {
     /**
      * @param {Game} game
-     * @param {Kart} kart
-     * @param {Kart} opponent
+     * @param {Vehicle} kart
+     * @param {Vehicle} opponent
      * @param {Powerup[]} powerups
      */
     constructor(game, kart, opponent, powerups) {

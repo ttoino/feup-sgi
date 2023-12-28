@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { Background } from "./background/Background.js";
-import { Kart } from "./Kart.js";
 import { HELPERS } from "./Layers.js";
 import { MainMenu } from "./menu/MainMenu.js";
 import { PauseMenu } from "./menu/PauseMenu.js";
@@ -9,6 +8,7 @@ import Powerup from "./powerup/Powerup.js";
 import { VehicleSelectionMenu } from "./menu/VehicleSelectionMenu.js";
 import { LightCycle } from "./vehicles/LightCycle.js";
 import { LightCar } from "./vehicles/LightCar.js";
+import Vehicle from "./vehicles/Vehicle.js";
 
 /**
  *  This class contains the contents of our application
@@ -40,6 +40,11 @@ export class SceneContents {
 
         this.car = new LightCar(this.game);
         this.game.scene.add(this.car);
+
+        /**
+         * @type {Vehicle[]}
+         */
+        this.vehicles = [this.cycle, this.car];
 
         this.kart = this.car;
 

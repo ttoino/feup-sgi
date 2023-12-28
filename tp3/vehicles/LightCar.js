@@ -20,8 +20,6 @@ export class LightCar extends Vehicle {
         this.wheels = [];
         /** @type {THREE.Object3D | undefined} */
         this.model = undefined;
-        /** @type {THREE.Object3D | undefined} */
-        this.center = undefined;
 
         this.game.modelManager.loadModel(
             `models/light_car.glb`,
