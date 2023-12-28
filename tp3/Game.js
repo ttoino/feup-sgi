@@ -55,6 +55,7 @@ export class Game {
 
         // Init gui
         this.gui = new DebugInterface(this);
+        this.gui.init();
 
         // Init renderer
         this.renderer = new Renderer(this);

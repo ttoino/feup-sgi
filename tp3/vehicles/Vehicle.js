@@ -23,6 +23,9 @@ export default class Vehicle extends THREE.Object3D {
         /** @type {THREE.Object3D | undefined} */
         this.center = undefined;
 
+        /** @type {THREE.Object3D | undefined} */
+        this.model = undefined;
+
         this.game = game
     }
 

@@ -89,7 +89,7 @@ export class LightCycle extends Vehicle {
         this.steers.forEach((steer) => {
             steer.rotation.y = THREE.MathUtils.lerp(
                 steer.rotation.y,
-                (this.rotationRad * Math.PI) / 6,
+                (this.rotationRad * Math.PI) / 18,
                 Math.min(1, delta * 4)
             );
         });

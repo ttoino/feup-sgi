@@ -31,11 +31,11 @@ export class Floor extends THREE.Mesh {
         this.light.rotateY(Math.PI);
         this.add(this.light);
 
-        const helper = new RectAreaLightHelper(this.light);
-        helper.layers.set(HELPERS);
-        helper.traverse((child) => {
-            child.layers.set(HELPERS);
-        });
-        game.scene.add(helper);
+        // const helper = new RectAreaLightHelper(this.light);
+        // helper.layers.set(HELPERS);
+        // helper.traverse((child) => {
+        //     child.layers.set(HELPERS);
+        // });
+        // game.scene.add(helper);
     }
 }

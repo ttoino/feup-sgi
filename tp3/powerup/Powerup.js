@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Game } from "../Game.js";
 import Collider from "../vehicles/Collider.js";
+import { HELPERS } from "../Layers.js";
 
 export default class Powerup extends THREE.Object3D {
     /**
@@ -17,7 +18,7 @@ export default class Powerup extends THREE.Object3D {
     }
 
     #init() {
-        const powerup = new THREE.Group();
+        const powerUp = new THREE.Group();
 
         const geometry = new THREE.CylinderGeometry(1, 1, 0.5);
         geometry.computeBoundingBox();
@@ -26,9 +27,9 @@ export default class Powerup extends THREE.Object3D {
 
         this.mesh.rotation.x = Math.PI / 2;
 
-        powerup.add(this.mesh);
+        powerUp.add(this.mesh);
 
-        this.add(powerup);
+        this.add(powerUp);
 
         // TODO: there's gotta be a simpler way o doing this
 
@@ -43,9 +44,10 @@ export default class Powerup extends THREE.Object3D {
         });
 
         this.sphereWireframe = new THREE.Mesh(
-            new THREE.SphereGeometry(this.sphereCollider.radius),
+            new THREE.SphereGeometry(this.sphereCollider.radius, 10, 10),
             new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
         )
+        this.sphereWireframe.layers.set(HELPERS);
 
         // @ts-ignore
         this.game.scene.add(this.sphereWireframe);

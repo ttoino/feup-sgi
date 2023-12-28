@@ -18,8 +18,6 @@ export class LightCar extends Vehicle {
         this.steers = [];
         /** @type {THREE.Object3D[]} */
         this.wheels = [];
-        /** @type {THREE.Object3D | undefined} */
-        this.model = undefined;
 
         this.game.modelManager.loadModel(
             `models/light_car.glb`,

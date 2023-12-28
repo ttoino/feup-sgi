@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Game } from "../Game.js";
 import Collider from "./Collider.js";
 import Vehicle from "./Vehicle.js";
+import { HELPERS } from "../Layers.js";
 
 export default class CollisionController {
     /**
@@ -14,9 +15,14 @@ export default class CollisionController {
         this.game = game
 
         this.object = object;
-        this.game.scene.add(new THREE.BoxHelper(this.object, 0xffff00));
+        // @ts-ignore
+        this.boxCollider = new THREE.Box3().setFromObject(object.model)
 
-        this.collider = new Collider({ object: new THREE.Box3().setFromObject(object), type: 'box' });
+        const colliderHelper = new THREE.Box3Helper(this.boxCollider, 0xffff00);
+        colliderHelper.layers.set(HELPERS);
+        this.game.scene.add(colliderHelper);
+
+        this.collider = new Collider({ object: this.boxCollider, type: 'box' });
         this.otherColliders = otherColliders
     }
 
@@ -27,7 +33,8 @@ export default class CollisionController {
     update(delta) {
         // TODO: update collider pos?
 
-        // this.collider.options.object.applyMatrix4(this.object.matrixWorld);
+        // @ts-ignore
+        this.boxCollider.setFromObject(this.object.model);
 
         for (const otherCollider of this.otherColliders) {
             if (this.collider.collidesWith(otherCollider)) {
