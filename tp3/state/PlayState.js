@@ -3,12 +3,12 @@ import { PauseState } from "./PauseState.js";
 import { Game } from "../Game.js";
 import Powerup from "../powerup/Powerup.js";
 import Vehicle from "../vehicles/Vehicle.js";
-import VehicleController from "../vehicles/VehicleControler.js";
+import PlayerController from "../PlayerController.js";
 
 export class PlayState extends GameState {
     /**
      * @param {Game} game
-     * @param {VehicleController} playerController
+     * @param {PlayerController} playerController
      * @param {Vehicle} opponent
      * @param {Powerup[]} powerups
      */
@@ -29,14 +29,14 @@ export class PlayState extends GameState {
         this.game.controls.target = this.playerController.vehicle.center ?? this.playerController.vehicle;
         this.game.controls.targetRotation = Math.PI;
 
-        this.playerController.installPlayerControls()
+        this.playerController.install()
 
         document.addEventListener("keydown", this.#onKeyDown.bind(this));
         document.addEventListener("keyup", this.#onKeyUp.bind(this));
     }
 
     destroy() {
-        this.playerController.removePlayerControls();
+        this.playerController.remove();
 
         document.removeEventListener("keydown", this.#onKeyDown.bind(this));
         document.removeEventListener("keyup", this.#onKeyUp.bind(this));

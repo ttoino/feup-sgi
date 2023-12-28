@@ -3,7 +3,7 @@ import { Game } from '../Game.js';
 
 export const ACCEL = 5;
 export const MIN_SPEED = 0;
-export const MAX_SPEED = 20;
+export const MAX_SPEED = 30;
 
 export default class Vehicle extends THREE.Object3D {
 
@@ -62,11 +62,11 @@ export default class Vehicle extends THREE.Object3D {
     }
 
     rotateLeft() {
-        this.rotationRad = 1;
+        this.rotationRad = 3;
     }
 
     rotateRight() {
-        this.rotationRad = -1;
+        this.rotationRad = -3;
     }
 
     resetRotation() {

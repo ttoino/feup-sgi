@@ -48,13 +48,20 @@ export class SceneContents {
 
         this.kart = this.car;
 
+        // Powerups
         this.powerups = [];
         const powerup = new Powerup(this.game);
         this.powerups.push(powerup);
         this.powerups.forEach((powerup) => {
-            powerup.position.y = 3;
+            powerup.position.y = 1.5;
             this.game.scene.add(powerup);
         });
+
+        // Obstacles
+        /**
+         * @type {THREE.Object3D[]}
+         */
+        this.obstacles = [];
 
         // Main menu UI
         this.mainMenu = new MainMenu(this.game);
