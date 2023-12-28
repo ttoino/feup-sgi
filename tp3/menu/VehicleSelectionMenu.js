@@ -39,7 +39,7 @@ export class VehicleSelectionMenu extends Menu {
                 new THREE.MeshStandardMaterial({
                     color: 0xf4af2d,
                     emissive: 0xf4af2d,
-                    emissiveIntensity: 5
+                    emissiveIntensity: 2
                 })
             );
             infoText.name = "info_text";
@@ -48,6 +48,7 @@ export class VehicleSelectionMenu extends Menu {
 
             infoText.position.x = -4.3;
             infoText.position.y = 4.5;
+            infoText.position.z = -1;
             infoText.rotation.x = -0.4;
             infoText.scale.multiplyScalar(0.5);
 

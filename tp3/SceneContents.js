@@ -7,6 +7,7 @@ import { PauseMenu } from "./menu/PauseMenu.js";
 import { Game } from "./Game.js";
 import Powerup from "./powerup/Powerup.js";
 import { VehicleSelectionMenu } from "./menu/VehicleSelectionMenu.js";
+import { LightCycle } from "./vehicles/LightCycle.js";
 
 /**
  *  This class contains the contents of our application
@@ -33,9 +34,7 @@ export class SceneContents {
         this.game.scene.add(this.background);
 
         // Mario kart
-        this.cycle = new Kart(this.game, {
-            model: "light_cycle",
-        });
+        this.cycle = new LightCycle(this.game);
         this.game.scene.add(this.cycle);
 
         this.car = new Kart(this.game, {
