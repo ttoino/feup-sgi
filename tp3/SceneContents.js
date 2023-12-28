@@ -72,7 +72,7 @@ export class SceneContents {
         this.vehicleSelectionMenu = new VehicleSelectionMenu(this.game);
         this.vehicleSelectionMenu.position.z = 150;
         this.vehicleSelectionMenu.position.x = -7;
-        this.vehicleSelectionMenu.position.y = 4;
+        this.vehicleSelectionMenu.position.y = 1;
         this.vehicleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.vehicleSelectionMenu);
     }

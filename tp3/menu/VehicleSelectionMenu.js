@@ -51,7 +51,17 @@ export class VehicleSelectionMenu extends Menu {
             infoText.rotation.x = -0.4;
             infoText.scale.multiplyScalar(0.5);
 
+            const fence = new THREE.Mesh(
+                new THREE.TorusGeometry(5, 0.5, 4, 4),
+                new THREE.MeshStandardMaterial({ color: 0xffff00 })
+            );
+            fence.rotation.x = Math.PI / 2;
+            fence.rotation.z = Math.PI / 4;
+
+            fence.scale.x = fence.scale.y = 2;
+
             vehicleSelectionMenu.add(infoText);
+            vehicleSelectionMenu.add(fence);
 
             this.add(vehicleSelectionMenu);
         })
