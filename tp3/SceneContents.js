@@ -36,10 +36,10 @@ export class SceneContents {
 
         // Mario kart
         this.cycle = new LightCycle(this.game);
-        this.game.scene.add(this.cycle);
+        // this.game.scene.add(this.cycle);
 
         this.car = new LightCar(this.game);
-        this.game.scene.add(this.car);
+        // this.game.scene.add(this.car);
 
         /**
          * @type {Vehicle[]}

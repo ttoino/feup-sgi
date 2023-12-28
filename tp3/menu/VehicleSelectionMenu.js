@@ -44,7 +44,6 @@ export class VehicleSelectionMenu extends Menu {
             );
             infoText.name = "info_text";
             infoText.layers.enable(UI);
-            infoText.layers.enable(VEHICLE_SELECTION_MENU)
 
             infoText.position.x = -4.3;
             infoText.position.y = 4.5;
@@ -52,19 +51,25 @@ export class VehicleSelectionMenu extends Menu {
             infoText.rotation.x = -0.4;
             infoText.scale.multiplyScalar(0.5);
 
-            const fence = new THREE.Mesh(
-                new THREE.TorusGeometry(5, 0.5, 4, 4),
-                new THREE.MeshStandardMaterial({ color: 0xffff00 })
-            );
-            fence.rotation.x = Math.PI / 2;
-            fence.rotation.z = Math.PI / 4;
-
-            fence.scale.x = fence.scale.y = 2;
-
             vehicleSelectionMenu.add(infoText);
-            vehicleSelectionMenu.add(fence);
 
             this.add(vehicleSelectionMenu);
+
+            const baseX = -1;
+            for (let i = 0; i < this.game.contents.vehicles.length; i++) {
+
+                const vehicle = this.game.contents.vehicles[i];
+
+                vehicle.position.x = baseX + i * 3;
+                vehicle.position.y = 0;
+                vehicle.position.z = 0;
+                vehicle.rotation.x = 0;
+                vehicle.rotation.y = 0;
+                vehicle.rotation.z = 0;
+                vehicle.scale.x = vehicle.scale.y = vehicle.scale.z = 1;
+                vehicle.layers.enable(VEHICLE_SELECTION_MENU);
+                this.add(vehicle);
+            }
         })
     }
 }

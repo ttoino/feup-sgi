@@ -3,6 +3,7 @@ import { MenuState } from "./MenuState.js";
 import { VEHICLE_SELECTION_MENU } from "../Layers.js";
 import { PlayState } from "./PlayState.js";
 import VehicleController from "../vehicles/VehicleControler.js";
+import Vehicle from "../vehicles/Vehicle.js";
 
 export default class VehicleSelectionState extends MenuState {
 
@@ -13,7 +14,14 @@ export default class VehicleSelectionState extends MenuState {
     constructor(game) {
         super(game, game.contents.vehicleSelectionMenu, VEHICLE_SELECTION_MENU);
 
+        /**
+         * @type {Vehicle | undefined}
+         */
         this.kart = undefined;
+
+        /**
+         * @type {Vehicle | undefined}
+         */
         this.opponent = undefined;
     }
 
@@ -23,17 +31,35 @@ export default class VehicleSelectionState extends MenuState {
      * @param {THREE.Object3D} object
      */
     onPick(object) {
-        switch (object.name) {
-            case "info_text":
-                this.stateManager.pushState(
-                    new PlayState(
-                        this.game,
-                        new VehicleController(this.game, this.game.contents.kart),
-                        this.game.contents.kart,
-                        this.game.contents.powerups
-                    )
-                );
-                return;
+
+        // TODO: improve this... A LOT
+
+        if (this.kart === undefined) {
+            // @ts-ignore
+            this.kart = object;
+
+            this.menuObject.remove(object);
+            this.game.scene.add(object);
+
+            return;
+        } else if (this.opponent === undefined) {
+            // @ts-ignore
+            this.opponent = object;
+            this.menuObject.remove(object);
+            this.game.scene.add(object);
+
+            this.stateManager.pushState(
+                new PlayState(
+                    this.game,
+                    new VehicleController(this.game, this.kart),
+                    // @ts-ignore
+                    this.opponent,
+                    this.game.contents.powerups
+                )
+            );
+            return;
+        } else {
+            console.error("HUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHhh...")
         }
     }
 }
