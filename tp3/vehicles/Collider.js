@@ -1,5 +1,7 @@
 import { Box3, Plane, Sphere } from "three"
 
+// TODO: implement better abstractions
+
 export default class Collider {
     /**
     *

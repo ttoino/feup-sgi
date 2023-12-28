@@ -30,17 +30,25 @@ export default class Powerup extends THREE.Object3D {
 
         this.add(powerup);
 
-        this.boxCollider = new THREE.Box3()
+        // TODO: there's gotta be a simpler way o doing this
 
+
+        this.sphereCollider = new THREE.Sphere();
         // @ts-ignore
-        this.boxCollider.copy(this.mesh.geometry.boundingBox).applyMatrix4(this.matrixWorld);
+        this.mesh.geometry.boundingBox.getBoundingSphere(this.sphereCollider).applyMatrix4(this.matrixWorld)
 
         this.collider = new Collider({
-            object: this.boxCollider,
-            type: "box",
+            object: this.sphereCollider,
+            type: "sphere",
         });
 
-        this.game.scene.add(new THREE.Box3Helper(this.boxCollider, 0xffff00));
+        this.sphereWireframe = new THREE.Mesh(
+            new THREE.SphereGeometry(this.sphereCollider.radius),
+            new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
+        )
+
+        // @ts-ignore
+        this.game.scene.add(this.sphereWireframe);
     }
 
     /**
@@ -53,7 +61,10 @@ export default class Powerup extends THREE.Object3D {
         this.rotateOnAxis(new THREE.Vector3(0, 1, 0), delta * 0.5);
 
         // @ts-ignore
-        this.boxCollider.copy(this.mesh.geometry.boundingBox).applyMatrix4(this.mesh.matrixWorld);
+        this.mesh.geometry.boundingBox?.getBoundingSphere(this.sphereCollider).applyMatrix4(this.matrixWorld)
+
+        // @ts-ignore
+        this.sphereWireframe.position.y = this.sphereCollider.center.y;
     }
 
     onCollision() {
