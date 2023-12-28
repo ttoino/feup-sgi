@@ -6,6 +6,7 @@ import { MainMenu } from "./menu/MainMenu.js";
 import { PauseMenu } from "./menu/PauseMenu.js";
 import { Game } from "./Game.js";
 import Powerup from "./powerup/Powerup.js";
+import { VehicleSelectionMenu } from "./menu/VehicleSelectionMenu.js";
 
 /**
  *  This class contains the contents of our application
@@ -67,5 +68,12 @@ export class SceneContents {
         this.pauseMenu.position.y = 140;
         this.pauseMenu.rotateY(Math.PI);
         this.game.scene.add(this.pauseMenu);
+
+        this.vehicleSelectionMenu = new VehicleSelectionMenu(this.game);
+        this.vehicleSelectionMenu.position.z = 150;
+        this.vehicleSelectionMenu.position.x = -7;
+        this.vehicleSelectionMenu.position.y = 4;
+        this.vehicleSelectionMenu.rotateY(Math.PI);
+        this.game.scene.add(this.vehicleSelectionMenu);
     }
 }

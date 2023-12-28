@@ -2,6 +2,7 @@ import { Game } from "../Game.js";
 import { MAIN_MENU } from "../Layers.js";
 import { PlayState } from "./PlayState.js";
 import { MenuState } from "./MenuState.js";
+import VehicleSelectionState from "./VehicleSelectionState.js";
 
 export class MainMenuState extends MenuState {
     /**
@@ -20,12 +21,7 @@ export class MainMenuState extends MenuState {
         switch (object.name) {
             case "play_button":
                 this.stateManager.pushState(
-                    new PlayState(
-                        this.game,
-                        this.game.contents.kart,
-                        this.game.contents.kart,
-                        this.game.contents.powerups
-                    )
+                    new VehicleSelectionState(this.game),
                 );
                 return;
             case "exit_button":

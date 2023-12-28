@@ -20,6 +20,10 @@ export class FontManager {
      * @param {(font: import('three/addons/loaders/FontLoader.js').Font) => void} onFontLoaded
      */
     loadFont(fontPath, onFontLoaded) {
+
+        console.log(`Loading font at ${fontPath}`);
+        console.log(this.fonts, this.fonts[fontPath], fontPath);
+
         if (this.fonts[fontPath]) {
             onFontLoaded(this.fonts[fontPath]);
             return;

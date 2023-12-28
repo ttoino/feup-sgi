@@ -33,6 +33,9 @@ export class PlayState extends GameState {
     }
 
     destroy() {
+
+        console.log("destroying play state");
+
         document.removeEventListener("keydown", this.#onKeyDown.bind(this));
         document.removeEventListener("keyup", this.#onKeyUp.bind(this));
     }

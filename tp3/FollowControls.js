@@ -52,8 +52,6 @@ export class FollowControls {
             "XZY"
         );
 
-        console.debug(targetQuaternion, targetRotation.y);
-
         const cylindrical = new THREE.Cylindrical().setFromVector3(
             this.camera.position.clone().add(targetPosition.clone().negate())
         );

@@ -39,7 +39,6 @@ export class Kart extends THREE.Object3D {
         this.game.modelManager.loadModel(
             `models/${params.model}.glb`,
             (gltf) => {
-                console.debug(gltf);
                 this.model = gltf;
                 this.add(gltf);
 
