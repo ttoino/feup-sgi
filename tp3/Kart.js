@@ -84,7 +84,7 @@ export class Kart extends THREE.Object3D {
         this.helper.layers.set(HELPERS);
         this.add(this.helper);
 
-        this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128, {
+        this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget(1024, {
             type: THREE.FloatType,
         });
         this.cubeCamera = new THREE.CubeCamera(
