@@ -3,38 +3,40 @@ import { PauseState } from "./PauseState.js";
 import { Game } from "../Game.js";
 import Powerup from "../powerup/Powerup.js";
 import Vehicle from "../vehicles/Vehicle.js";
+import VehicleController from "../vehicles/VehicleControler.js";
 
 export class PlayState extends GameState {
     /**
      * @param {Game} game
-     * @param {Vehicle} kart
+     * @param {VehicleController} playerController
      * @param {Vehicle} opponent
      * @param {Powerup[]} powerups
      */
-    constructor(game, kart, opponent, powerups) {
+    constructor(game, playerController, opponent, powerups) {
         super(game);
 
-        this.kart = kart;
+        this.playerController = playerController;
         this.opponent = opponent;
         this.powerups = powerups ?? [];
 
-        this.updaters.push(this.kart);
+        this.updaters.push(this.playerController);
         this.updaters.push(this.opponent);
 
         this.updaters.push(...this.powerups);
     }
 
     init() {
-        this.game.controls.target = this.kart.center ?? this.kart;
+        this.game.controls.target = this.playerController.vehicle.center ?? this.playerController.vehicle;
         this.game.controls.targetRotation = Math.PI;
+
+        this.playerController.installPlayerControls()
 
         document.addEventListener("keydown", this.#onKeyDown.bind(this));
         document.addEventListener("keyup", this.#onKeyUp.bind(this));
     }
 
     destroy() {
-
-        console.log("destroying play state");
+        this.playerController.removePlayerControls();
 
         document.removeEventListener("keydown", this.#onKeyDown.bind(this));
         document.removeEventListener("keyup", this.#onKeyUp.bind(this));

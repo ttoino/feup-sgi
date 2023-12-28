@@ -68,67 +68,6 @@ export class LightCycle extends Vehicle {
             this.cubeRenderTarget
         );
         this.add(this.cubeCamera);
-
-        document.addEventListener(
-            "keydown",
-            this.movementKeyDownController.bind(this)
-        );
-        document.addEventListener(
-            "keyup",
-            this.movementKeyUpController.bind(this)
-        );
-    }
-
-    /**
-     * @param {KeyboardEvent} event
-     */
-    movementKeyDownController(event) {
-        switch (event.key) {
-            case "ArrowUp":
-            case "w":
-            case "W":
-                this.speedUp();
-                break;
-            case "ArrowDown":
-            case "s":
-            case "S":
-                this.speedDown();
-                break;
-            case "ArrowLeft":
-            case "a":
-            case "A":
-                this.rotateLeft();
-                break;
-            case "ArrowRight":
-            case "d":
-            case "D":
-                this.rotateRight();
-                break;
-        }
-    }
-
-    /**
-     * @param {KeyboardEvent} event
-     */
-    movementKeyUpController(event) {
-        switch (event.key) {
-            case "ArrowUp":
-            case "w":
-            case "W":
-            case "ArrowDown":
-            case "s":
-            case "S":
-                this.resetAcceleration();
-                break;
-            case "ArrowLeft":
-            case "a":
-            case "A":
-            case "ArrowRight":
-            case "d":
-            case "D":
-                this.resetRotation();
-                break;
-        }
     }
 
     /**

@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { Game } from '../Game.js';
 
-const ACCEL = 5;
-const MIN_SPEED = 0;
-const MAX_SPEED = 20;
+export const ACCEL = 5;
+export const MIN_SPEED = 0;
+export const MAX_SPEED = 20;
 
 export default class Vehicle extends THREE.Object3D {
 
@@ -49,12 +49,12 @@ export default class Vehicle extends THREE.Object3D {
             this.forwardSpeed * Math.cos(this.rotation.y) * delta;
     }
 
-    speedUp() {
-        this.acceleration = ACCEL;
+    speedUp(amount = ACCEL) {
+        this.acceleration = amount;
     }
 
-    speedDown() {
-        this.acceleration = -ACCEL;
+    speedDown(amount = ACCEL) {
+        this.acceleration = -amount;
     }
 
     resetAcceleration() {

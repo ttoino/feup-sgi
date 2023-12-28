@@ -2,6 +2,7 @@ import { Game } from "../Game.js";
 import { MenuState } from "./MenuState.js";
 import { VEHICLE_SELECTION_MENU } from "../Layers.js";
 import { PlayState } from "./PlayState.js";
+import VehicleController from "../vehicles/VehicleControler.js";
 
 export default class VehicleSelectionState extends MenuState {
 
@@ -27,7 +28,7 @@ export default class VehicleSelectionState extends MenuState {
                 this.stateManager.pushState(
                     new PlayState(
                         this.game,
-                        this.game.contents.kart,
+                        new VehicleController(this.game, this.game.contents.kart),
                         this.game.contents.kart,
                         this.game.contents.powerups
                     )
