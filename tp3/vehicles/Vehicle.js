@@ -33,8 +33,11 @@ export default class Vehicle extends THREE.Object3D {
             this.maxSpeed
         );
 
-        // TODO: Kart rotation should be based on the speed
-        this.rotation.y += this.rotationRad * delta;
+        this.rotation.y = THREE.MathUtils.lerp(
+            this.rotation.y,
+            this.rotation.y + this.rotationRad * delta * this.forwardSpeed * .1,
+            Math.min(1, delta * 4)
+        );
 
         // TODO: Max speed, maybe using drag
         this.position.x +=

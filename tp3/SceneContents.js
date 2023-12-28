@@ -8,6 +8,7 @@ import { Game } from "./Game.js";
 import Powerup from "./powerup/Powerup.js";
 import { VehicleSelectionMenu } from "./menu/VehicleSelectionMenu.js";
 import { LightCycle } from "./vehicles/LightCycle.js";
+import { LightCar } from "./vehicles/LightCar.js";
 
 /**
  *  This class contains the contents of our application
@@ -37,9 +38,7 @@ export class SceneContents {
         this.cycle = new LightCycle(this.game);
         this.game.scene.add(this.cycle);
 
-        this.car = new Kart(this.game, {
-            model: "light_car",
-        });
+        this.car = new LightCar(this.game);
         this.game.scene.add(this.car);
 
         this.kart = this.car;
