@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import * as MathUtils from "./MathUtils.js";
 
 export class FollowControls {
     /**
@@ -40,23 +41,43 @@ export class FollowControls {
      * @param {number} delta
      */
     update(delta) {
-        const targetPos = new THREE.Vector3()
-            .setFromCylindricalCoords(
-                this.targetDistance,
-                this.targetRotation + this.target.rotation.y,
-                this.targetHeight
-            )
-            .add(this.target.position);
-        
-        const prevPos = this.camera.position.clone();
-        this.camera.position.set(targetPos.x, targetPos.y, targetPos.z);
-        const prevRotation = this.camera.quaternion.clone();
-        this.camera.lookAt(this.target.position);
-        
-        this.camera.position.lerp(
-            prevPos,
-            1 - Math.min(1, this.positionSpeed * delta)
+        const targetPosition = this.target.getWorldPosition(
+            new THREE.Vector3()
         );
+        const targetQuaternion = this.target.getWorldQuaternion(
+            new THREE.Quaternion()
+        );
+        const targetRotation = new THREE.Euler().setFromQuaternion(
+            targetQuaternion,
+            "XZY"
+        );
+
+        console.debug(targetQuaternion, targetRotation.y);
+
+        const cylindrical = new THREE.Cylindrical().setFromVector3(
+            this.camera.position.clone().add(targetPosition.clone().negate())
+        );
+        const targetCylindrical = new THREE.Cylindrical(
+            this.targetDistance,
+            this.targetRotation + targetRotation.y,
+            this.targetHeight
+        );
+        const lerpedCylindrical = MathUtils.clerp(
+            cylindrical,
+            targetCylindrical,
+            this.positionSpeed * delta,
+            this.rotationSpeed * delta
+        );
+
+        this.camera.position
+            .setFromCylindrical(targetCylindrical)
+            .add(targetPosition);
+        const prevRotation = this.camera.quaternion.clone();
+        this.camera.lookAt(targetPosition);
+
+        this.camera.position
+            .setFromCylindrical(lerpedCylindrical)
+            .add(targetPosition);
         this.camera.quaternion.slerp(
             prevRotation,
             1 - Math.min(1, this.rotationSpeed * delta)

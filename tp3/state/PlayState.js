@@ -25,13 +25,16 @@ export class PlayState extends GameState {
     }
 
     init() {
-        this.game.controls.target = this.kart;
+        this.game.controls.target = this.kart.center ?? this.kart;
+        this.game.controls.targetRotation = Math.PI;
 
         document.addEventListener("keydown", this.#onKeyDown.bind(this));
+        document.addEventListener("keyup", this.#onKeyUp.bind(this));
     }
 
     destroy() {
         document.removeEventListener("keydown", this.#onKeyDown.bind(this));
+        document.removeEventListener("keyup", this.#onKeyUp.bind(this));
     }
 
     /**
@@ -40,6 +43,17 @@ export class PlayState extends GameState {
     #onKeyDown(event) {
         if (event.key === "p" || event.key === "P") {
             this.stateManager.pushState(new PauseState(this.game));
+        } else if (event.key === "Shift") {
+            this.game.controls.targetRotation = 0;
+        }
+    }
+
+    /**
+     * @param {KeyboardEvent} event
+     */
+    #onKeyUp(event) {
+        if (event.key === "Shift") {
+            this.game.controls.targetRotation = Math.PI;
         }
     }
 }

@@ -27,26 +27,41 @@ export class Kart extends THREE.Object3D {
         this.rotationSpeedRadS = 0;
         this.rotationRad = 0;
 
-        this.position.set(0, 1, 0);
-
         /** @type {THREE.Object3D[]} */
         this.steers = [];
         /** @type {THREE.Object3D[]} */
         this.wheels = [];
+        /** @type {THREE.Object3D | undefined} */
+        this.model = undefined;
+        /** @type {THREE.Object3D | undefined} */
+        this.center = undefined;
 
-        const loader = new GLTFLoader();
-        loader.load(`models/${params.model}.glb`, (gltf) => {
-            console.debug(gltf);
-            this.add(gltf.scene);
+        this.game.modelManager.loadModel(
+            `models/${params.model}.glb`,
+            (gltf) => {
+                console.debug(gltf);
+                this.model = gltf;
+                this.add(gltf);
 
-            gltf.scene.traverse((child) => {
-                if (child.name.includes("steer")) {
-                    this.steers.push(child);
-                } else if (child.name.includes("wheel")) {
-                    this.wheels.push(child);
-                }
-            });
-        });
+                gltf.traverse((child) => {
+                    if (child.name.includes("steer")) {
+                        this.steers.push(child);
+                    } else if (child.name.includes("wheel")) {
+                        this.wheels.push(child);
+                    } else if (child.name.includes("center")) {
+                        this.center = child;
+                        this.cubeCamera.position.copy(child.position);
+                    }
+
+                    if (
+                        child instanceof THREE.Mesh &&
+                        child.material instanceof THREE.MeshStandardMaterial
+                    ) {
+                        child.material.envMap = this.cubeRenderTarget.texture;
+                    }
+                });
+            }
+        );
 
         this.layers.enable(ALL_VEHICLES);
 
@@ -68,6 +83,16 @@ export class Kart extends THREE.Object3D {
         );
         this.helper.layers.set(HELPERS);
         this.add(this.helper);
+
+        this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128, {
+            type: THREE.FloatType,
+        });
+        this.cubeCamera = new THREE.CubeCamera(
+            0.1,
+            1000,
+            this.cubeRenderTarget
+        );
+        this.add(this.cubeCamera);
     }
 
     #speedUp() {
@@ -185,5 +210,9 @@ export class Kart extends THREE.Object3D {
         this.wheels.forEach((wheel) => {
             wheel.rotation.x += this.forwardSpeed * delta;
         });
+
+        if (this.model) this.model.visible = false;
+        this.cubeCamera.update(this.game.renderer.renderer, this.game.scene);
+        if (this.model) this.model.visible = true;
     }
 }

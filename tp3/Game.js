@@ -10,7 +10,8 @@ import { DebugInterface } from "./DebugInterface.js";
 import { FollowControls } from "./FollowControls.js";
 import { GameStateManager } from "./state/GameStateManager.js";
 import { MainMenuState } from "./state/MainMenuState.js";
-import FontManager from "./fonts/FontManager.js";
+import { FontManager } from "./fonts/FontManager.js";
+import { ModelManager } from "./models/ModelManager.js";
 
 export class Game {
     /**
@@ -40,11 +41,10 @@ export class Game {
         this._activeCamera = this.cameras.default;
 
         // Init controls
-        this.controls = new FollowControls(this.activeCamera, this.scene, {
-            targetRotation: Math.PI,
-        });
+        this.controls = new FollowControls(this.activeCamera, this.scene);
 
         this.fontManager = new FontManager();
+        this.modelManager = new ModelManager();
 
         // Init contents
         this.contents = new SceneContents(this);
