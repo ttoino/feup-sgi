@@ -33,6 +33,9 @@ export default class SphereCollider extends Collider {
      * @param {number} delta 
      */
     update(delta) {
+        // We are working under the assumption that, if something gets a spherical collider,
+        // chances are they are somewhat spherical and wont change significantly in size or shape.
+
         this.collider.center.copy(this.object.position);
 
         this.sphereWireframe.position.copy(this.collider.center);

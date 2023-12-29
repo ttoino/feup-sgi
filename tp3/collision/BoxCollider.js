@@ -27,7 +27,7 @@ export default class BoxCollider extends Collider {
      * @param {number} delta 
      */
     update(delta) {
-        // no need to apply world matrix since setFromObject apparently already does that.
+        // Since this collider is an AABB, we need to call setFromObject. Apparently it already handles positioning for us so thats cool.
         this.collider.setFromObject(this.object)
     }
 

@@ -5,6 +5,7 @@ import { HELPERS } from "../Layers.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import SphereCollider from "../collision/SphereCollider.js";
 
+export const PICKUP_INTERVAL = 5000;
 export default class Powerup extends THREE.Object3D {
     /**
      * @param {Game} game

@@ -4,11 +4,11 @@ import { HELPERS } from "./Layers.js";
 import { MainMenu } from "./menu/MainMenu.js";
 import { PauseMenu } from "./menu/PauseMenu.js";
 import { Game } from "./Game.js";
-import Powerup from "./powerup/Powerup.js";
 import { VehicleSelectionMenu } from "./menu/VehicleSelectionMenu.js";
 import { LightCycle } from "./vehicles/LightCycle.js";
 import { LightCar } from "./vehicles/LightCar.js";
 import Vehicle from "./vehicles/Vehicle.js";
+import MaxSpeedPowerup from "./powerup/MaxSpeedPowerup.js";
 
 /**
  *  This class contains the contents of our application
@@ -50,7 +50,7 @@ export class SceneContents {
 
         // Powerups
         this.powerups = [];
-        const powerup = new Powerup(this.game);
+        const powerup = new MaxSpeedPowerup(this.game);
         powerup.position.x = 50;
         powerup.position.z = 50;
         this.powerups.push(powerup);

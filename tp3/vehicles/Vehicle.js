@@ -30,12 +30,12 @@ export default class Vehicle extends THREE.Object3D {
     }
 
     /**
-     * Applies an effect to this kart's max speed.
+     * Applies an effect to this vehicle.
      *
-     * @param {(previousMaxSpeed: number) => number} effect
+     * @param {(vehicle: this) => void} effect
      */
-    applySpeedEffect(effect) {
-        this.maxSpeed = effect(this.maxSpeed);
+    applyEffect(effect) {
+        effect(this);
     }
 
     /**
