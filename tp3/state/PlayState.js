@@ -20,6 +20,7 @@ export class PlayState extends GameState {
         this.updaters.push(this.opponent);
 
         this.updaters.push(...this.game.contents.powerups);
+        this.updaters.push(...this.game.contents.obstacles);
     }
 
     init() {

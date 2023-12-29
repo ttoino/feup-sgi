@@ -9,6 +9,7 @@ import { LightCycle } from "./vehicles/LightCycle.js";
 import { LightCar } from "./vehicles/LightCar.js";
 import Vehicle from "./vehicles/Vehicle.js";
 import MaxSpeedPowerup from "./track/items/powerup/MaxSpeedPowerup.js";
+import MaxSpeedObstacle from "./track/items/obstacle/MaxSpeedObstacle.js";
 
 /**
  *  This class contains the contents of our application
@@ -60,10 +61,15 @@ export class SceneContents {
         });
 
         // Obstacles
-        /**
-         * @type {THREE.Object3D[]}
-         */
         this.obstacles = [];
+        const obstacle = new MaxSpeedObstacle(this.game);
+        obstacle.position.x = 53;
+        obstacle.position.z = 53;
+        this.obstacles.push(obstacle);
+        this.obstacles.forEach((obstacle) => {
+            obstacle.position.y = 1.5;
+            this.game.scene.add(obstacle);
+        });
 
         // Main menu UI
         this.mainMenu = new MainMenu(this.game);

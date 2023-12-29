@@ -1,10 +1,10 @@
 import { Game } from "../../../Game.js";
 import Vehicle from "../../../vehicles/Vehicle.js";
-import Powerup, { PICKUP_INTERVAL } from "./Obstacle.js";
+import Obstacle, { PICKUP_INTERVAL } from "./Obstacle.js";
 
-const POWERUP_DURATION = 5000;
+const DEBUFF_DURATION = 5000;
 
-export default class MaxSpeedPowerup extends Powerup {
+export default class MaxSpeedObstacle extends Obstacle {
 
     /**
      * 
@@ -27,15 +27,15 @@ export default class MaxSpeedPowerup extends Powerup {
         this.pickedUp = true;
         setTimeout(() => this.pickedUp = false, PICKUP_INTERVAL);
 
-        this.displayPowerupTime(POWERUP_DURATION, true);
+        this.displayEffectTime(DEBUFF_DURATION);
 
         vehicle.applyEffect((vehicle) => {
             const currentMaxSpeed = vehicle.maxSpeed;
-            vehicle.maxSpeed *= 1.5;
+            vehicle.maxSpeed *= 0.7;
 
             setTimeout(() => {
                 vehicle.maxSpeed = currentMaxSpeed
-            }, POWERUP_DURATION);
+            }, DEBUFF_DURATION);
         })
     }
 }
