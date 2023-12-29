@@ -65,7 +65,6 @@ export default class VehicleSelectionState extends MenuState {
                     playerController,
                     // @ts-ignore
                     this.opponent,
-                    this.game.contents.powerups
                 )
             );
             return;

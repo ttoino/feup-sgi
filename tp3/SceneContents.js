@@ -8,7 +8,7 @@ import { VehicleSelectionMenu } from "./menu/VehicleSelectionMenu.js";
 import { LightCycle } from "./vehicles/LightCycle.js";
 import { LightCar } from "./vehicles/LightCar.js";
 import Vehicle from "./vehicles/Vehicle.js";
-import MaxSpeedPowerup from "./powerup/MaxSpeedPowerup.js";
+import MaxSpeedPowerup from "./track/items/powerup/MaxSpeedPowerup.js";
 
 /**
  *  This class contains the contents of our application

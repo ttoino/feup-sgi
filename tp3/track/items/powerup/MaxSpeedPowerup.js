@@ -1,5 +1,5 @@
-import { Game } from "../Game.js";
-import Vehicle from "../vehicles/Vehicle.js";
+import { Game } from "../../../Game.js";
+import Vehicle from "../../../vehicles/Vehicle.js";
 import Powerup, { PICKUP_INTERVAL } from "./Powerup.js";
 
 const POWERUP_DURATION = 5000;

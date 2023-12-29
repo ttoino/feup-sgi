@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
-import Vehicle from "../vehicles/Vehicle.js";
-import SphereCollider from "../collision/SphereCollider.js";
+import { Game } from "../../../Game.js";
+import Vehicle from "../../../vehicles/Vehicle.js";
+import SphereCollider from "../../../collision/SphereCollider.js";
 
 export const PICKUP_INTERVAL = 5000;
 export default class Powerup extends THREE.Object3D {
@@ -60,16 +60,14 @@ export default class Powerup extends THREE.Object3D {
 
         const timeLabelValue = document.createElement("span");
         timeLabelValue.classList.add("value");
-        timeLabelValue.innerText = `${maxTime / 1000}s`;
+        timeLabelValue.innerText = `${(maxTime / 1000).toFixed(2)}s`;
 
-        const labelSeconds = document.createTextNode('s')
 
         const progressElement = document.createElement("div");
         progressElement.classList.add("progress", `${buff ? '' : 'de'}buff`);
         progressElement.style.width = '100%';
 
         timeLabel.appendChild(timeLabelValue);
-        timeLabel.appendChild(labelSeconds);
 
         effectElement.appendChild(timeLabel);
         effectElement.appendChild(progressElement);

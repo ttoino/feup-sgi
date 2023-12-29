@@ -1,7 +1,6 @@
 import { GameState } from "./GameState.js";
 import { PauseState } from "./PauseState.js";
 import { Game } from "../Game.js";
-import Powerup from "../powerup/Powerup.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import PlayerController from "../PlayerController.js";
 
@@ -10,19 +9,17 @@ export class PlayState extends GameState {
      * @param {Game} game
      * @param {PlayerController} playerController
      * @param {Vehicle} opponent
-     * @param {Powerup[]} powerups
      */
-    constructor(game, playerController, opponent, powerups) {
+    constructor(game, playerController, opponent) {
         super(game);
 
         this.playerController = playerController;
         this.opponent = opponent;
-        this.powerups = powerups ?? [];
 
         this.updaters.push(this.playerController);
         this.updaters.push(this.opponent);
 
-        this.updaters.push(...this.powerups);
+        this.updaters.push(...this.game.contents.powerups);
     }
 
     init() {
