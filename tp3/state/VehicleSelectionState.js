@@ -5,7 +5,7 @@ import { PlayState } from "./PlayState.js";
 import VehicleController from "../vehicles/VehicleController.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import PlayerController from "../PlayerController.js";
-import CollisionController from "../vehicles/CollisionController.js";
+import CollisionController from "../collision/CollisionController.js";
 
 export default class VehicleSelectionState extends MenuState {
 

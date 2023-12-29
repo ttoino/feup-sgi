@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import { Game } from "../Game.js";
-import Collider from "../vehicles/Collider.js";
+import Collider from "../collision/Collider.js";
 import { HELPERS } from "../Layers.js";
 import Vehicle from "../vehicles/Vehicle.js";
+import SphereCollider from "../collision/SphereCollider.js";
 
 export default class Powerup extends THREE.Object3D {
     /**
@@ -32,26 +33,7 @@ export default class Powerup extends THREE.Object3D {
 
         this.add(powerUp);
 
-        // TODO: there's gotta be a simpler way o doing this
-
-
-        this.sphereCollider = new THREE.Sphere();
-        // @ts-ignore
-        this.mesh.geometry.boundingBox.getBoundingSphere(this.sphereCollider).applyMatrix4(this.matrixWorld)
-
-        this.collider = new Collider({
-            object: this.sphereCollider,
-            type: "sphere",
-        }, this.onCollision);
-
-        this.sphereWireframe = new THREE.Mesh(
-            new THREE.SphereGeometry(this.sphereCollider.radius, 10, 10),
-            new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-        )
-        this.sphereWireframe.layers.set(HELPERS);
-
-        // @ts-ignore
-        this.game.scene.add(this.sphereWireframe);
+        this.collider = new SphereCollider(this.game, this, this.onCollision);
     }
 
     /**
@@ -63,11 +45,7 @@ export default class Powerup extends THREE.Object3D {
         this.position.y += Math.sin(this.time * 2) * 0.125;
         this.rotateOnAxis(new THREE.Vector3(0, 1, 0), delta * 0.5);
 
-        // @ts-ignore
-        this.mesh.geometry.boundingBox?.getBoundingSphere(this.sphereCollider).applyMatrix4(this.matrixWorld)
-
-        // @ts-ignore
-        this.sphereWireframe.position.y = this.sphereCollider.center.y;
+        this.collider?.update(delta)
     }
 
     /**

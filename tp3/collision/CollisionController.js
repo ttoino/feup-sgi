@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import { Game } from "../Game.js";
 import Collider from "./Collider.js";
-import Vehicle from "./Vehicle.js";
+import Vehicle from "../vehicles/Vehicle.js";
 import { HELPERS } from "../Layers.js";
+import BoxCollider from "./BoxCollider.js";
 
 export default class CollisionController {
     /**
@@ -13,17 +14,14 @@ export default class CollisionController {
      */
     constructor(game, object, otherColliders) {
         this.game = game
+        this.otherColliders = otherColliders ?? [];
 
         this.object = object;
         // @ts-ignore
         this.boxCollider = new THREE.Box3().setFromObject(object.model)
 
-        const colliderHelper = new THREE.Box3Helper(this.boxCollider, 0xffff00);
-        colliderHelper.layers.set(HELPERS);
-        this.game.scene.add(colliderHelper);
-
-        this.collider = new Collider({ object: this.boxCollider, type: 'box' }, (other) => void 0);
-        this.otherColliders = otherColliders
+        // @ts-ignore
+        this.collider = new BoxCollider(game, object.model, (other) => void 0)
     }
 
     /**
@@ -31,13 +29,14 @@ export default class CollisionController {
      * @param {number} delta 
      */
     update(delta) {
+
+        this.collider.update(delta);
+
         // @ts-ignore
         this.boxCollider.setFromObject(this.object.model);
 
         for (const otherCollider of this.otherColliders) {
             if (this.collider.collidesWith(otherCollider)) {
-                console.log("WAHHHH", otherCollider, this.collider)
-
                 otherCollider.onCollision(this.object)
 
                 // We are not colliding with more than one object

@@ -1,5 +1,5 @@
 import { Game } from "./Game.js";
-import CollisionController from "./vehicles/CollisionController.js";
+import CollisionController from "./collision/CollisionController.js";
 import VehicleController from "./vehicles/VehicleController.js";
 
 export default class PlayerController {
