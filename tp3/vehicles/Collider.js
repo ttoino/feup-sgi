@@ -1,4 +1,5 @@
 import { Box3, Plane, Sphere } from "three"
+import Vehicle from "./Vehicle.js"
 
 // TODO: implement better abstractions
 
@@ -16,11 +17,14 @@ export default class Collider {
     *   type: 'sphere',
     *   object: Sphere,
     * }} options
+    * @param {(other: Vehicle) => void} handler
     */
-    constructor(options) {
+    constructor(options, handler) {
 
         // TODO: better type magic
         this.options = options
+
+        this.handler = handler
     }
 
     /**
@@ -40,5 +44,14 @@ export default class Collider {
                 return this.options.object.intersectsPlane(other.options.object)
             }
         }
+    }
+
+    // TODO: this typing is awkward
+    /**
+     * 
+     * @param {Vehicle} other 
+     */
+    onCollision(other) {
+        this.handler(other)
     }
 }

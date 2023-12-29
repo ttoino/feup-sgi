@@ -69,15 +69,6 @@ export class LightCar extends Vehicle {
     }
 
     /**
-     * Applies an effect to this kart's max speed.
-     *
-     * @param {(previousMaxSpeed: number) => number} effect
-     */
-    applySpeedEffect(effect) {
-        this.maxSpeed = effect(this.maxSpeed);
-    }
-
-    /**
      * @param {number} delta
      */
     update(delta) {

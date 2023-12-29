@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Game } from "../Game.js";
 import Collider from "../vehicles/Collider.js";
 import { HELPERS } from "../Layers.js";
+import Vehicle from "../vehicles/Vehicle.js";
 
 export default class Powerup extends THREE.Object3D {
     /**
@@ -41,7 +42,7 @@ export default class Powerup extends THREE.Object3D {
         this.collider = new Collider({
             object: this.sphereCollider,
             type: "sphere",
-        });
+        }, this.onCollision);
 
         this.sphereWireframe = new THREE.Mesh(
             new THREE.SphereGeometry(this.sphereCollider.radius, 10, 10),
@@ -69,7 +70,14 @@ export default class Powerup extends THREE.Object3D {
         this.sphereWireframe.position.y = this.sphereCollider.center.y;
     }
 
-    onCollision() {
-        throw new Error("onCollision() not implemented for base powerup class");
+    /**
+     * 
+     * @param {Vehicle} vehicle 
+     */
+    onCollision(vehicle) {
+
+        console.log("onCollision() not implemented for base powerup class", vehicle);
+
+        // throw new Error("onCollision() not implemented for base powerup class");
     }
 }

@@ -22,7 +22,7 @@ export default class CollisionController {
         colliderHelper.layers.set(HELPERS);
         this.game.scene.add(colliderHelper);
 
-        this.collider = new Collider({ object: this.boxCollider, type: 'box' });
+        this.collider = new Collider({ object: this.boxCollider, type: 'box' }, (other) => void 0);
         this.otherColliders = otherColliders
     }
 
@@ -31,14 +31,14 @@ export default class CollisionController {
      * @param {number} delta 
      */
     update(delta) {
-        // TODO: update collider pos?
-
         // @ts-ignore
         this.boxCollider.setFromObject(this.object.model);
 
         for (const otherCollider of this.otherColliders) {
             if (this.collider.collidesWith(otherCollider)) {
                 console.log("WAHHHH", otherCollider, this.collider)
+
+                otherCollider.onCollision(this.object)
 
                 // We are not colliding with more than one object
                 break;

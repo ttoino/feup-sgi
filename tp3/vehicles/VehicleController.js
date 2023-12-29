@@ -11,13 +11,6 @@ export default class VehicleController {
     constructor(game, vehicle) {
         this.game = game
         this.vehicle = vehicle
-
-        // TODO: needed?
-        this.forwardSpeed = 0;
-        this.rotationSpeedRadS = 0;
-        this.rotationRad = 0;
-        this.acceleration = 0;
-        this.maxSpeed = MAX_SPEED;
     }
 
     installPlayerControls() {

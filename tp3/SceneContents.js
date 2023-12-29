@@ -51,6 +51,8 @@ export class SceneContents {
         // Powerups
         this.powerups = [];
         const powerup = new Powerup(this.game);
+        powerup.position.x = 50;
+        powerup.position.z = 50;
         this.powerups.push(powerup);
         this.powerups.forEach((powerup) => {
             powerup.position.y = 1.5;
