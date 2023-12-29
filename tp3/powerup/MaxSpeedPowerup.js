@@ -27,6 +27,8 @@ export default class MaxSpeedPowerup extends Powerup {
         this.pickedUp = true;
         setTimeout(() => this.pickedUp = false, PICKUP_INTERVAL);
 
+        this.displayPowerupTime(POWERUP_DURATION, true);
+
         vehicle.applyEffect((vehicle) => {
             const currentMaxSpeed = vehicle.maxSpeed;
             vehicle.maxSpeed *= 1.5;
