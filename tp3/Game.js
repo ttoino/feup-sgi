@@ -17,6 +17,15 @@ export class Game {
      * the constructor
      */
     constructor() {
+        // Handle loading screen
+        THREE.DefaultLoadingManager.onLoad = () => {
+            console.info("Loading complete!");
+
+            const loadingScreen = document.querySelector("#loading");
+
+            if (loadingScreen) loadingScreen.classList.add("loaded");
+        };
+
         // Create an empty scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x101010);

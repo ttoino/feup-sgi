@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 export class ModelManager {
     /**
@@ -12,6 +13,7 @@ export class ModelManager {
         this.models = {};
 
         this.gltfLoader = new GLTFLoader();
+        this.objLoader = new OBJLoader();
     }
 
     /**
@@ -24,42 +26,51 @@ export class ModelManager {
             return;
         }
 
+        /** @param {THREE.Object3D} model */
+        const onLoad = (model) => {
+            console.info(`Loaded model at ${modelPath}`);
+            this.models[modelPath] = model;
+            onModelLoaded(model);
+        };
+
+        /** @param {ProgressEvent} e */
+        const onProgress = (e) =>
+            console.log(`${modelPath}: ${(e.loaded / e.total) * 100}% loaded`);
+
+        /** @param {unknown} e */
+        const onError = (e) =>
+            console.error(`An error happened while loading ${modelPath}: ${e}`);
+
         if (modelPath.match(/\.gl(b|tf)$/))
             this.gltfLoader.load(
                 modelPath,
 
                 (model) => {
-                    console.info(`Loaded model at ${modelPath}`);
-
                     model.scene.traverse((child) => {
-                        if (
-                            child instanceof THREE.Mesh &&
-                            child.material instanceof
-                                THREE.MeshStandardMaterial &&
-                            child.material.opacity < 1
-                        ) {
-                            child.material.transparent = true;
+                        if (child instanceof THREE.Mesh) {
+                            // Blender exports models with double-sided materials
+                            if (child.material instanceof THREE.Material)
+                                child.material.side = THREE.FrontSide;
+
+                            // Transparent materials
+                            if (
+                                child.material instanceof
+                                    THREE.MeshStandardMaterial &&
+                                child.material.opacity < 1
+                            ) {
+                                child.material.transparent = true;
+                            }
                         }
                     });
 
-                    this.models[modelPath] = model.scene;
-                    onModelLoaded(model.scene);
+                    onLoad(model.scene);
                 },
 
-                function (xhr) {
-                    console.log(
-                        `${modelPath}: ${
-                            (xhr.loaded / xhr.total) * 100
-                        }% loaded`
-                    );
-                },
-
-                function (err) {
-                    console.error(
-                        `An error happened while loading ${modelPath}: ${err}`
-                    );
-                }
+                onProgress,
+                onError
             );
+        else if (modelPath.match(/\.obj$/))
+            this.objLoader.load(modelPath, onLoad, onProgress, onError);
         else console.error(`Unsupported format for model ${modelPath}`);
     }
 }
