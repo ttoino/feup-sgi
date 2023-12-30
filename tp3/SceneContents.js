@@ -12,6 +12,7 @@ import MaxSpeedPowerup from "./track/items/powerup/MaxSpeedPowerup.js";
 import MaxSpeedObstacle from "./track/items/obstacle/MaxSpeedObstacle.js";
 import { Particles } from "./particles/Particles.js";
 import { Fireworks } from "./particles/Fireworks.js";
+import { Track } from "./track/Track.js";
 
 /**
  *  This class contains the contents of our application
@@ -47,12 +48,10 @@ export class SceneContents {
         /**
          * @type {Vehicle[]}
          */
-        this.vehicles = [
-            this.cycle, 
-            this.car
-        ];
+        this.vehicles = [this.cycle, this.car];
 
-        this.kart = this.car;
+        this.track = new Track(this.game);
+        this.game.scene.add(this.track);
 
         // Powerups
         this.powerups = [];
