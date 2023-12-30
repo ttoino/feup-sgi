@@ -28,10 +28,12 @@ export class PlayState extends GameState {
     }
 
     init() {
-        this.game.controls.target = this.playerController.vehicle.center ?? this.playerController.vehicle;
-        this.game.controls.targetRotation = Math.PI;
+        this.game.gameplayControls.target =
+            this.playerController.vehicle.center ??
+            this.playerController.vehicle;
+        this.game.gameplayControls.targetRotation = Math.PI;
 
-        this.playerController.install()
+        this.playerController.install();
 
         document.addEventListener("keydown", this.#onKeyDown.bind(this));
         document.addEventListener("keyup", this.#onKeyUp.bind(this));
@@ -51,7 +53,7 @@ export class PlayState extends GameState {
         if (event.key === "p" || event.key === "P") {
             this.stateManager.pushState(new PauseState(this.game));
         } else if (event.key === "Shift") {
-            this.game.controls.targetRotation = 0;
+            this.game.gameplayControls.targetRotation = 0;
         }
     }
 
@@ -60,7 +62,7 @@ export class PlayState extends GameState {
      */
     #onKeyUp(event) {
         if (event.key === "Shift") {
-            this.game.controls.targetRotation = Math.PI;
+            this.game.gameplayControls.targetRotation = Math.PI;
         }
     }
 }

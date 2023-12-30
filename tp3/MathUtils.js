@@ -32,3 +32,10 @@ export const clerp = (c1, c2, t, at = t) => {
         lerp(c1.y, c2.y, t)
     );
 };
+
+/**
+ * @param {number} min
+ * @param {number} max
+ * @returns {number}
+ */
+export const randRange = (min, max) => Math.random() * (max - min) + min;

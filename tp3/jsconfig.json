@@ -6,8 +6,9 @@
         "strict": true,
         "checkJs": true,
         "paths": {
-            "lil-gui": ["https://unpkg.com/lil-gui@0.19/dist/lil-gui.esm.d.ts"]
-            // "lil-gui": ["https://unpkg.com/lil-gui@0.19"]
+            "three": ["./node_modules/@types/three"],
+            "three/addons/*.js": ["./node_modules/@types/three/examples/jsm/*"],
+            "lil-gui": ["./node_modules/lil-gui"]
         }
     }
 }

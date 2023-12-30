@@ -21,8 +21,8 @@ export class MenuState extends GameState {
 
     init() {
         this.picker.pickOnClick().then((object) => this.onPick(object));
-        this.game.controls.target = this.menuObject;
-        this.game.controls.targetRotation = 0;
+        this.game.gameplayControls.target = this.menuObject;
+        this.game.gameplayControls.targetRotation = 0;
     }
 
     destroy() {

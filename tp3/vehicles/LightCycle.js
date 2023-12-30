@@ -1,5 +1,3 @@
-/// <reference path="../types/three/addons/loaders.d.ts"/>
-
 import * as THREE from "three";
 import { ALL_VEHICLES, HELPERS } from "../Layers.js";
 import { Game } from "../Game.js";
@@ -21,31 +19,28 @@ export class LightCycle extends Vehicle {
         /** @type {THREE.Object3D | undefined} */
         this.model = undefined;
 
-        this.game.modelManager.loadModel(
-            `models/light_cycle.glb`,
-            (gltf) => {
-                this.model = gltf;
-                this.add(gltf);
+        this.game.modelManager.loadModel(`models/light_cycle.glb`, (gltf) => {
+            this.model = gltf;
+            this.add(gltf);
 
-                gltf.traverse((child) => {
-                    if (child.name.includes("steer")) {
-                        this.steers.push(child);
-                    } else if (child.name.includes("wheel")) {
-                        this.wheels.push(child);
-                    } else if (child.name.includes("center")) {
-                        this.center = child;
-                        this.cubeCamera.position.copy(child.position);
-                    }
+            gltf.traverse((child) => {
+                if (child.name.includes("steer")) {
+                    this.steers.push(child);
+                } else if (child.name.includes("wheel")) {
+                    this.wheels.push(child);
+                } else if (child.name.includes("center")) {
+                    this.center = child;
+                    this.cubeCamera.position.copy(child.position);
+                }
 
-                    if (
-                        child instanceof THREE.Mesh &&
-                        child.material instanceof THREE.MeshStandardMaterial
-                    ) {
-                        child.material.envMap = this.cubeRenderTarget.texture;
-                    }
-                });
-            }
-        );
+                if (
+                    child instanceof THREE.Mesh &&
+                    child.material instanceof THREE.MeshStandardMaterial
+                ) {
+                    child.material.envMap = this.cubeRenderTarget.texture;
+                }
+            });
+        });
 
         this.layers.enable(ALL_VEHICLES);
 
@@ -74,7 +69,7 @@ export class LightCycle extends Vehicle {
      * @param {number} delta
      */
     update(delta) {
-        super.update(delta)
+        super.update(delta);
         this.helper.scale.z = this.forwardSpeed;
 
         this.steers.forEach((steer) => {

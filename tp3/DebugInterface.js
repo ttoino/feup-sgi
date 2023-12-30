@@ -1,4 +1,4 @@
-import { GUI } from "lil-gui";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { HELPERS } from "./Layers.js";
 import { Game } from "./Game.js";
 
@@ -23,8 +23,20 @@ export class DebugInterface {
 
         const cameraFolder = this.gui.addFolder("Camera");
         cameraFolder
-            .add(this.game, "activeCameraName", Object.keys(this.game.cameras))
-            .name("active camera");
+            .add(
+                {
+                    activeCamera: this.game.activeCamera.name,
+                },
+                "activeCamera",
+                Object.keys(this.game.cameras)
+            )
+            .name("active camera")
+            .onChange((value) => {
+                this.game.activeCamera =
+                    this.game.cameras[
+                        /** @type {keyof typeof this.game.cameras} */ (value)
+                    ];
+            });
         cameraFolder.open();
 
         // LIGHTS /////////////////////////////////////////////////
@@ -33,8 +45,9 @@ export class DebugInterface {
             .add({ showHelpers: false }, "showHelpers")
             .name("Show helpers")
             .onChange((value) => {
-                if (value) this.game.activeCamera.layers.enable(HELPERS);
-                else this.game.activeCamera.layers.disable(HELPERS);
+                for (const camera of Object.values(this.game.cameras)) {
+                    camera.layers.toggle(HELPERS);
+                }
             });
     }
 }

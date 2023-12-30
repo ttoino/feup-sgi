@@ -1,5 +1,4 @@
 import * as THREE from "three";
-// @ts-expect-error
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { FloorMaterial } from "./FloorMaterial.js";
 import { Game } from "../Game.js";

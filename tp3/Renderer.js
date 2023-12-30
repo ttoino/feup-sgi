@@ -1,5 +1,3 @@
-/// <reference path="./types/three/addons/postprocessing.d.ts"/>
-
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";

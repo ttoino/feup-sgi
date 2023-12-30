@@ -2,15 +2,13 @@ import { Game } from "../Game.js";
 import Vehicle, { MAX_SPEED } from "./Vehicle.js";
 
 export default class VehicleController {
-
     /**
-     * 
-     * @param {Game} game 
+     * @param {Game} game
      * @param {Vehicle} vehicle
      */
     constructor(game, vehicle) {
-        this.game = game
-        this.vehicle = vehicle
+        this.game = game;
+        this.vehicle = vehicle;
     }
 
     installPlayerControls() {
@@ -88,10 +86,9 @@ export default class VehicleController {
     }
 
     /**
-     * 
-     * @param {number} delta 
+     * @param {number} delta
      */
     update(delta) {
-        this.vehicle.update(delta)
+        this.vehicle.update(delta);
     }
 }

@@ -1,18 +1,16 @@
-import * as THREE from 'three';
-import { Game } from '../Game.js';
+import * as THREE from "three";
+import { Game } from "../Game.js";
 
 export const ACCEL = 5;
 export const MIN_SPEED = 0;
 export const MAX_SPEED = 30;
 
 export default class Vehicle extends THREE.Object3D {
-
     /**
-     * 
-     * @param {Game} game 
+     * @param {Game} game
      */
     constructor(game) {
-        super()
+        super();
 
         this.forwardSpeed = 0;
         this.rotationSpeedRadS = 0;
@@ -26,7 +24,7 @@ export default class Vehicle extends THREE.Object3D {
         /** @type {THREE.Object3D | undefined} */
         this.model = undefined;
 
-        this.game = game
+        this.game = game;
     }
 
     /**
@@ -39,8 +37,8 @@ export default class Vehicle extends THREE.Object3D {
     }
 
     /**
-     * 
-     * @param {number} delta 
+     *
+     * @param {number} delta
      */
     update(delta) {
         this.forwardSpeed = Math.min(
@@ -50,7 +48,8 @@ export default class Vehicle extends THREE.Object3D {
 
         this.rotation.y = THREE.MathUtils.lerp(
             this.rotation.y,
-            this.rotation.y + this.rotationRad * delta * this.forwardSpeed * .1,
+            this.rotation.y +
+                this.rotationRad * delta * this.forwardSpeed * 0.1,
             Math.min(1, delta * 4)
         );
 

@@ -1,0 +1,12 @@
+{
+  "name": "tp3",
+  "version": "1.0.0",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "@types/three": "^0.160.0",
+    "lil-gui": "^0.19.1",
+    "three": "^0.160.0"
+  }
+}

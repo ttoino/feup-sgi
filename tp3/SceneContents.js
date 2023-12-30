@@ -10,6 +10,8 @@ import { LightCar } from "./vehicles/LightCar.js";
 import Vehicle from "./vehicles/Vehicle.js";
 import MaxSpeedPowerup from "./track/items/powerup/MaxSpeedPowerup.js";
 import MaxSpeedObstacle from "./track/items/obstacle/MaxSpeedObstacle.js";
+import { Particles } from "./particles/Particles.js";
+import { Fireworks } from "./particles/Fireworks.js";
 
 /**
  *  This class contains the contents of our application
@@ -93,5 +95,8 @@ export class SceneContents {
         this.vehicleSelectionMenu.position.y = 1;
         this.vehicleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.vehicleSelectionMenu);
+
+        this.particles = new Fireworks(this.game);
+        this.game.scene.add(this.particles);
     }
 }

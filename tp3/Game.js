@@ -1,9 +1,7 @@
-/// <reference path="./types/three/addons/libs.d.ts"/>
-/// <reference path="./types/three/addons/lights.d.ts"/>
-
 import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Renderer } from "./Renderer.js";
 import { SceneContents } from "./SceneContents.js";
 import { DebugInterface } from "./DebugInterface.js";
@@ -12,6 +10,7 @@ import { GameStateManager } from "./state/GameStateManager.js";
 import { MainMenuState } from "./state/MainMenuState.js";
 import { FontManager } from "./fonts/FontManager.js";
 import { ModelManager } from "./models/ModelManager.js";
+import { HELPERS } from "./Layers.js";
 
 export class Game {
     /**
@@ -29,19 +28,53 @@ export class Game {
         // Init cameras
         const aspect = window.innerWidth / window.innerHeight;
 
-        // Create a basic perspective camera
-        const perspective = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-        perspective.position.set(10, 10, 3);
+        const gameplayCamera = new THREE.PerspectiveCamera(
+            75,
+            aspect,
+            0.1,
+            1000
+        );
+        gameplayCamera.position.set(10, 10, 3);
+        gameplayCamera.name = "gameplay";
+        this.gameplayControls = new FollowControls(gameplayCamera, this.scene);
+
+        const topCamera = new THREE.OrthographicCamera(
+            -aspect * 10,
+            aspect * 10,
+            10,
+            -10,
+            0.1,
+            1000
+        );
+        topCamera.position.set(0, 10, 0);
+        topCamera.lookAt(0, 0, 0);
+        topCamera.name = "top";
+
+        const noclipCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        noclipCamera.position.set(0, 10, 10);
+        noclipCamera.lookAt(0, 0, 0);
+        noclipCamera.name = "noclip";
 
         this.cameras = {
-            default: perspective,
+            gameplay: gameplayCamera,
+            top: topCamera,
+            noclip: noclipCamera,
         };
 
-        this.activeCameraElement = document.querySelector("#camera");
-        this._activeCamera = this.cameras.default;
+        for (const camera of Object.values(this.cameras)) {
+            const helper = new THREE.CameraHelper(camera);
+            helper.layers.set(HELPERS);
+            helper.traverse((child) => {
+                child.layers.set(HELPERS);
+            });
+            this.scene.add(helper);
+        }
 
-        // Init controls
-        this.controls = new FollowControls(this.activeCamera, this.scene);
+        /** @type {THREE.Camera} */
+        this._activeCamera = this.cameras.gameplay;
+        this.activeCameraElement = document.querySelector("#camera");
+        if (this.activeCameraElement)
+            this.activeCameraElement.innerHTML = this.activeCamera.name;
 
         this.fontManager = new FontManager();
         this.modelManager = new ModelManager();
@@ -60,6 +93,14 @@ export class Game {
         // Init renderer
         this.renderer = new Renderer(this);
 
+        // Initialize it here, as it needs the renderer
+        this.noclipControls = new OrbitControls(
+            noclipCamera,
+            this.renderer.renderer.domElement
+        );
+        this.noclipControls.enableDamping = true;
+        this.noclipControls.enabled = this.activeCamera == noclipCamera;
+
         // manage window resizes
         window.addEventListener("resize", this.onResize.bind(this), false);
 
@@ -73,7 +114,14 @@ export class Game {
 
     set activeCamera(camera) {
         this._activeCamera = camera;
+        this.renderer.updateCamera();
         this.onResize();
+
+        if (this.activeCamera == this.cameras.noclip) {
+            this.noclipControls.enabled = true;
+        } else {
+            this.noclipControls.enabled = false;
+        }
 
         if (this.activeCameraElement)
             this.activeCameraElement.innerHTML = camera.name;
@@ -83,9 +131,17 @@ export class Game {
      * the window resize handler
      */
     onResize() {
-        this.activeCamera.aspect = window.innerWidth / window.innerHeight;
-        this.activeCamera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+        if (this.activeCamera instanceof THREE.PerspectiveCamera) {
+            this.activeCamera.aspect = window.innerWidth / window.innerHeight;
+            this.activeCamera.updateProjectionMatrix();
+        } else if (this.activeCamera instanceof THREE.OrthographicCamera) {
+            const aspect = window.innerWidth / window.innerHeight;
+            this.activeCamera.left = -aspect * this.activeCamera.top;
+            this.activeCamera.right = aspect * this.activeCamera.top;
+            this.activeCamera.updateProjectionMatrix();
+        }
     }
 
     /**
@@ -99,7 +155,10 @@ export class Game {
         const delta = deltaMs / 1000;
 
         this.stateManager.current?.update(delta);
-        this.controls.update(delta);
+        this.gameplayControls.update(delta);
+        this.noclipControls.update(delta);
+
+        this.contents.particles.update(delta);
 
         this.renderer.render(delta);
 
