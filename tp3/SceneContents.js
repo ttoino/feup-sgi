@@ -47,7 +47,10 @@ export class SceneContents {
         /**
          * @type {Vehicle[]}
          */
-        this.vehicles = [this.cycle, this.car];
+        this.vehicles = [
+            this.cycle, 
+            this.car
+        ];
 
         this.kart = this.car;
 
@@ -95,8 +98,5 @@ export class SceneContents {
         this.vehicleSelectionMenu.position.y = 1;
         this.vehicleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.vehicleSelectionMenu);
-
-        this.particles = new Fireworks(this.game);
-        this.game.scene.add(this.particles);
     }
 }

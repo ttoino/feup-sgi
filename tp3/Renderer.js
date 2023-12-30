@@ -3,7 +3,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
-import { SSAARenderPass as RenderPass } from "three/addons/postprocessing/SSAARenderPass.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { Game } from "./Game.js";
 
@@ -19,8 +19,6 @@ export class Renderer {
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor("#000000");
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         // Append Renderer to DOM
         document

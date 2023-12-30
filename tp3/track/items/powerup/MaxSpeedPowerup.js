@@ -5,27 +5,23 @@ import Powerup, { PICKUP_INTERVAL } from "./Powerup.js";
 const POWERUP_DURATION = 5000;
 
 export default class MaxSpeedPowerup extends Powerup {
-
     /**
-     * 
-     * @param {Game} game 
+     * @param {Game} game
      */
     constructor(game) {
-        super(game)
+        super(game);
 
         this.pickedUp = false;
     }
 
     /**
-     * 
-     * @param {Vehicle} vehicle 
+     * @param {Vehicle} vehicle
      */
     onCollision(vehicle) {
-
         if (this.pickedUp) return;
 
         this.pickedUp = true;
-        setTimeout(() => this.pickedUp = false, PICKUP_INTERVAL);
+        setTimeout(() => (this.pickedUp = false), PICKUP_INTERVAL);
 
         this.displayEffectTime(POWERUP_DURATION);
 
@@ -34,8 +30,8 @@ export default class MaxSpeedPowerup extends Powerup {
             vehicle.maxSpeed *= 1.5;
 
             setTimeout(() => {
-                vehicle.maxSpeed = currentMaxSpeed
+                vehicle.maxSpeed = currentMaxSpeed;
             }, POWERUP_DURATION);
-        })
+        });
     }
 }

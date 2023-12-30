@@ -32,17 +32,13 @@ export class ModelManager {
                     console.info(`Loaded model at ${modelPath}`);
 
                     model.scene.traverse((child) => {
-                        if (child instanceof THREE.Mesh) {
-                            child.castShadow = true;
-                            child.receiveShadow = true;
-
-                            if (
-                                child.material instanceof
-                                    THREE.MeshStandardMaterial &&
-                                child.material.opacity < 1
-                            ) {
-                                child.material.transparent = true;
-                            }
+                        if (
+                            child instanceof THREE.Mesh &&
+                            child.material instanceof
+                                THREE.MeshStandardMaterial &&
+                            child.material.opacity < 1
+                        ) {
+                            child.material.transparent = true;
                         }
                     });
 

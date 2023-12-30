@@ -158,7 +158,7 @@ export class Game {
         this.gameplayControls.update(delta);
         this.noclipControls.update(delta);
 
-        this.contents.particles.update(delta);
+        // this.contents.particles.update(delta);
 
         this.renderer.render(delta);
 

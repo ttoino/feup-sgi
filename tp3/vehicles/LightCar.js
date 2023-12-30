@@ -52,7 +52,7 @@ export class LightCar extends Vehicle {
         this.helper.layers.set(HELPERS);
         this.add(this.helper);
 
-        this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget(1024, {
+        this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128, {
             type: THREE.FloatType,
         });
         this.cubeCamera = new THREE.CubeCamera(

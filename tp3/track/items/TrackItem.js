@@ -5,7 +5,6 @@ import SphereCollider from "../../collision/SphereCollider.js";
 
 export const PICKUP_INTERVAL = 5000;
 export default class TrackItem extends THREE.Object3D {
-
     /**
      * @param {Game} game
      */
@@ -19,7 +18,13 @@ export default class TrackItem extends THREE.Object3D {
         /**
          * @type {HTMLDivElement}
          */
-        this.effectDisplay = document.querySelector("div#effect-display") ?? (() => { const element = document.createElement("div"); element.classList.add("effect-display"); return element; })()
+        this.effectDisplay =
+            document.querySelector("div#effect-display") ??
+            (() => {
+                const element = document.createElement("div");
+                element.classList.add("effect-display");
+                return element;
+            })();
 
         /**
          * @type {((delta: number) => boolean)[]}
@@ -43,15 +48,17 @@ export default class TrackItem extends THREE.Object3D {
 
         this.add(powerUp);
 
-        this.collider = new SphereCollider(this.game, this, this.onCollision.bind(this));
+        this.collider = new SphereCollider(
+            this.game,
+            this,
+            this.onCollision.bind(this)
+        );
     }
 
     /**
-     * 
-     * @param {number} maxTime 
+     * @param {number} maxTime
      */
     displayEffectTime(maxTime, buff = true) {
-
         const effectElement = document.createElement("div");
         effectElement.classList.add("effect");
 
@@ -62,10 +69,9 @@ export default class TrackItem extends THREE.Object3D {
         timeLabelValue.classList.add("value");
         timeLabelValue.innerText = `${(maxTime / 1000).toFixed(2)}s`;
 
-
         const progressElement = document.createElement("div");
-        progressElement.classList.add("progress", `${buff ? '' : 'de'}buff`);
-        progressElement.style.width = '100%';
+        progressElement.classList.add("progress", `${buff ? "" : "de"}buff`);
+        progressElement.style.width = "100%";
 
         timeLabel.appendChild(timeLabelValue);
 
@@ -79,7 +85,7 @@ export default class TrackItem extends THREE.Object3D {
             currentTime -= delta * 1000;
 
             if (currentTime <= 0) {
-                effectElement.remove()
+                effectElement.remove();
                 return true;
             }
 
@@ -87,7 +93,7 @@ export default class TrackItem extends THREE.Object3D {
             timeLabelValue.innerText = `${(currentTime / 1000).toFixed(2)}s`;
 
             return false;
-        })
+        });
     }
 
     /**
@@ -99,19 +105,19 @@ export default class TrackItem extends THREE.Object3D {
         this.position.y += Math.sin(this.time * 2) * 0.125;
         this.rotateOnAxis(new THREE.Vector3(0, 1, 0), delta * 0.5);
 
-        this.collider?.update(delta)
+        this.collider?.update(delta);
 
-        this.effects = this.effects.filter(effect => !effect(delta));
+        this.effects = this.effects.filter((effect) => !effect(delta));
     }
 
     /**
-     * 
-     * @param {Vehicle} vehicle 
+     *
+     * @param {Vehicle} vehicle
      */
     onCollision(vehicle) {
-
-        console.log("onCollision() not implemented for base powerup class", vehicle);
-
-        // throw new Error("onCollision() not implemented for base powerup class");
+        console.error(
+            "onCollision() not implemented for base powerup class",
+            vehicle
+        );
     }
 }

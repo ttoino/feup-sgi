@@ -5,27 +5,23 @@ import Obstacle, { PICKUP_INTERVAL } from "./Obstacle.js";
 const DEBUFF_DURATION = 5000;
 
 export default class MaxSpeedObstacle extends Obstacle {
-
     /**
-     * 
-     * @param {Game} game 
+     * @param {Game} game
      */
     constructor(game) {
-        super(game)
+        super(game);
 
         this.pickedUp = false;
     }
 
     /**
-     * 
-     * @param {Vehicle} vehicle 
+     * @param {Vehicle} vehicle
      */
     onCollision(vehicle) {
-
         if (this.pickedUp) return;
 
         this.pickedUp = true;
-        setTimeout(() => this.pickedUp = false, PICKUP_INTERVAL);
+        setTimeout(() => (this.pickedUp = false), PICKUP_INTERVAL);
 
         this.displayEffectTime(DEBUFF_DURATION);
 
@@ -34,8 +30,8 @@ export default class MaxSpeedObstacle extends Obstacle {
             vehicle.maxSpeed *= 0.7;
 
             setTimeout(() => {
-                vehicle.maxSpeed = currentMaxSpeed
+                vehicle.maxSpeed = currentMaxSpeed;
             }, DEBUFF_DURATION);
-        })
+        });
     }
 }
