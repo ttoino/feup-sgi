@@ -1,7 +1,5 @@
 import * as THREE from "three";
 import { Game } from "../../../Game.js";
-import Vehicle from "../../../vehicles/Vehicle.js";
-import SphereCollider from "../../../collision/SphereCollider.js";
 import TrackItem from "../TrackItem.js";
 
 export const PICKUP_INTERVAL = 5000;

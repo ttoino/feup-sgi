@@ -16,13 +16,15 @@ export default class SphereCollider extends Collider {
         super(game, object, handler);
 
         this.collider = new THREE.Sphere()
-        new THREE.Box3().setFromObject(object).getBoundingSphere(this.collider).applyMatrix4(object.matrixWorld);
+        new THREE.Box3().setFromObject(object).getBoundingSphere(this.collider);
 
         this.sphereWireframe = new THREE.Mesh(
             new THREE.SphereGeometry(this.collider.radius, 10, 10),
             new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
         )
         this.sphereWireframe.layers.set(HELPERS);
+
+        console.log(this.object.position)
 
         // @ts-ignore
         this.game.scene.add(this.sphereWireframe);
@@ -47,6 +49,7 @@ export default class SphereCollider extends Collider {
      * @returns {boolean}
      */
     collidesWith(other) {
+
         return other.collider?.intersectsSphere(this.collider) ?? false;
     }
 }

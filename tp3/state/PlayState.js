@@ -16,11 +16,15 @@ export class PlayState extends GameState {
         this.playerController = playerController;
         this.opponent = opponent;
 
-        this.updaters.push(this.playerController);
-        this.updaters.push(this.opponent);
+        // Unfortunately, due to the way I coded this, the order in which these objects are added matters:
+        // if we place the player last, everything else will hopefully have already updated at least once
+        // and the player will be able to collide with them correctly.
 
         this.updaters.push(...this.game.contents.powerups);
         this.updaters.push(...this.game.contents.obstacles);
+
+        this.updaters.push(this.opponent);
+        this.updaters.push(this.playerController);
     }
 
     init() {
