@@ -1,4 +1,5 @@
 import { Game } from "../../../Game.js";
+import { PauseState } from "../../../state/PauseState.js";
 import Vehicle from "../../../vehicles/Vehicle.js";
 import Powerup, { PICKUP_INTERVAL } from "./Powerup.js";
 
@@ -21,7 +22,9 @@ export default class MaxSpeedPowerup extends Powerup {
         if (this.pickedUp) return;
 
         this.pickedUp = true;
-        setTimeout(() => (this.pickedUp = false), PICKUP_INTERVAL);
+        this.game.stateManager.current.setTimeout(() => {
+            this.pickedUp = false
+        }, PICKUP_INTERVAL);
 
         this.displayEffectTime(POWERUP_DURATION);
 
@@ -29,9 +32,11 @@ export default class MaxSpeedPowerup extends Powerup {
             const currentMaxSpeed = vehicle.maxSpeed;
             vehicle.maxSpeed *= 1.5;
 
-            setTimeout(() => {
+            this.game.stateManager.current.setTimeout(() => {
                 vehicle.maxSpeed = currentMaxSpeed;
             }, POWERUP_DURATION);
         });
+
+        this.game.stateManager.pushState(new PauseState(this.game))
     }
 }

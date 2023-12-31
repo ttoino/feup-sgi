@@ -43,6 +43,9 @@ export default class Vehicle extends THREE.Object3D {
      * @param {number} delta
      */
     update(delta) {
+
+        console.log(this.maxSpeed);
+
         this.forwardSpeed = Math.min(
             Math.max(this.forwardSpeed + this.acceleration * delta, MIN_SPEED),
             this.maxSpeed
