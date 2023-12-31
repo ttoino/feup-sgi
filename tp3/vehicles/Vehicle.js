@@ -5,7 +5,7 @@ import { HELPERS } from "../Layers.js";
 export const ACCEL = 5;
 export const ANGULAR_ACCEL = 10;
 export const MIN_SPEED = 0;
-export const MAX_SPEED = 30;
+export const MAX_SPEED = 50;
 
 export default class Vehicle extends THREE.Object3D {
     /**

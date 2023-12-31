@@ -36,6 +36,11 @@ export default class OpponentController {
      */
     #onPlayerCollision(otherVehicle) {
 
+        if (this.collided) return;
+
+        this.collided = true;
+        setTimeout(() => (this.collided = false), 1000);
+
         console.log("Opponent collided with player")
 
         otherVehicle.applyEffect((vehicle) => {
