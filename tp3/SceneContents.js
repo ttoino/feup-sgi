@@ -13,6 +13,7 @@ import MaxSpeedObstacle from "./track/items/obstacle/MaxSpeedObstacle.js";
 import { Particles } from "./particles/Particles.js";
 import { Fireworks } from "./particles/Fireworks.js";
 import { Track } from "./track/Track.js";
+import { ObstacleSelectionMenu } from "./menu/ObstacleSelectionMenu.js";
 
 /**
  *  This class contains the contents of our application
@@ -91,11 +92,20 @@ export class SceneContents {
         this.pauseMenu.rotateY(Math.PI);
         this.game.scene.add(this.pauseMenu);
 
+        // Vehicle Selection Menu
         this.vehicleSelectionMenu = new VehicleSelectionMenu(this.game);
         this.vehicleSelectionMenu.position.z = 150;
         this.vehicleSelectionMenu.position.x = -7;
         this.vehicleSelectionMenu.position.y = 1;
         this.vehicleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.vehicleSelectionMenu);
+
+        // Obstacle Selection Menu
+        this.obstacleSelectionMenu = new ObstacleSelectionMenu(this.game);
+        this.obstacleSelectionMenu.position.z = -150;
+        this.obstacleSelectionMenu.position.x = -7;
+        this.obstacleSelectionMenu.position.y = 1;
+        this.obstacleSelectionMenu.rotateY(Math.PI);
+        this.game.scene.add(this.obstacleSelectionMenu);
     }
 }

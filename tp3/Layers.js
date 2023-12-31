@@ -10,5 +10,6 @@ export const UI = 16;
 export const MAIN_MENU = 17;
 export const PAUSE_MENU = 18;
 export const VEHICLE_SELECTION_MENU = 19;
+export const OBSTACLE_SELECTION_MENU = 20;
 
 export const HELPERS = 31;

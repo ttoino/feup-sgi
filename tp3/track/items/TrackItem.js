@@ -102,7 +102,7 @@ export default class TrackItem extends THREE.Object3D {
     update(delta) {
         this.time += delta;
 
-        this.position.y += Math.sin(this.time * 2) * 0.125;
+        this.position.y += Math.sin(this.time * 2) * 0.125 * 0.25;
         this.rotateOnAxis(new THREE.Vector3(0, 1, 0), delta * 0.5);
 
         this.collider?.update(delta);

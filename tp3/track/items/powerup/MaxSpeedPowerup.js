@@ -1,5 +1,5 @@
 import { Game } from "../../../Game.js";
-import { PauseState } from "../../../state/PauseState.js";
+import ObstacleSelectionState from "../../../state/ObstacleSelectionState.js";
 import Vehicle from "../../../vehicles/Vehicle.js";
 import Powerup, { PICKUP_INTERVAL } from "./Powerup.js";
 
@@ -39,6 +39,6 @@ export default class MaxSpeedPowerup extends Powerup {
             }, POWERUP_DURATION);
         });
 
-        this.game.stateManager.pushState(new PauseState(this.game))
+        this.game.stateManager.pushState(new ObstacleSelectionState(this.game))
     }
 }

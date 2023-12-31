@@ -92,6 +92,9 @@ export default class VehicleController {
      * @param {number} delta
      */
     update(delta) {
+
+        console.log(this.vehicle.maxSpeed)
+
         this.vehicle.update(delta);
 
         this.#checkOnTrack();
