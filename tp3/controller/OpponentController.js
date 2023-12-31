@@ -39,15 +39,13 @@ export default class OpponentController {
         if (this.collided) return;
 
         this.collided = true;
-        setTimeout(() => (this.collided = false), 1000);
-
-        console.log("Opponent collided with player")
+        this.game.stateManager.current.setTimeout(() => (this.collided = false), 1000);
 
         otherVehicle.applyEffect((vehicle) => {
             const currentMaxSpeed = vehicle.maxSpeed;
-            vehicle.maxSpeed *= 0.7;
+            vehicle.maxSpeed *= 0.4;
 
-            setTimeout(() => {
+            this.game.stateManager.current.setTimeout(() => {
                 vehicle.maxSpeed = currentMaxSpeed;
             }, EFFECT_DURATION);
         });

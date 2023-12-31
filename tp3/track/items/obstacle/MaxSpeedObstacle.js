@@ -21,15 +21,17 @@ export default class MaxSpeedObstacle extends Obstacle {
         if (this.pickedUp) return;
 
         this.pickedUp = true;
-        setTimeout(() => (this.pickedUp = false), PICKUP_INTERVAL);
+        this.game.stateManager.current.setTimeout(() => (this.pickedUp = false), PICKUP_INTERVAL);
 
-        this.displayEffectTime(DEBUFF_DURATION);
+        this.game.stateManager.current.setTimeout(() => {
+            this.displayEffectTime(DEBUFF_DURATION);
+        }, 0);
 
         vehicle.applyEffect((vehicle) => {
             const currentMaxSpeed = vehicle.maxSpeed;
             vehicle.maxSpeed *= 0.7;
 
-            setTimeout(() => {
+            this.game.stateManager.current.setTimeout(() => {
                 vehicle.maxSpeed = currentMaxSpeed;
             }, DEBUFF_DURATION);
         });

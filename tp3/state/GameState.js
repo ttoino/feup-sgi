@@ -26,9 +26,9 @@ export class GameState {
      * @param {number} delta
      */
     update(delta) {
-        this.updaters.forEach((updater) => updater?.update(delta));
-
         this.stateEffects = this.stateEffects.filter((effect) => !effect(delta))
+
+        this.updaters.forEach((updater) => updater?.update(delta));
     }
 
     /**
