@@ -17,9 +17,8 @@ export default class CollisionController {
         this.otherColliders = otherColliders ?? [];
 
         this.object = object;
-        // @ts-ignore
-        this.boxCollider = new THREE.Box3().setFromObject(object.model)
 
+        // Need to use the model here since helpers increase the bounding box of an object
         // @ts-ignore
         this.collider = new BoxCollider(game, object.model, (other) => void 0)
     }
@@ -31,9 +30,6 @@ export default class CollisionController {
     update(delta) {
 
         this.collider.update(delta);
-
-        // @ts-ignore
-        this.boxCollider.setFromObject(this.object.model);
 
         for (const otherCollider of this.otherColliders) {
             if (this.collider.collidesWith(otherCollider)) {

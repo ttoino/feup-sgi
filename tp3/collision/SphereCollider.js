@@ -23,10 +23,6 @@ export default class SphereCollider extends Collider {
             new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
         )
         this.sphereWireframe.layers.set(HELPERS);
-
-        console.log(this.object.position)
-
-        // @ts-ignore
         this.game.scene.add(this.sphereWireframe);
     }
 

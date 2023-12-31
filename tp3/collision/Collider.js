@@ -1,9 +1,10 @@
 import * as THREE from "three";
 import Vehicle from "../vehicles/Vehicle.js";
 import { Game } from "../Game.js";
+import { OBB } from 'three/addons/math/OBB.js';
 
 /**
- * @typedef {THREE.Box3 | THREE.Sphere | THREE.Plane} CollisionObject
+ * @typedef {OBB | THREE.Sphere | THREE.Plane} CollisionObject
  */
 
 /**

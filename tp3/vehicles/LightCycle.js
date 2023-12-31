@@ -44,15 +44,15 @@ export class LightCycle extends Vehicle {
 
         this.layers.enable(ALL_VEHICLES);
 
-        this.helper = new THREE.Line(
+        this.directionHelper = new THREE.Line(
             new THREE.BufferGeometry().setFromPoints([
                 new THREE.Vector3(0, 0, 0),
                 new THREE.Vector3(0, 0, 1),
             ]),
             new THREE.LineBasicMaterial({ color: 0xffffff })
         );
-        this.helper.layers.set(HELPERS);
-        this.add(this.helper);
+        this.directionHelper.layers.set(HELPERS);
+        this.add(this.directionHelper);
 
         this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128, {
             type: THREE.FloatType,
@@ -70,7 +70,7 @@ export class LightCycle extends Vehicle {
      */
     update(delta) {
         super.update(delta);
-        this.helper.scale.z = this.forwardSpeed;
+        this.directionHelper.scale.z = this.forwardSpeed;
 
         this.steers.forEach((steer) => {
             steer.rotation.y = THREE.MathUtils.lerp(
