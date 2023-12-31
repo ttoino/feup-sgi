@@ -4,8 +4,9 @@ import { VEHICLE_SELECTION_MENU } from "../Layers.js";
 import { PlayState } from "./PlayState.js";
 import VehicleController from "../vehicles/VehicleController.js";
 import Vehicle from "../vehicles/Vehicle.js";
-import PlayerController from "../PlayerController.js";
+import PlayerController from "../controller/PlayerController.js";
 import CollisionController from "../collision/CollisionController.js";
+import OpponentController from "../controller/OpponentController.js";
 
 export default class VehicleSelectionState extends MenuState {
 
@@ -50,11 +51,17 @@ export default class VehicleSelectionState extends MenuState {
             this.menuObject.remove(object);
             this.game.scene.add(object);
 
+            const opponentController = new OpponentController(
+                this.game,
+                // @ts-ignore
+                this.opponent,
+            );
+
             const playerController = new PlayerController(
                 this.game,
                 new VehicleController(this.game, this.kart),
-                new CollisionController(this.game, this.kart, [...this.game.contents.powerups, ...this.game.contents.obstacles].map((object) => {
-                    // @ts-ignore
+                // @ts-ignore
+                new CollisionController(this.game, this.kart, [...this.game.contents.powerups, ...this.game.contents.obstacles, opponentController].map((object) => {
                     return object.collider; // TODO: brah
                 })),
             );
@@ -63,8 +70,7 @@ export default class VehicleSelectionState extends MenuState {
                 new PlayState(
                     this.game,
                     playerController,
-                    // @ts-ignore
-                    this.opponent,
+                    opponentController,
                 )
             );
             return;

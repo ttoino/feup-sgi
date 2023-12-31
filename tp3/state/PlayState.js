@@ -2,19 +2,20 @@ import { GameState } from "./GameState.js";
 import { PauseState } from "./PauseState.js";
 import { Game } from "../Game.js";
 import Vehicle from "../vehicles/Vehicle.js";
-import PlayerController from "../PlayerController.js";
+import PlayerController from "../controller/PlayerController.js";
+import OpponentController from "../controller/OpponentController.js";
 
 export class PlayState extends GameState {
     /**
      * @param {Game} game
      * @param {PlayerController} playerController
-     * @param {Vehicle} opponent
+     * @param {OpponentController} opponentController
      */
-    constructor(game, playerController, opponent) {
+    constructor(game, playerController, opponentController) {
         super(game);
 
         this.playerController = playerController;
-        this.opponent = opponent;
+        this.opponentController = opponentController;
 
         // Unfortunately, due to the way I coded this, the order in which these objects are added matters:
         // if we place the player last, everything else will hopefully have already updated at least once
@@ -23,7 +24,7 @@ export class PlayState extends GameState {
         this.updaters.push(...this.game.contents.powerups);
         this.updaters.push(...this.game.contents.obstacles);
 
-        this.updaters.push(this.opponent);
+        this.updaters.push(this.opponentController);
         this.updaters.push(this.playerController);
     }
 

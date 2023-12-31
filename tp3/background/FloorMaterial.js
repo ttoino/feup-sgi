@@ -32,7 +32,7 @@ export class FloorMaterial extends THREE.MeshPhongMaterial {
     }
 
     /**
-     * @param {THREE.Shader} shader
+     * @param {THREE.ShaderLibShader} shader
      */
     onBeforeCompile(shader) {
         // console.log(shader);

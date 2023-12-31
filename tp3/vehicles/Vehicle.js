@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Game } from "../Game.js";
 
 export const ACCEL = 5;
+export const ANGULAR_ACCEL = 10;
 export const MIN_SPEED = 0;
 export const MAX_SPEED = 30;
 
@@ -49,7 +50,7 @@ export default class Vehicle extends THREE.Object3D {
         this.rotation.y = THREE.MathUtils.lerp(
             this.rotation.y,
             this.rotation.y +
-                this.rotationRad * delta * this.forwardSpeed * 0.1,
+            this.rotationRad * delta * this.forwardSpeed * 0.1,
             Math.min(1, delta * 4)
         );
 
@@ -72,12 +73,12 @@ export default class Vehicle extends THREE.Object3D {
         this.acceleration = 0;
     }
 
-    rotateLeft() {
-        this.rotationRad = 3;
+    rotateLeft(amount = ANGULAR_ACCEL) {
+        this.rotationRad = amount;
     }
 
-    rotateRight() {
-        this.rotationRad = -3;
+    rotateRight(amount = ANGULAR_ACCEL) {
+        this.rotationRad = -amount;
     }
 
     resetRotation() {
