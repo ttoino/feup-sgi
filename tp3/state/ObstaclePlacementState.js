@@ -34,15 +34,19 @@ export default class ObstaclePlacementState extends GameState {
 
         this.pickOnClick().then((position) => {
 
-            // FIXME: create Obstacle.clone method
-            // const obstacle = this.obstacle.clone();
+            const obstacle = this.obstacle.makeClone();
 
-            // obstacle.position.copy(position);
+            obstacle.position.copy(position);
 
-            // this.game.contents.obstacles.push(obstacle);
+            this.game.contents.obstacles.push(obstacle);
+            this.game.scene.add(obstacle);
 
             this.game.stateManager.popUntil(PlayState)
-            // this.game.stateManager.current.updaters.push(obstacle);
+            this.game.stateManager.current.updaters.push(obstacle);
+
+            // HACK:
+            // @ts-ignore
+            this.game.stateManager.current.playerController.collisionController.otherColliders.push(obstacle.collider);
         });
     }
 

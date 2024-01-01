@@ -36,4 +36,18 @@ export default class MaxSpeedObstacle extends Obstacle {
             }, DEBUFF_DURATION);
         });
     }
+
+    makeClone() {
+        // const clone = super.makeClone()
+        // clone.onCollision = this.onCollision.bind(clone);
+
+        const clone = new MaxSpeedObstacle(this.game);
+
+        clone.position.copy(this.position);
+        clone.rotation.copy(this.rotation);
+        clone.scale.copy(this.scale);
+
+        clone.pickedUp = this.pickedUp;
+        return clone;
+    }
 }

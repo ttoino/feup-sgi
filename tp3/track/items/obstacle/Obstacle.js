@@ -8,6 +8,8 @@ export default class Obstacle extends TrackItem {
      */
     constructor(game) {
         super(game);
+
+        this.name = "boas" + Math.random();
     }
 
     /**
@@ -15,5 +17,20 @@ export default class Obstacle extends TrackItem {
      */
     displayEffectTime(maxTime) {
         super.displayEffectTime(maxTime, false);
+    }
+
+    /**
+     * 
+     * @returns {Obstacle}
+     */
+    makeClone() {
+        const clone = new Obstacle(this.game);
+
+        clone.position.copy(this.position);
+        clone.rotation.copy(this.rotation);
+        clone.scale.copy(this.scale);
+
+        // @ts-ignore
+        return clone;
     }
 }

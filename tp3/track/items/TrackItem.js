@@ -23,6 +23,7 @@ export default class TrackItem extends THREE.Object3D {
             (() => {
                 const element = document.createElement("div");
                 element.classList.add("effect-display");
+                document.body.appendChild(element);
                 return element;
             })();
 
