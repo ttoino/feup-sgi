@@ -15,12 +15,14 @@ export default class ObstaclePlacementState extends GameState {
         super(game);
 
         /**
-         * @type {Obstacle | undefined}
+         * @type {Obstacle}
          */
         this.obstacle = obstacle;
 
         this.raycaster = new THREE.Raycaster();
         this.pointer = new THREE.Vector2();
+
+        this.placementPosition = null;
 
         this.boundOnPointerMove = this.onPointerMove.bind(this);
     }
@@ -29,14 +31,43 @@ export default class ObstaclePlacementState extends GameState {
         document.addEventListener("pointermove", this.boundOnPointerMove);
         this.game.gameplayControls.target = this.game.contents.track;
         this.game.gameplayControls.targetRotation = 0;
-        this.setTimeout(() => {
-            this.game.stateManager.popUntil(PlayState);
-        }, 3000);
+
+        this.pickOnClick().then((position) => {
+
+            // FIXME: create Obstacle.clone method
+            // const obstacle = this.obstacle.clone();
+
+            // obstacle.position.copy(position);
+
+            // this.game.contents.obstacles.push(obstacle);
+
+            this.game.stateManager.popUntil(PlayState)
+            // this.game.stateManager.current.updaters.push(obstacle);
+        });
     }
 
     destroy() {
         document.removeEventListener("pointermove", this.boundOnPointerMove);
     }
+
+    /**
+     * 
+     * @returns {Promise<THREE.Vector3>}
+     */
+    pickOnClick() {
+        return new Promise((resolve, reject) => {
+
+            const clickListener = () => {
+                if (this.placementPosition) {
+                    document.removeEventListener("click", clickListener);
+                    resolve(this.placementPosition);
+                }
+            };
+
+            document.addEventListener("click", clickListener);
+        });
+    }
+
 
     /**
      * @override
@@ -48,8 +79,8 @@ export default class ObstaclePlacementState extends GameState {
     }
 
     /**
- * @param {PointerEvent} e
- */
+     * @param {PointerEvent} e
+     */
     onPointerMove(e) {
         this.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
         this.pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -58,6 +89,13 @@ export default class ObstaclePlacementState extends GameState {
 
         const intersections = this.raycaster.intersectObject(this.game.contents.track);
 
-        console.log(intersections);
+        if (intersections.length > 0) {
+            const intersection = intersections[0];
+            this.placementPosition = new THREE.Vector3();
+            this.placementPosition.copy(intersection.point);
+            this.placementPosition.y += 1.5;
+        } else {
+            this.placementPosition = null;
+        }
     }
 }

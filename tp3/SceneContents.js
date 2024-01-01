@@ -14,6 +14,7 @@ import { Particles } from "./particles/Particles.js";
 import { Fireworks } from "./particles/Fireworks.js";
 import { Track } from "./track/Track.js";
 import { ObstacleSelectionMenu } from "./menu/ObstacleSelectionMenu.js";
+import Obstacle from "./track/items/obstacle/Obstacle.js";
 
 /**
  *  This class contains the contents of our application
@@ -66,6 +67,9 @@ export class SceneContents {
         });
 
         // Obstacles
+        /**
+         * @type {Obstacle[]}
+         */
         this.obstacles = [];
         const obstacle = new MaxSpeedObstacle(this.game);
         obstacle.position.x = 53;

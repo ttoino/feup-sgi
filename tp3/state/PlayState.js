@@ -17,18 +17,25 @@ export class PlayState extends GameState {
         this.playerController = playerController;
         this.opponentController = opponentController;
 
-        // Unfortunately, due to the way I coded this, the order in which these objects are added matters:
-        // if we place the player last, everything else will hopefully have already updated at least once
-        // and the player will be able to collide with them correctly.
-
         this.updaters.push(...this.game.contents.powerups);
         this.updaters.push(...this.game.contents.obstacles);
 
-        this.updaters.push(this.opponentController);
-        this.updaters.push(this.playerController);
-
         this.boundOnKeyDown = this.#onKeyDown.bind(this);
         this.boundOnKeyUp = this.#onKeyUp.bind(this);
+    }
+
+    /**
+     * 
+     * @param {number} delta 
+     */
+    update(delta) {
+        super.update(delta);
+
+        // The order in which this state's updaters are first updated matters,
+        // so just explicitly update the controllers last here.
+
+        this.opponentController.update(delta);
+        this.playerController.update(delta);
     }
 
     init() {
