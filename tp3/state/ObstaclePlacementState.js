@@ -43,10 +43,6 @@ export default class ObstaclePlacementState extends GameState {
 
             this.game.stateManager.popUntil(PlayState)
             this.game.stateManager.current.updaters.push(obstacle);
-
-            // HACK:
-            // @ts-ignore
-            this.game.stateManager.current.playerController.collisionController.otherColliders.push(obstacle.collider);
         });
     }
 

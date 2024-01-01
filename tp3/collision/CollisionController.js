@@ -4,17 +4,19 @@ import Collider from "./Collider.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import { HELPERS } from "../Layers.js";
 import BoxCollider from "./BoxCollider.js";
+import OpponentController from "../controller/OpponentController.js";
 
 export default class CollisionController {
     /**
      * 
      * @param {Game} game 
      * @param {Vehicle} object
-     * @param {Collider[]} otherColliders
+     * @param {OpponentController} opponentController
      */
-    constructor(game, object, otherColliders) {
+    constructor(game, object, opponentController) {
         this.game = game
-        this.otherColliders = otherColliders ?? [];
+
+        this.opponentController = opponentController;
 
         this.object = object;
 
@@ -23,17 +25,25 @@ export default class CollisionController {
         this.collider = new BoxCollider(game, object.model, (other) => void 0)
     }
 
+    get otherColliders() {
+        return [...this.game.contents.powerups, ...this.game.contents.obstacles, this.opponentController];
+    }
+
     /**
      * 
      * @param {number} delta 
      */
     update(delta) {
-
         this.collider.update(delta);
 
         for (const otherCollider of this.otherColliders) {
-            if (this.collider.collidesWith(otherCollider)) {
-                otherCollider.onCollision(this.object)
+
+            const collider = otherCollider.collider;
+
+            if (!collider) continue;
+
+            if (this.collider.collidesWith(collider)) {
+                collider.onCollision(this.object)
 
                 // We are not colliding with more than one object
                 break;

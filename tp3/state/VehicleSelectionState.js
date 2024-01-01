@@ -61,9 +61,7 @@ export default class VehicleSelectionState extends MenuState {
                 this.game,
                 new VehicleController(this.game, this.kart),
                 // @ts-ignore
-                new CollisionController(this.game, this.kart, [...this.game.contents.powerups, ...this.game.contents.obstacles, opponentController].map((object) => {
-                    return object.collider; // TODO: brah
-                })),
+                new CollisionController(this.game, this.kart, opponentController),
             );
 
             this.stateManager.pushState(
