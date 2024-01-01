@@ -30,7 +30,12 @@ export default class ObstaclePlacementState extends GameState {
     init() {
         document.addEventListener("pointermove", this.boundOnPointerMove);
         this.game.gameplayControls.target = this.game.contents.track;
+
+        const initialTarget = new THREE.Vector3(Math.PI, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight);
+
         this.game.gameplayControls.targetRotation = 0;
+        this.game.gameplayControls.targetDistance = 10;
+        this.game.gameplayControls.targetHeight = 100;
 
         this.pickOnClick().then((position) => {
 
@@ -43,6 +48,10 @@ export default class ObstaclePlacementState extends GameState {
 
             this.game.stateManager.popUntil(PlayState)
             this.game.stateManager.current.updaters.push(obstacle);
+
+            this.game.gameplayControls.targetRotation = initialTarget.x;
+            this.game.gameplayControls.targetDistance = initialTarget.y;
+            this.game.gameplayControls.targetHeight = initialTarget.z;
         });
     }
 
