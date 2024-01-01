@@ -20,7 +20,7 @@ export class MenuState extends GameState {
     }
 
     init() {
-        this.picker.pickOnClick().then((object) => this.onPick(object));
+        this.picker.pickOnClick().then((object) => this.onPick(object)).catch(() => { console.log("coiso"); });
         this.game.gameplayControls.target = this.menuObject;
         this.game.gameplayControls.targetRotation = 0;
     }

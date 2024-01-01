@@ -82,10 +82,20 @@ export class Picker {
             this.startPicking();
 
             const clickListener = () => {
+
+                if (!this.picking) {
+                    document.removeEventListener("click", clickListener);
+                    reject();
+                }
+
                 if (this.picked) {
+
+                    const pickedObject = this.picked;
+                    this.picked = null
+
                     this.finishPicking();
                     document.removeEventListener("click", clickListener);
-                    resolve(this.picked);
+                    resolve(pickedObject);
                 } else if (cancelable) {
                     this.finishPicking();
                     document.removeEventListener("click", clickListener);
