@@ -9,7 +9,7 @@ body {
     margin: 0;
 }
 
-.fill {
+.fullscreen {
     position: fixed;
     inset: 0;
 }

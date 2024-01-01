@@ -63,8 +63,8 @@ export class FollowControls {
         const lerpedCylindrical = MathUtils.clerp(
             cylindrical,
             targetCylindrical,
-            this.positionSpeed * delta,
-            this.rotationSpeed * delta
+            Math.min(1, this.positionSpeed * delta),
+            Math.min(1, this.rotationSpeed * delta)
         );
 
         this.camera.position

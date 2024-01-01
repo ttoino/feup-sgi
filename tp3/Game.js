@@ -95,10 +95,6 @@ export class Game {
         this.stateManager = new GameStateManager();
         this.stateManager.pushState(new MainMenuState(this));
 
-        // Init gui
-        this.gui = new DebugInterface(this);
-        this.gui.init();
-
         // Init renderer
         this.renderer = new Renderer(this);
 
@@ -109,6 +105,9 @@ export class Game {
         );
         this.noclipControls.enableDamping = true;
         this.noclipControls.enabled = this.activeCamera == noclipCamera;
+
+        // Init gui
+        this.gui = new DebugInterface(this);
 
         // manage window resizes
         window.addEventListener("resize", this.onResize.bind(this), false);

@@ -3,6 +3,7 @@ import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js
 import { FloorMaterial } from "./FloorMaterial.js";
 import { Game } from "../Game.js";
 import { HELPERS } from "../Layers.js";
+import { ReflectorForSSRPass } from "three/addons/objects/ReflectorForSSRPass.js";
 
 const size = 1000;
 const divisions = 100;
@@ -36,5 +37,15 @@ export class Floor extends THREE.Mesh {
         //     child.layers.set(HELPERS);
         // });
         // game.scene.add(helper);
+
+        this.reflector = new ReflectorForSSRPass(this.geometry, {
+            clipBias: 0.003,
+            textureWidth: window.innerWidth * window.devicePixelRatio,
+            textureHeight: window.innerHeight * window.devicePixelRatio,
+            color: 0x777777,
+            useDepthTexture: true,
+        });
+        this.reflector.material.depthWrite = false;
+        this.reflector.layers.set(HELPERS);
     }
 }
