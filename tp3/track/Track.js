@@ -12,7 +12,10 @@ export class Track extends THREE.Object3D {
         game.modelManager.loadModel("models/track.glb", (model) => {
             this.add(model);
 
-            model.layers.enable(TRACK);
+            model.traverse((child) => {
+                if (child.name.includes("collider"))
+                    child.layers.set(TRACK);
+            });
 
             console.log(model);
         });

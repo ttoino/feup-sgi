@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Game } from "../Game.js";
-import Vehicle, { MAX_SPEED } from "./Vehicle.js";
+import Vehicle from "./Vehicle.js";
 
 export default class VehicleController {
     /**
@@ -11,11 +11,15 @@ export default class VehicleController {
         this.game = game;
         this.vehicle = vehicle;
 
-        this.trackTracker = new THREE.Raycaster(this.vehicle.position.clone(), new THREE.Vector3(0, -1, 0));
+        this.trackTracker = new THREE.Raycaster(
+            this.vehicle.position.clone(),
+            new THREE.Vector3(0, -1, 0)
+        );
 
-        this.boundMovementKeyDownController = this.movementKeyDownController.bind(this);
-        this.boundMovementKeyUpController = this.movementKeyUpController.bind(this);
-
+        this.boundMovementKeyDownController =
+            this.movementKeyDownController.bind(this);
+        this.boundMovementKeyUpController =
+            this.movementKeyUpController.bind(this);
     }
 
     installPlayerControls() {
@@ -23,10 +27,7 @@ export default class VehicleController {
             "keydown",
             this.boundMovementKeyDownController
         );
-        document.addEventListener(
-            "keyup",
-            this.boundMovementKeyUpController
-        );
+        document.addEventListener("keyup", this.boundMovementKeyUpController);
     }
 
     removePlayerControls() {
@@ -102,31 +103,36 @@ export default class VehicleController {
     }
 
     #checkOnTrack() {
-
-        const position = new THREE.Vector3().copy(this.vehicle.position.clone());
-        position.y = 1;
+        const position = this.vehicle.position.clone();
+        position.y += 1;
 
         this.trackTracker.set(position, new THREE.Vector3(0, -1, 0));
 
-        const intersects = this.trackTracker.intersectObjects(this.game.contents.track.children);
+        const intersects = this.trackTracker.intersectObjects(
+            this.game.contents.track.children
+        );
 
         if (intersects.length <= 0) {
+            this.vehicle.position.y = 0;
+
             // Out of track
             if (this.previousMaxSpeed === undefined) {
                 this.vehicle.applyEffect((vehicle) => {
                     this.previousMaxSpeed = vehicle.maxSpeed;
                     vehicle.maxSpeed *= 0.7;
-                })
+                });
             }
-
         } else {
+            const intersection = intersects[0];
+            this.vehicle.position.y = intersection.point.y;
+
             if (this.previousMaxSpeed !== undefined) {
                 // this is to make the types happy
                 const previousMaxSpeed = this.previousMaxSpeed;
 
                 this.vehicle.applyEffect((vehicle) => {
                     vehicle.maxSpeed = previousMaxSpeed;
-                })
+                });
                 delete this.previousMaxSpeed;
             }
         }

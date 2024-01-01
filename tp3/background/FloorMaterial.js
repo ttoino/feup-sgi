@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export class FloorMaterial extends THREE.MeshPhongMaterial {
+export class FloorMaterial extends THREE.MeshPhysicalMaterial {
     constructor({ divisions = 1 }) {
         super();
 
@@ -27,6 +27,7 @@ export class FloorMaterial extends THREE.MeshPhongMaterial {
         this.noiseMap.wrapS = THREE.RepeatWrapping;
         this.noiseMap.wrapT = THREE.RepeatWrapping;
         this.noiseScale = 2;
+        this.metalness = 1;
 
         this.customProgramCacheKey = () => Math.random().toString();
     }
