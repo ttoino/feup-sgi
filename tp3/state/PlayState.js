@@ -26,6 +26,9 @@ export class PlayState extends GameState {
 
         this.updaters.push(this.opponentController);
         this.updaters.push(this.playerController);
+
+        this.boundOnKeyDown = this.#onKeyDown.bind(this);
+        this.boundOnKeyUp = this.#onKeyUp.bind(this);
     }
 
     init() {
@@ -36,15 +39,15 @@ export class PlayState extends GameState {
 
         this.playerController.install();
 
-        document.addEventListener("keydown", this.#onKeyDown.bind(this));
-        document.addEventListener("keyup", this.#onKeyUp.bind(this));
+        document.addEventListener("keydown", this.boundOnKeyDown);
+        document.addEventListener("keyup", this.boundOnKeyUp);
     }
 
     destroy() {
         this.playerController.remove();
 
-        document.removeEventListener("keydown", this.#onKeyDown.bind(this));
-        document.removeEventListener("keyup", this.#onKeyUp.bind(this));
+        document.removeEventListener("keydown", this.boundOnKeyDown);
+        document.removeEventListener("keyup", this.boundOnKeyUp);
     }
 
     /**

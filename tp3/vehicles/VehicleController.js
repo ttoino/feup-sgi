@@ -12,27 +12,31 @@ export default class VehicleController {
         this.vehicle = vehicle;
 
         this.trackTracker = new THREE.Raycaster(this.vehicle.position.clone(), new THREE.Vector3(0, -1, 0));
+
+        this.boundMovementKeyDownController = this.movementKeyDownController.bind(this);
+        this.boundMovementKeyUpController = this.movementKeyUpController.bind(this);
+
     }
 
     installPlayerControls() {
         document.addEventListener(
             "keydown",
-            this.movementKeyDownController.bind(this)
+            this.boundMovementKeyDownController
         );
         document.addEventListener(
             "keyup",
-            this.movementKeyUpController.bind(this)
+            this.boundMovementKeyUpController
         );
     }
 
     removePlayerControls() {
         document.removeEventListener(
             "keydown",
-            this.movementKeyDownController.bind(this)
+            this.boundMovementKeyDownController
         );
         document.removeEventListener(
             "keyup",
-            this.movementKeyUpController.bind(this)
+            this.boundMovementKeyUpController
         );
     }
 
