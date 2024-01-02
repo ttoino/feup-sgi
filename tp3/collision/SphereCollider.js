@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import Collider from "./Collider.js";
-import { HELPERS } from "../Layers.js";
+import { HELPERS } from "../renderer/Layers.js";
 
 export default class SphereCollider extends Collider {
     /**

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { UI } from "../Layers.js";
+import { UI } from "../renderer/Layers.js";
 
 /**
  * @abstract

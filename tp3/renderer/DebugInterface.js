@@ -1,6 +1,6 @@
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { HELPERS } from "./Layers.js";
-import { Game } from "./Game.js";
+import { Game } from "../game/Game.js";
 
 /**
     This class customizes the gui interface for the game

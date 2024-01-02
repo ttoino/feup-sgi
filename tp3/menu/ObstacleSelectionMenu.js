@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Menu from "./Menu.js";
-import { OBSTACLE_SELECTION_MENU, UI } from "../Layers.js";
-import { Game } from "../Game.js";
+import { OBSTACLE_SELECTION_MENU, UI } from "../renderer/Layers.js";
+import { Game } from "../game/Game.js";
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 export class ObstacleSelectionMenu extends Menu {

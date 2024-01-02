@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Game } from "../../Game.js";
+import { Game } from "../../game/Game.js";
 import Vehicle from "../../vehicles/Vehicle.js";
 import SphereCollider from "../../collision/SphereCollider.js";
 

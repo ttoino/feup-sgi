@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import Obstacle from "../track/items/obstacle/Obstacle.js";
 import { GameState } from "./GameState.js";
 import { PlayState } from "./PlayState.js";

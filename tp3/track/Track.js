@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OBB } from "three/addons/math/OBB.js";
-import { Game } from "../Game.js";
-import { HELPERS, TRACK } from "../Layers.js";
+import { Game } from "../game/Game.js";
+import { HELPERS, TRACK } from "../renderer/Layers.js";
 
 export class Track extends THREE.Object3D {
     /**
@@ -45,21 +45,21 @@ export class Track extends THREE.Object3D {
             });
 
             this.waypointLights = waypoints.map((waypoint) =>
-                /** @type {const} */ ([1, 2, 3]).map((i) => {
-                    const light = {
-                        on: waypoint.getObjectByName(
-                            `${waypoint.name}_${i}_on`
-                        ),
-                        off: waypoint.getObjectByName(
-                            `${waypoint.name}_${i}_off`
-                        ),
-                    };
+                /** @type {const} */([1, 2, 3]).map((i) => {
+                const light = {
+                    on: waypoint.getObjectByName(
+                        `${waypoint.name}_${i}_on`
+                    ),
+                    off: waypoint.getObjectByName(
+                        `${waypoint.name}_${i}_off`
+                    ),
+                };
 
-                    if (light.on) light.on.visible = false;
-                    if (light.off) light.off.visible = true;
+                if (light.on) light.on.visible = false;
+                if (light.off) light.off.visible = true;
 
-                    return light;
-                })
+                return light;
+            })
             );
 
             this.waypointColliders = waypoints

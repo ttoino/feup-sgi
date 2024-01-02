@@ -1,6 +1,6 @@
 import { GameState } from "./GameState.js";
 import { PauseState } from "./PauseState.js";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import PlayerController from "../controller/PlayerController.js";
 import OpponentController from "../controller/OpponentController.js";

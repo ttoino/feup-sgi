@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Menu from "./Menu.js";
-import { PAUSE_MENU, UI } from "../Layers.js";
-import { Game } from "../Game.js";
+import { PAUSE_MENU, UI } from "../renderer/Layers.js";
+import { Game } from "../game/Game.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 export class PauseMenu extends Menu {

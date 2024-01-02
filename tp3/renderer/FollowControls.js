@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import * as MathUtils from "./MathUtils.js";
+import * as MathUtils from "../MathUtils.js";
 
 export class FollowControls {
     /**

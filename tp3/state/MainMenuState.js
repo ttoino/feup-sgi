@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
-import { MAIN_MENU } from "../Layers.js";
+import { Game } from "../game/Game.js";
+import { MAIN_MENU } from "../renderer/Layers.js";
 import { MenuState } from "./MenuState.js";
 import VehicleSelectionState from "./VehicleSelectionState.js";
 import { MainMenu } from "../menu/MainMenu.js";

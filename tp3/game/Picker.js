@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Game } from "./Game.js";
-import { ALL, HELPERS } from "./Layers.js";
+import { ALL, HELPERS } from "../renderer/Layers.js";
 
 export class Picker {
     /**

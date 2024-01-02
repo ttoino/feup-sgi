@@ -1,4 +1,4 @@
-import { Game } from "../../../Game.js";
+import { Game } from "../../../game/Game.js";
 import Vehicle from "../../../vehicles/Vehicle.js";
 import Obstacle, { PICKUP_INTERVAL } from "./Obstacle.js";
 

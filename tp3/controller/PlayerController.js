@@ -1,4 +1,4 @@
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import CollisionController from "../collision/CollisionController.js";
 import VehicleController from "../vehicles/VehicleController.js";
 

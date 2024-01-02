@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import { Particles } from "./Particles.js";
 import { randRange } from "../MathUtils.js";
 

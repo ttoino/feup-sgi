@@ -1,5 +1,5 @@
-import { Game } from "../Game.js";
-import { Picker } from "../Picker.js";
+import { Game } from "../game/Game.js";
+import { Picker } from "../game/Picker.js";
 import { GameState } from "./GameState.js";
 
 /**

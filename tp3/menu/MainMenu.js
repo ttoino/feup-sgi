@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Menu from "./Menu.js";
-import { MAIN_MENU, UI } from "../Layers.js";
-import { Game } from "../Game.js";
+import { MAIN_MENU, UI } from "../renderer/Layers.js";
+import { Game } from "../game/Game.js";
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { Font } from "three/addons/loaders/FontLoader.js";
 

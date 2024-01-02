@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import { Floor } from "./Floor.js";
 
 export class Background extends THREE.Object3D {

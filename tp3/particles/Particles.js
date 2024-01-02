@@ -1,4 +1,4 @@
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import * as THREE from "three";
 
 export class Particles extends THREE.InstancedMesh {

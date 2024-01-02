@@ -1,4 +1,4 @@
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import Vehicle from "./Vehicle.js";
 
 export class LightCar extends Vehicle {
@@ -7,5 +7,7 @@ export class LightCar extends Vehicle {
      */
     constructor(game) {
         super(game, "light_car");
+
+        this.name = "Light Car";
     }
 }

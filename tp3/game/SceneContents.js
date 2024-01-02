@@ -1,20 +1,20 @@
 import * as THREE from "three";
-import { Background } from "./background/Background.js";
-import { HELPERS } from "./Layers.js";
-import { MainMenu } from "./menu/MainMenu.js";
-import { PauseMenu } from "./menu/PauseMenu.js";
+import { Background } from "../background/Background.js";
+import { HELPERS } from "../renderer/Layers.js";
+import { MainMenu } from "../menu/MainMenu.js";
+import { PauseMenu } from "../menu/PauseMenu.js";
 import { Game } from "./Game.js";
-import { VehicleSelectionMenu } from "./menu/VehicleSelectionMenu.js";
-import { LightCycle } from "./vehicles/LightCycle.js";
-import { LightCar } from "./vehicles/LightCar.js";
-import Vehicle from "./vehicles/Vehicle.js";
-import MaxSpeedPowerup from "./track/items/powerup/MaxSpeedPowerup.js";
-import MaxSpeedObstacle from "./track/items/obstacle/MaxSpeedObstacle.js";
-import { Particles } from "./particles/Particles.js";
-import { Fireworks } from "./particles/Fireworks.js";
-import { Track } from "./track/Track.js";
-import { ObstacleSelectionMenu } from "./menu/ObstacleSelectionMenu.js";
-import Obstacle from "./track/items/obstacle/Obstacle.js";
+import { VehicleSelectionMenu } from "../menu/VehicleSelectionMenu.js";
+import { LightCycle } from "../vehicles/LightCycle.js";
+import { LightCar } from "../vehicles/LightCar.js";
+import Vehicle from "../vehicles/Vehicle.js";
+import MaxSpeedPowerup from "../track/items/powerup/MaxSpeedPowerup.js";
+import MaxSpeedObstacle from "../track/items/obstacle/MaxSpeedObstacle.js";
+import { Particles } from "../particles/Particles.js";
+import { Fireworks } from "../particles/Fireworks.js";
+import { Track } from "../track/Track.js";
+import { ObstacleSelectionMenu } from "../menu/ObstacleSelectionMenu.js";
+import Obstacle from "../track/items/obstacle/Obstacle.js";
 
 /**
  *  This class contains the contents of our application

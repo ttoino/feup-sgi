@@ -1,4 +1,4 @@
-import { Game } from "./Game.js";
+import { Game } from "./game/Game.js";
 
 const game = new Game();
 game.update();

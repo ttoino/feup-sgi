@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
-import { ALL_VEHICLES, HELPERS } from "../Layers.js";
+import { Game } from "../game/Game.js";
+import { ALL_VEHICLES, HELPERS } from "../renderer/Layers.js";
 
 export const ACCEL = 5;
 export const ANGULAR_ACCEL = 5;

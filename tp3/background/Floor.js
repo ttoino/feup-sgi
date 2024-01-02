@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { FloorMaterial } from "./FloorMaterial.js";
-import { Game } from "../Game.js";
-import { HELPERS } from "../Layers.js";
+import { Game } from "../game/Game.js";
+import { HELPERS } from "../renderer/Layers.js";
 import { ReflectorForSSRPass } from "three/addons/objects/ReflectorForSSRPass.js";
 
 const size = 1000;

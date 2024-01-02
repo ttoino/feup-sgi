@@ -14,7 +14,7 @@ import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
 import { SSRPass } from "three/addons/postprocessing/SSRPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
-import { Game } from "./Game.js";
+import { Game } from "../game/Game.js";
 
 export class Renderer {
     /**
@@ -129,10 +129,10 @@ export class Renderer {
         return this.ssaaRenderPass.enabled
             ? "ssaa"
             : this.smaaPass.enabled
-            ? "smaa"
-            : this.fxaaPass.enabled
-            ? "fxaa"
-            : "none";
+                ? "smaa"
+                : this.fxaaPass.enabled
+                    ? "fxaa"
+                    : "none";
     }
 
     set antialiasing(value) {
@@ -168,10 +168,10 @@ export class Renderer {
         return this.saoPass.enabled
             ? "sao"
             : this.ssaoPass.enabled
-            ? "ssao"
-            : this.gtaoPass.enabled
-            ? "gtao"
-            : "none";
+                ? "ssao"
+                : this.gtaoPass.enabled
+                    ? "gtao"
+                    : "none";
     }
 
     set ambientOcclusion(value) {
@@ -203,8 +203,8 @@ export class Renderer {
         return this.unrealBloomPass.enabled
             ? "high"
             : this.bloomPass.enabled
-            ? "low"
-            : "none";
+                ? "low"
+                : "none";
     }
 
     set bloom(value) {

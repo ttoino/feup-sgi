@@ -1,4 +1,4 @@
-import { Game } from "../../../Game.js";
+import { Game } from "../../../game/Game.js";
 import TrackItem from "../TrackItem.js";
 
 export const PICKUP_INTERVAL = 5000;

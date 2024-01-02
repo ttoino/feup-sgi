@@ -1,5 +1,5 @@
-import { Game } from "../Game.js";
-import { PAUSE_MENU } from "../Layers.js";
+import { Game } from "../game/Game.js";
+import { PAUSE_MENU } from "../renderer/Layers.js";
 import { MainMenuState } from "./MainMenuState.js";
 import { MenuState } from "./MenuState.js";
 import { PlayState } from "./PlayState.js";

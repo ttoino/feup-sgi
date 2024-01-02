@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import { MenuState } from "./MenuState.js";
-import { VEHICLE_SELECTION_MENU } from "../Layers.js";
+import { VEHICLE_SELECTION_MENU } from "../renderer/Layers.js";
 import { PlayState } from "./PlayState.js";
 import VehicleController from "../vehicles/VehicleController.js";
 import Vehicle from "../vehicles/Vehicle.js";

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import Vehicle from "../vehicles/Vehicle.js";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 
 /**
  * @abstract

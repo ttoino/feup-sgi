@@ -2,15 +2,15 @@ import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Renderer } from "./Renderer.js";
+import { Renderer } from "../renderer/Renderer.js";
 import { SceneContents } from "./SceneContents.js";
-import { DebugInterface } from "./DebugInterface.js";
-import { FollowControls } from "./FollowControls.js";
-import { GameStateManager } from "./state/GameStateManager.js";
-import { MainMenuState } from "./state/MainMenuState.js";
-import { FontManager } from "./fonts/FontManager.js";
-import { ModelManager } from "./models/ModelManager.js";
-import { HELPERS } from "./Layers.js";
+import { DebugInterface } from "../renderer/DebugInterface.js";
+import { FollowControls } from "../renderer/FollowControls.js";
+import { GameStateManager } from "../state/GameStateManager.js";
+import { MainMenuState } from "../state/MainMenuState.js";
+import { FontManager } from "../fonts/FontManager.js";
+import { ModelManager } from "../models/ModelManager.js";
+import { HELPERS } from "../renderer/Layers.js";
 
 export class Game {
     /**

@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import Vehicle from "./Vehicle.js";
-import { TRACK } from "../Layers.js";
+import { TRACK } from "../renderer/Layers.js";
 
 export default class VehicleController {
     /**

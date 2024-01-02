@@ -1,6 +1,6 @@
-import { Game } from "../Game.js";
+import { Game } from "../game/Game.js";
 import { MenuState } from "./MenuState.js";
-import { OBSTACLE_SELECTION_MENU } from "../Layers.js";
+import { OBSTACLE_SELECTION_MENU } from "../renderer/Layers.js";
 import ObstaclePlacementState from "./ObstaclePlacementState.js";
 import Obstacle from "../track/items/obstacle/Obstacle.js";
 
