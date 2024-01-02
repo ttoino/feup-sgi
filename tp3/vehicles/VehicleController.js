@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Game } from "../Game.js";
 import Vehicle from "./Vehicle.js";
+import { TRACK } from "../Layers.js";
 
 export default class VehicleController {
     /**
@@ -15,6 +16,9 @@ export default class VehicleController {
             this.vehicle.position.clone(),
             new THREE.Vector3(0, -1, 0)
         );
+        this.trackTracker.far = 2;
+        this.trackTracker.near = 0;
+        this.trackTracker.layers.set(TRACK);
 
         this.boundMovementKeyDownController =
             this.movementKeyDownController.bind(this);
