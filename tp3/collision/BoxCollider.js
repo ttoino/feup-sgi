@@ -1,51 +1,50 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import { Game } from "../Game.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import Collider from "./Collider.js";
-import { HELPERS } from '../Layers.js';
-import { OBB } from 'three/addons/math/OBB.js';
-import SphereCollider from './SphereCollider.js';
-import PlaneCollider from './PlaneCollider.js';
+import { HELPERS } from "../Layers.js";
+import { OBB } from "three/addons/math/OBB.js";
+import SphereCollider from "./SphereCollider.js";
+import PlaneCollider from "./PlaneCollider.js";
 
 export default class BoxCollider extends Collider {
-
     /**
-     * 
-     * @param {Game} game 
-     * @param {THREE.Object3D} object 
-     * @param {(vehicle: Vehicle) => void} handler 
+     * @param {Game} game
+     * @param {THREE.Object3D} object
+     * @param {(vehicle: Vehicle) => void} handler
      */
     constructor(game, object, handler) {
         super(game, object, handler);
 
-        this.collider = new OBB().fromBox3(new THREE.Box3().setFromObject(object));
+        this.collider = new OBB().fromBox3(
+            new THREE.Box3().setFromObject(object)
+        );
 
         const size = new THREE.Vector3();
         this.collider.getSize(size);
         this.boxWireframe = new THREE.Mesh(
             new THREE.BoxGeometry(size.x, size.y, size.z),
             new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-        )
+        );
         this.boxWireframe.layers.set(HELPERS);
         this.game.scene.add(this.boxWireframe);
     }
 
     /**
-     * 
-     * @param {number} delta 
+     * @param {number} delta
      */
     update(delta) {
         this.collider.fromBox3(new THREE.Box3().setFromObject(this.object));
 
         this.boxWireframe.position.copy(this.collider.center);
         // @ts-ignore
-        this.boxWireframe.rotation.copy(new THREE.Euler().setFromRotationMatrix(this.object.matrixWorld));
+        this.boxWireframe.rotation.copy(
+            new THREE.Euler().setFromRotationMatrix(this.object.matrixWorld)
+        );
     }
 
-
     /**
-     * 
-     * @param {Collider} other 
+     * @param {Collider} other
      * @returns {boolean}
      */
     collidesWith(other) {

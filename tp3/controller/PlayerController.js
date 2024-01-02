@@ -3,12 +3,10 @@ import CollisionController from "../collision/CollisionController.js";
 import VehicleController from "../vehicles/VehicleController.js";
 
 export default class PlayerController {
-
     /**
-     * 
-     * @param {Game} game 
-     * @param {VehicleController} vehicleController 
-     * @param {CollisionController} collisionController 
+     * @param {Game} game
+     * @param {VehicleController} vehicleController
+     * @param {CollisionController} collisionController
      */
     constructor(game, vehicleController, collisionController) {
         this.game = game;
@@ -16,7 +14,9 @@ export default class PlayerController {
         this.collisionController = collisionController;
     }
 
-    get vehicle() { return this.vehicleController.vehicle; }
+    get vehicle() {
+        return this.vehicleController.vehicle;
+    }
 
     install() {
         this.vehicleController.installPlayerControls();
@@ -27,8 +27,7 @@ export default class PlayerController {
     }
 
     /**
-     * 
-     * @param {number} delta 
+     * @param {number} delta
      */
     update(delta) {
         this.vehicleController.update(delta);

@@ -22,12 +22,6 @@ export class Picker {
 
         this.picking = false;
 
-        this.helper = new THREE.Mesh(
-            new THREE.SphereGeometry(0.1),
-            new THREE.MeshBasicMaterial({ color: 0xffffff })
-        );
-        this.helper.layers = this.helperLayers;
-
         document.addEventListener("pointermove", this.onPointerMove.bind(this));
     }
 
@@ -72,9 +66,8 @@ export class Picker {
     }
 
     /**
-     * 
-     * @param {boolean} [cancelable=false] 
-     * 
+     * @param {boolean} [cancelable=false]
+     *
      * @returns {Promise<THREE.Object3D>}
      */
     pickOnClick(cancelable = false) {
@@ -82,16 +75,14 @@ export class Picker {
             this.startPicking();
 
             const clickListener = () => {
-
                 if (!this.picking) {
                     document.removeEventListener("click", clickListener);
                     reject();
                 }
 
                 if (this.picked) {
-
                     const pickedObject = this.picked;
-                    this.picked = null
+                    this.picked = null;
 
                     this.finishPicking();
                     document.removeEventListener("click", clickListener);
