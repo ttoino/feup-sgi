@@ -15,6 +15,7 @@ export class MainMenuState extends MenuState {
         this.boundKeyDownController = this.#onKeyDown.bind(this);
 
         this.name = "";
+        this.difficulty = "easy";
     }
 
     init() {
@@ -82,6 +83,10 @@ export class MainMenuState extends MenuState {
     onPick(object) {
         switch (object.name) {
             case "play_button":
+
+                this.game.info.playerName = this.name;
+                this.game.info.difficulty = this.difficulty;
+
                 this.stateManager.pushState(
                     new VehicleSelectionState(this.game),
                 );

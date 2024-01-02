@@ -11,6 +11,7 @@ import { MainMenuState } from "../state/MainMenuState.js";
 import { FontManager } from "../fonts/FontManager.js";
 import { ModelManager } from "../models/ModelManager.js";
 import { HELPERS } from "../renderer/Layers.js";
+import GameInfo from "./GameInfo.js";
 
 export class Game {
     /**
@@ -90,6 +91,9 @@ export class Game {
 
         // Init contents
         this.contents = new SceneContents(this);
+
+        // Init game info
+        this.info = new GameInfo(this, "", null, null, "");
 
         // Init state manager
         this.stateManager = new GameStateManager();

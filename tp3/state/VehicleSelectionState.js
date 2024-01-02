@@ -73,12 +73,6 @@ export default class VehicleSelectionState extends MenuState {
             );
 
             object.updateMatrix();
-            console.log(
-                new THREE.Euler().setFromQuaternion(
-                    object.getWorldQuaternion(new THREE.Quaternion())
-                ),
-                object.getWorldDirection(new THREE.Vector3())
-            );
 
             const opponentController = new OpponentController(
                 this.game,
@@ -94,6 +88,9 @@ export default class VehicleSelectionState extends MenuState {
                     opponentController
                 )
             );
+
+            this.game.info.playerCar = this.kart.name;
+            this.game.info.opponentCar = this.opponent.name;
 
             this.stateManager.pushState(
                 new PlayState(this.game, playerController, opponentController)
