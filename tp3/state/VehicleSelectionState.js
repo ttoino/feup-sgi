@@ -41,14 +41,44 @@ export default class VehicleSelectionState extends MenuState {
 
             this.menuObject.remove(object);
             this.game.scene.add(object);
-            object.position.copy(this.game.contents.track.playerStart.getWorldPosition(new THREE.Vector3()));
-            object.quaternion.copy(this.game.contents.track.playerStart.getWorldQuaternion(new THREE.Quaternion()));
+            object.position.copy(
+                this.game.contents.track.playerStart.getWorldPosition(
+                    new THREE.Vector3()
+                )
+            );
+            object.rotation.copy(
+                new THREE.Euler().setFromQuaternion(
+                    this.game.contents.track.playerStart.getWorldQuaternion(
+                        new THREE.Quaternion()
+                    ),
+                    "YXZ"
+                )
+            );
         } else if (this.opponent === undefined) {
             this.opponent = object;
             this.menuObject.remove(object);
             this.game.scene.add(object);
-            object.position.copy(this.game.contents.track.opponentStart.getWorldPosition(new THREE.Vector3()));
-            object.quaternion.copy(this.game.contents.track.opponentStart.getWorldQuaternion(new THREE.Quaternion()));
+            object.position.copy(
+                this.game.contents.track.opponentStart.getWorldPosition(
+                    new THREE.Vector3()
+                )
+            );
+            object.rotation.copy(
+                new THREE.Euler().setFromQuaternion(
+                    this.game.contents.track.opponentStart.getWorldQuaternion(
+                        new THREE.Quaternion()
+                    ),
+                    "YXZ"
+                )
+            );
+
+            object.updateMatrix();
+            console.log(
+                new THREE.Euler().setFromQuaternion(
+                    object.getWorldQuaternion(new THREE.Quaternion())
+                ),
+                object.getWorldDirection(new THREE.Vector3())
+            );
 
             const opponentController = new OpponentController(
                 this.game,

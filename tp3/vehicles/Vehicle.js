@@ -46,6 +46,7 @@ export default class Vehicle extends THREE.Object3D {
                 } else if (child.name.includes("center")) {
                     this.center = child;
                     this.cubeCamera.position.copy(child.position);
+                    this.directionHelper.position.copy(child.position);
                 }
 
                 if (
@@ -59,12 +60,8 @@ export default class Vehicle extends THREE.Object3D {
 
         this.layers.enable(ALL_VEHICLES);
 
-        this.directionHelper = new THREE.Line(
-            new THREE.BufferGeometry().setFromPoints([
-                new THREE.Vector3(0, 0, 0),
-                new THREE.Vector3(0, 0, 1),
-            ]),
-            new THREE.LineBasicMaterial({ color: 0xffffff })
+        this.directionHelper = new THREE.ArrowHelper(
+            new THREE.Vector3(0, 0, 1)
         );
         this.directionHelper.layers.set(HELPERS);
         this.add(this.directionHelper);
@@ -112,7 +109,7 @@ export default class Vehicle extends THREE.Object3D {
             this.forwardSpeed * delta
         );
 
-        this.directionHelper.scale.z = this.forwardSpeed;
+        this.directionHelper.setLength(this.forwardSpeed);
 
         this.steers.forEach((steer) => {
             steer.rotation.y = THREE.MathUtils.lerp(

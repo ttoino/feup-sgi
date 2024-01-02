@@ -27,6 +27,7 @@ export default class CollisionController {
         );
 
         this.nextWaypoint = 0;
+        this.lap = 0;
     }
 
     get otherColliders() {
@@ -56,15 +57,6 @@ export default class CollisionController {
             }
         }
 
-        if (
-            this.collider.collider.intersectsOBB(
-                this.game.contents.track.waypoints[this.nextWaypoint]
-            )
-        ) {
-            this.nextWaypoint =
-                (this.nextWaypoint + 1) %
-                this.game.contents.track.waypoints.length;
-            console.log(this.nextWaypoint);
-        }
+        this.game.contents.track.checkWaypoint(this.collider.collider);
     }
 }

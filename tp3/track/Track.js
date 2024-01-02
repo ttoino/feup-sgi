@@ -13,7 +13,18 @@ export class Track extends THREE.Object3D {
         this.playerStart = new THREE.Object3D();
         this.opponentStart = new THREE.Object3D();
         /** @type {OBB[]} */
-        this.waypoints = [];
+        this.waypointColliders = [];
+        /**
+         * @typedef {{
+         *     on: THREE.Object3D;
+         *     off: THREE.Object3D;
+         * }} WaypointLight
+         * @type {[WaypointLight, WaypointLight, WaypointLight][]}
+         */
+        this.waypointLights = [];
+
+        this.lap = -1;
+        this.nextWaypoint = 0;
 
         game.modelManager.loadModel("models/track.glb", (model) => {
             this.add(model);
@@ -30,10 +41,29 @@ export class Track extends THREE.Object3D {
                 if (child.name.includes("start_opponent"))
                     this.opponentStart = child;
 
-                if (child.name.match(/waypoint_\d+/)) waypoints.push(child);
+                if (child.name.match(/waypoint_\d+$/)) waypoints.push(child);
             });
 
-            this.waypoints = waypoints
+            // @ts-ignore
+            this.waypointLights = waypoints.map((waypoint) =>
+                [1, 2, 3].map((i) => {
+                    const light = {
+                        on: waypoint.getObjectByName(
+                            `${waypoint.name}_${i}_on`
+                        ),
+                        off: waypoint.getObjectByName(
+                            `${waypoint.name}_${i}_off`
+                        ),
+                    };
+
+                    light.on.visible = false;
+                    light.off.visible = true;
+
+                    return light;
+                })
+            );
+
+            this.waypointColliders = waypoints
                 .sort((a, b) => a.name.localeCompare(b.name, ["en"]))
                 .map((waypoint) => {
                     waypoint.updateMatrixWorld();
@@ -58,9 +88,25 @@ export class Track extends THREE.Object3D {
                     //     waypoint.getWorldPosition(new THREE.Vector3())
                     // )
                 });
-
-            console.log(waypoints, this.waypoints);
-            console.log(model);
         });
+    }
+
+    /**
+     * @param {OBB} collider
+     */
+    checkWaypoint(collider) {
+        if (collider.intersectsOBB(this.waypointColliders[this.nextWaypoint])) {
+            if (this.nextWaypoint === 0) this.lap++;
+
+            if (this.lap >= 3) return;
+
+            this.waypointLights[this.nextWaypoint][this.lap].on.visible = true;
+            this.waypointLights[this.nextWaypoint][
+                this.lap
+            ].off.visible = false;
+
+            this.nextWaypoint =
+                (this.nextWaypoint + 1) % this.waypointColliders.length;
+        }
     }
 }
