@@ -16,10 +16,10 @@ export class Track extends THREE.Object3D {
         this.waypointColliders = [];
         /**
          * @typedef {{
-         *     on: THREE.Object3D;
-         *     off: THREE.Object3D;
+         *     on?: THREE.Object3D;
+         *     off?: THREE.Object3D;
          * }} WaypointLight
-         * @type {[WaypointLight, WaypointLight, WaypointLight][]}
+         * @type {WaypointLight[][]}
          */
         this.waypointLights = [];
 
@@ -44,9 +44,8 @@ export class Track extends THREE.Object3D {
                 if (child.name.match(/waypoint_\d+$/)) waypoints.push(child);
             });
 
-            // @ts-ignore
             this.waypointLights = waypoints.map((waypoint) =>
-                [1, 2, 3].map((i) => {
+                /** @type {const} */ ([1, 2, 3]).map((i) => {
                     const light = {
                         on: waypoint.getObjectByName(
                             `${waypoint.name}_${i}_on`
@@ -56,8 +55,8 @@ export class Track extends THREE.Object3D {
                         ),
                     };
 
-                    light.on.visible = false;
-                    light.off.visible = true;
+                    if (light.on) light.on.visible = false;
+                    if (light.off) light.off.visible = true;
 
                     return light;
                 })
@@ -100,10 +99,10 @@ export class Track extends THREE.Object3D {
 
             if (this.lap >= 3) return;
 
-            this.waypointLights[this.nextWaypoint][this.lap].on.visible = true;
-            this.waypointLights[this.nextWaypoint][
-                this.lap
-            ].off.visible = false;
+            const light = this.waypointLights[this.nextWaypoint][this.lap];
+
+            if (light.on) light.on.visible = true;
+            if (light.off) light.off.visible = false;
 
             this.nextWaypoint =
                 (this.nextWaypoint + 1) % this.waypointColliders.length;

@@ -3,7 +3,7 @@ import { Game } from "../Game.js";
 import { ALL_VEHICLES, HELPERS } from "../Layers.js";
 
 export const ACCEL = 5;
-export const ANGULAR_ACCEL = 10;
+export const ANGULAR_ACCEL = 5;
 export const MIN_SPEED = 0;
 export const MAX_SPEED = 50;
 
@@ -18,7 +18,6 @@ export default class Vehicle extends THREE.Object3D {
         this.game = game;
 
         this.forwardSpeed = 0;
-        this.rotationSpeedRadS = 0;
         this.rotationRad = 0;
         this.acceleration = 0;
         this.maxSpeed = MAX_SPEED;
@@ -96,11 +95,8 @@ export default class Vehicle extends THREE.Object3D {
             this.maxSpeed
         );
 
-        this.rotation.y = THREE.MathUtils.lerp(
-            this.rotation.y,
-            this.rotation.y +
-                this.rotationRad * delta * this.forwardSpeed * 0.1,
-            Math.min(1, delta * 4)
+        this.rotateY(
+            (this.rotationRad * delta * this.forwardSpeed) / this.maxSpeed
         );
 
         // TODO: Max speed, maybe using drag
@@ -114,7 +110,7 @@ export default class Vehicle extends THREE.Object3D {
         this.steers.forEach((steer) => {
             steer.rotation.y = THREE.MathUtils.lerp(
                 steer.rotation.y,
-                (this.rotationRad * Math.PI) / 6,
+                ((this.rotationRad / ANGULAR_ACCEL) * Math.PI) / 6,
                 Math.min(1, delta * 4)
             );
         });
