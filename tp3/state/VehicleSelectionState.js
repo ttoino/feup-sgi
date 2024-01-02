@@ -33,67 +33,41 @@ export default class VehicleSelectionState extends MenuState {
      * @param {THREE.Object3D} object
      */
     onPick(object) {
+        if (!(object instanceof Vehicle)) return;
         // TODO: improve this... A LOT
 
         if (this.kart === undefined) {
-            if (object instanceof Vehicle) {
-                // Should always be true but types...
+            this.kart = object;
 
-                this.kart = object;
-
-                this.menuObject.remove(object);
-                this.game.scene.add(object);
-                object.position.copy(
-                    this.game.contents.track.playerStart.getWorldPosition(
-                        new THREE.Vector3()
-                    )
-                );
-                object.quaternion.copy(
-                    this.game.contents.track.playerStart.getWorldQuaternion(
-                        new THREE.Quaternion()
-                    )
-                );
-
-                return;
-            }
+            this.menuObject.remove(object);
+            this.game.scene.add(object);
+            object.position.copy(this.game.contents.track.playerStart.getWorldPosition(new THREE.Vector3()));
+            object.quaternion.copy(this.game.contents.track.playerStart.getWorldQuaternion(new THREE.Quaternion()));
         } else if (this.opponent === undefined) {
-            if (object instanceof Vehicle) {
-                // Should always be true but types...
+            this.opponent = object;
+            this.menuObject.remove(object);
+            this.game.scene.add(object);
+            object.position.copy(this.game.contents.track.opponentStart.getWorldPosition(new THREE.Vector3()));
+            object.quaternion.copy(this.game.contents.track.opponentStart.getWorldQuaternion(new THREE.Quaternion()));
 
-                this.opponent = object;
-                this.menuObject.remove(object);
-                this.game.scene.add(object);
-                object.position.copy(
-                    this.game.contents.track.opponentStart.getWorldPosition(
-                        new THREE.Vector3()
-                    )
-                );
-                object.quaternion.copy(
-                    this.game.contents.track.opponentStart.getWorldQuaternion(
-                        new THREE.Quaternion()
-                    )
-                );
+            const opponentController = new OpponentController(
+                this.game,
+                this.opponent
+            );
 
-                const opponentController = new OpponentController(
+            const playerController = new PlayerController(
+                this.game,
+                new VehicleController(this.game, this.kart),
+                new CollisionController(
                     this.game,
-                    this.opponent
-                );
+                    this.kart,
+                    opponentController
+                )
+            );
 
-                const playerController = new PlayerController(
-                    this.game,
-                    new VehicleController(this.game, this.kart),
-                    new CollisionController(
-                        this.game,
-                        this.kart,
-                        opponentController
-                    )
-                );
-
-                this.stateManager.pushState(
-                    new PlayState(this.game, playerController, opponentController)
-                );
-                return;
-            }
+            this.stateManager.pushState(
+                new PlayState(this.game, playerController, opponentController)
+            );
         } else {
             console.error("HUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHhh...");
         }

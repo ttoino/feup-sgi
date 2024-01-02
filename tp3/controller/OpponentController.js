@@ -5,25 +5,28 @@ import Vehicle from "../vehicles/Vehicle.js";
 export const EFFECT_DURATION = 5000;
 
 export default class OpponentController {
-
     /**
-     * 
-     * @param {Game} game 
-     * @param {Vehicle} opponentVehicle 
+     * @param {Game} game
+     * @param {Vehicle} opponentVehicle
      */
     constructor(game, opponentVehicle) {
         this.game = game;
 
         this.opponentVehicle = opponentVehicle;
 
-        this.collider = new BoxCollider(this.game, this.opponentVehicle, this.#onPlayerCollision.bind(this));
+        this.collider = new BoxCollider(
+            this.game,
+            this.opponentVehicle.model ?? this.opponentVehicle,
+            this.#onPlayerCollision.bind(this)
+        );
     }
 
-    get vehicle() { return this.opponentVehicle; }
+    get vehicle() {
+        return this.opponentVehicle;
+    }
 
     /**
-     * 
-     * @param {number} delta 
+     * @param {number} delta
      */
     update(delta) {
         this.opponentVehicle.update(delta);
@@ -31,15 +34,16 @@ export default class OpponentController {
     }
 
     /**
-     * 
-     * @param {Vehicle} otherVehicle 
+     * @param {Vehicle} otherVehicle
      */
     #onPlayerCollision(otherVehicle) {
-
         if (this.collided) return;
 
         this.collided = true;
-        this.game.stateManager.current.setTimeout(() => (this.collided = false), 1000);
+        this.game.stateManager.current.setTimeout(
+            () => (this.collided = false),
+            1000
+        );
 
         otherVehicle.applyEffect((vehicle) => {
             const currentMaxSpeed = vehicle.maxSpeed;

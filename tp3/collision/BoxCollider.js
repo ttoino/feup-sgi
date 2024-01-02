@@ -16,30 +16,37 @@ export default class BoxCollider extends Collider {
     constructor(game, object, handler) {
         super(game, object, handler);
 
-        this.collider = new OBB().fromBox3(
-            new THREE.Box3().setFromObject(object)
-        );
+        this.aabb = new THREE.Box3().setFromObject(object.clone());
+        console.log(this.aabb);
 
-        const size = new THREE.Vector3();
-        this.collider.getSize(size);
-        this.boxWireframe = new THREE.Mesh(
+        object.updateMatrixWorld();
+        this.collider = new OBB()
+            .fromBox3(this.aabb)
+            .applyMatrix4(object.matrixWorld);
+
+        const size = this.aabb.getSize(new THREE.Vector3());
+        const center = this.aabb.getCenter(new THREE.Vector3());
+        const helperMesh = new THREE.Mesh(
             new THREE.BoxGeometry(size.x, size.y, size.z),
             new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
         );
-        this.boxWireframe.layers.set(HELPERS);
-        this.game.scene.add(this.boxWireframe);
+        helperMesh.position.copy(center);
+        helperMesh.layers.set(HELPERS);
+        this.helper = new THREE.Object3D();
+        this.helper.add(helperMesh);
+        this.helper.matrixAutoUpdate = false;
+        this.helper.matrix.copy(object.matrixWorld);
+        this.helper.layers.set(HELPERS);
+        this.game.scene.add(this.helper);
     }
 
     /**
      * @param {number} delta
      */
     update(delta) {
-        this.collider.fromBox3(new THREE.Box3().setFromObject(this.object));
-
-        this.boxWireframe.position.copy(this.collider.center);
-        this.boxWireframe.rotation.copy(
-            new THREE.Euler().setFromRotationMatrix(this.object.matrixWorld)
-        );
+        this.object.updateMatrixWorld();
+        this.collider.fromBox3(this.aabb).applyMatrix4(this.object.matrixWorld);
+        this.helper.matrix.copy(this.object.matrixWorld);
     }
 
     /**
@@ -49,13 +56,12 @@ export default class BoxCollider extends Collider {
     collidesWith(other) {
         // TODO: yuck
 
-        if (other instanceof SphereCollider) {
+        if (other instanceof SphereCollider)
             return this.collider.intersectsSphere(other.collider);
-        } else if (other instanceof BoxCollider) {
+        else if (other instanceof BoxCollider)
             return this.collider.intersectsOBB(other.collider);
-        } else if (other instanceof PlaneCollider) {
+        else if (other instanceof PlaneCollider)
             return this.collider.intersectsPlane(other.collider);
-        }
 
         return false;
     }

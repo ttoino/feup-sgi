@@ -8,45 +8,63 @@ import OpponentController from "../controller/OpponentController.js";
 
 export default class CollisionController {
     /**
-     * 
-     * @param {Game} game 
+     * @param {Game} game
      * @param {Vehicle} object
      * @param {OpponentController} opponentController
      */
     constructor(game, object, opponentController) {
-        this.game = game
+        this.game = game;
 
         this.opponentController = opponentController;
 
         this.object = object;
 
         // Need to use the model here since helpers increase the bounding box of an object
-        this.collider = new BoxCollider(game, object.model ?? object, (other) => void 0)
+        this.collider = new BoxCollider(
+            game,
+            object.model ?? object,
+            (other) => void 0
+        );
+
+        this.nextWaypoint = 0;
     }
 
     get otherColliders() {
-        return [...this.game.contents.powerups, ...this.game.contents.obstacles, this.opponentController];
+        return [
+            ...this.game.contents.powerups,
+            ...this.game.contents.obstacles,
+            this.opponentController,
+        ];
     }
 
     /**
-     * 
-     * @param {number} delta 
+     * @param {number} delta
      */
     update(delta) {
         this.collider.update(delta);
 
         for (const otherCollider of this.otherColliders) {
-
             const collider = otherCollider.collider;
 
             if (!collider) continue;
 
             if (this.collider.collidesWith(collider)) {
-                collider.onCollision(this.object)
+                collider.onCollision(this.object);
 
                 // We are not colliding with more than one object
                 break;
             }
+        }
+
+        if (
+            this.collider.collider.intersectsOBB(
+                this.game.contents.track.waypoints[this.nextWaypoint]
+            )
+        ) {
+            this.nextWaypoint =
+                (this.nextWaypoint + 1) %
+                this.game.contents.track.waypoints.length;
+            console.log(this.nextWaypoint);
         }
     }
 }
