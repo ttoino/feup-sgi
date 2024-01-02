@@ -84,8 +84,9 @@ export class SceneContents {
         this.mainMenu = new MainMenu(this.game);
         this.mainMenu.position.z = 170;
         this.mainMenu.position.x = 377;
-        this.mainMenu.position.y = 140;
+        this.mainMenu.position.y = 470;
         this.mainMenu.rotateY(Math.PI);
+        this.mainMenu.rotateX(-Math.PI / 8);
         this.game.scene.add(this.mainMenu);
 
         // Pause menu UI

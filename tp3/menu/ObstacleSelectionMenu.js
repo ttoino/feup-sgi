@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import Menu from "./Menu.js";
-import { OBSTACLE_SELECTION_MENU, UI, VEHICLE_SELECTION_MENU } from "../Layers.js";
+import { OBSTACLE_SELECTION_MENU, UI } from "../Layers.js";
 import { Game } from "../Game.js";
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
@@ -62,11 +62,17 @@ export class ObstacleSelectionMenu extends Menu {
                 obstacle.position.x = baseX + i * 3;
                 obstacle.position.y = 0;
                 obstacle.position.z = 0;
+
                 obstacle.rotation.x = 0;
                 obstacle.rotation.y = 0;
                 obstacle.rotation.z = 0;
+
                 obstacle.scale.x = obstacle.scale.y = obstacle.scale.z = 1;
+
                 obstacle.layers.enable(OBSTACLE_SELECTION_MENU);
+
+                obstacle.update(0)
+
                 this.add(obstacle);
             }
         })
