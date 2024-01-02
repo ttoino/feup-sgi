@@ -36,59 +36,64 @@ export default class VehicleSelectionState extends MenuState {
         // TODO: improve this... A LOT
 
         if (this.kart === undefined) {
-            // @ts-ignore
-            this.kart = object;
+            if (object instanceof Vehicle) {
+                // Should always be true but types...
 
-            this.menuObject.remove(object);
-            this.game.scene.add(object);
-            object.position.copy(
-                this.game.contents.track.playerStart.getWorldPosition(
-                    new THREE.Vector3()
-                )
-            );
-            object.quaternion.copy(
-                this.game.contents.track.playerStart.getWorldQuaternion(
-                    new THREE.Quaternion()
-                )
-            );
+                this.kart = object;
 
-            return;
+                this.menuObject.remove(object);
+                this.game.scene.add(object);
+                object.position.copy(
+                    this.game.contents.track.playerStart.getWorldPosition(
+                        new THREE.Vector3()
+                    )
+                );
+                object.quaternion.copy(
+                    this.game.contents.track.playerStart.getWorldQuaternion(
+                        new THREE.Quaternion()
+                    )
+                );
+
+                return;
+            }
         } else if (this.opponent === undefined) {
-            // @ts-ignore
-            this.opponent = object;
-            this.menuObject.remove(object);
-            this.game.scene.add(object);
-            object.position.copy(
-                this.game.contents.track.opponentStart.getWorldPosition(
-                    new THREE.Vector3()
-                )
-            );
-            object.quaternion.copy(
-                this.game.contents.track.opponentStart.getWorldQuaternion(
-                    new THREE.Quaternion()
-                )
-            );
+            if (object instanceof Vehicle) {
+                // Should always be true but types...
 
-            const opponentController = new OpponentController(
-                this.game,
-                // @ts-ignore
-                this.opponent
-            );
+                this.opponent = object;
+                this.menuObject.remove(object);
+                this.game.scene.add(object);
+                object.position.copy(
+                    this.game.contents.track.opponentStart.getWorldPosition(
+                        new THREE.Vector3()
+                    )
+                );
+                object.quaternion.copy(
+                    this.game.contents.track.opponentStart.getWorldQuaternion(
+                        new THREE.Quaternion()
+                    )
+                );
 
-            const playerController = new PlayerController(
-                this.game,
-                new VehicleController(this.game, this.kart),
-                new CollisionController(
+                const opponentController = new OpponentController(
                     this.game,
-                    this.kart,
-                    opponentController
-                )
-            );
+                    this.opponent
+                );
 
-            this.stateManager.pushState(
-                new PlayState(this.game, playerController, opponentController)
-            );
-            return;
+                const playerController = new PlayerController(
+                    this.game,
+                    new VehicleController(this.game, this.kart),
+                    new CollisionController(
+                        this.game,
+                        this.kart,
+                        opponentController
+                    )
+                );
+
+                this.stateManager.pushState(
+                    new PlayState(this.game, playerController, opponentController)
+                );
+                return;
+            }
         } else {
             console.error("HUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHhh...");
         }

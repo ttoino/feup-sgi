@@ -25,7 +25,6 @@ export class MainMenu extends Menu {
             const mainMenuFrameGeometry = new THREE.TorusGeometry(7, 1, 4, 4);
 
             const playButtonGeom = new TextGeometry('Play Game', {
-                // @ts-ignore
                 font: gameFont,
                 size: 1,
                 height: 0.25,
@@ -51,7 +50,6 @@ export class MainMenu extends Menu {
             playButton.position.x = -3.3;
 
             const exitButtonGeom = new TextGeometry('Exit', {
-                // @ts-ignore
                 font: gameFont,
                 size: 1,
                 height: 0.25,

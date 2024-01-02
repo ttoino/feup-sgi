@@ -30,7 +30,6 @@ export default class Obstacle extends TrackItem {
         clone.rotation.copy(this.rotation);
         clone.scale.copy(this.scale);
 
-        // @ts-ignore
         return clone;
     }
 }

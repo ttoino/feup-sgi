@@ -26,7 +26,6 @@ export class PauseMenu extends Menu {
             const pauseMenuFrameGeometry = new THREE.TorusGeometry(7, 1, 4, 4);
 
             const resumeButtonGeom = new TextGeometry('Resume', {
-                // @ts-ignore
                 font: gameFont,
                 size: 1,
                 height: 0.25,
@@ -53,7 +52,6 @@ export class PauseMenu extends Menu {
             resumeButton.position.x = -2.5;
 
             const mainMenuButtonGeom = new TextGeometry('Back to\nMain Menu', {
-                // @ts-ignore
                 font: gameFont,
                 size: 1,
                 height: 0.25,

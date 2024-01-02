@@ -23,14 +23,10 @@ export default class PlaneCollider extends Collider {
      * @returns {boolean}
      */
     collidesWith(other) {
-        if (other instanceof PlaneCollider) {
+        if (/* other instanceof PlaneCollider && */ other.collider instanceof THREE.Plane) {
             return Math.abs(this.collider.normal.dot(other.collider.normal)) === 1
         } else {
-
-            // TODO: figure out typing for this.
-
-            // @ts-ignore
-            return other.collider?.collidesWithPlane(this.collider) ?? false;
+            return other.collider?.intersectsPlane(this.collider) ?? false;
         }
     }
 }

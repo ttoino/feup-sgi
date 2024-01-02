@@ -23,7 +23,6 @@ export class ObstacleSelectionMenu extends Menu {
             const vehicleSelectionMenu = new THREE.Group();
 
             const infoTextGeom = new TextGeometry('Pick an obstacle to place on the track', {
-                // @ts-ignore
                 font: gameFont,
                 size: 1,
                 height: 0.25,

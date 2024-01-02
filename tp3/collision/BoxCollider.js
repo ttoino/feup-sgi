@@ -37,7 +37,6 @@ export default class BoxCollider extends Collider {
         this.collider.fromBox3(new THREE.Box3().setFromObject(this.object));
 
         this.boxWireframe.position.copy(this.collider.center);
-        // @ts-ignore
         this.boxWireframe.rotation.copy(
             new THREE.Euler().setFromRotationMatrix(this.object.matrixWorld)
         );

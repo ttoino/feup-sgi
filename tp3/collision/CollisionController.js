@@ -21,8 +21,7 @@ export default class CollisionController {
         this.object = object;
 
         // Need to use the model here since helpers increase the bounding box of an object
-        // @ts-ignore
-        this.collider = new BoxCollider(game, object.model, (other) => void 0)
+        this.collider = new BoxCollider(game, object.model ?? object, (other) => void 0)
     }
 
     get otherColliders() {

@@ -23,7 +23,6 @@ export class VehicleSelectionMenu extends Menu {
             const vehicleSelectionMenu = new THREE.Group();
 
             const infoTextGeom = new TextGeometry('Pick your and\nyour opponent\'s\nvehicles', {
-                // @ts-ignore
                 font: gameFont,
                 size: 1,
                 height: 0.25,
