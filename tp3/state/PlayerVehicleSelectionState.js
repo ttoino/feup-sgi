@@ -11,7 +11,9 @@ export default class PlayerVehicleSelectionState extends VehicleSelectionState {
             game.contents.playerVehicleSelectionMenu,
             game.contents.vehiclePark,
             game.contents.track.playerStart,
-            (vehicle) => { game.info.playerCar = vehicle; },
+            (vehicle) => {
+                game.info.playerCar = vehicle;
+            },
             "updatePlayerVehicleName"
         );
     }

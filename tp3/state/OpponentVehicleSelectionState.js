@@ -11,7 +11,9 @@ export default class OpponentVehicleSelectionState extends VehicleSelectionState
             game.contents.opponentVehicleSelectionMenu,
             game.contents.opponentPark,
             game.contents.track.opponentStart,
-            (vehicle) => { game.info.opponentCar = vehicle; },
+            (vehicle) => {
+                game.info.opponentCar = vehicle;
+            },
             "updateOpponentVehicleName"
         );
     }

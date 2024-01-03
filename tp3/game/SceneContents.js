@@ -20,6 +20,7 @@ import { OpponentPark } from "../park/OpponentPark.js";
 import { ObstaclePark } from "../park/ObstaclePark.js";
 import ControlReverseObstacle from "../track/items/obstacle/ControlReverseObstacle.js";
 import { OpponentVehicleSelectionMenu } from "../menu/OpponentVehicleSelectionMenu.js";
+import { SceneOutdoor } from "../outdoor/SceneOutdoor.js";
 
 /**
  *  This class contains the contents of our application
@@ -108,6 +109,11 @@ export class SceneContents {
             this.game.scene.add(obstacle);
         });
 
+        // Outdoors
+        this.sceneOutdoor = new SceneOutdoor(this.game);
+        this.sceneOutdoor.position.z = -100;
+        this.game.scene.add(this.sceneOutdoor);
+
         // Main menu UI
         this.mainMenu = new MainMenu(this.game);
         this.mainMenu.position.z = 170;
@@ -157,6 +163,7 @@ export class SceneContents {
      */
     update(delta) {
         this.background.update(delta);
+        this.sceneOutdoor.update(delta);
 
         this.obstacles.forEach((obstacle) => {
             obstacle.update(delta);

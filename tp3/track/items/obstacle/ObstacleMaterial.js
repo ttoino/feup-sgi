@@ -54,7 +54,7 @@ uniform float time;
 
     transformed += normalize(objectNormal) * (
         texture2D(displacementMap, vUv).x *
-        (sin(time * PI) + 1.0) *
+        sin(time * PI) *
         displacementScale +
         displacementBias
     );
@@ -62,7 +62,7 @@ uniform float time;
 #else
     
     transformed += normalize(objectNormal) * (
-        (sin(time * PI) + 1.0) *
+        sin(time * PI) *
         displacementScale +
         displacementBias
     );
