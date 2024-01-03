@@ -14,8 +14,6 @@ export class Sprite extends THREE.Mesh {
             (coord, i) => box2[coord ? "max" : "min"][i % 2 ? "y" : "x"]
         );
 
-        console.log(uvs)
-
         geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
 
         super(geometry, material);

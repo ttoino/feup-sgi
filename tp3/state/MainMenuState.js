@@ -2,8 +2,14 @@ import * as THREE from "three";
 import { Game } from "../game/Game.js";
 import { MAIN_MENU } from "../renderer/Layers.js";
 import { MenuState } from "./MenuState.js";
-import VehicleSelectionState from "./VehicleSelectionState.js";
 import { MainMenu } from "../menu/MainMenu.js";
+import OpponentVehicleSelectionState from "./OpponentVehicleSelectionState.js";
+import PlayerVehicleSelectionState from "./PlayerVehicleSelectionState.js";
+import { PlayState } from "./PlayState.js";
+import OpponentController from "../controller/OpponentController.js";
+import PlayerController from "../controller/PlayerController.js";
+import VehicleController from "../vehicles/VehicleController.js";
+import CollisionController from "../collision/CollisionController.js";
 
 export class MainMenuState extends MenuState {
     /**
@@ -20,6 +26,8 @@ export class MainMenuState extends MenuState {
         this.difficulty = null;
         /** @type {THREE.Object3D | null} */
         this.highlightedDifficultyButton = null;
+
+        this.maxNameLength = 6;
     }
 
     init() {
@@ -76,7 +84,7 @@ export class MainMenuState extends MenuState {
                 break;
             }
             default: {
-                if (e.key.length > 1 || this.name.length >= 3) return;
+                if (e.key.length > 1 || this.name.length >= this.maxNameLength) return;
 
                 this.name += e.key
 
@@ -100,13 +108,40 @@ export class MainMenuState extends MenuState {
         switch (object.name) {
             case "play_button":
 
-                if (this.name.length === 0 || !this.difficulty) return;
+                if (
+                    this.name.length === 0 ||
+                    !this.difficulty ||
+                    !this.game.info.playerCar ||
+                    !this.game.info.opponentCar
+                ) return;
 
                 this.game.info.playerName = this.name;
                 this.game.info.difficulty = this.difficulty;
 
+
+
+
+                const opponentController = new OpponentController(
+                    this.game,
+                    this.game.info.opponentCar
+                );
+
+                const playerController = new PlayerController(
+                    this.game,
+                    new VehicleController(this.game, this.game.info.playerCar),
+                    new CollisionController(
+                        this.game,
+                        this.game.info.playerCar,
+                        opponentController
+                    )
+                );
+
+
+
+                console.log("Game Info:", this.game.info);
+
                 this.stateManager.pushState(
-                    new VehicleSelectionState(this.game),
+                    new PlayState(this.game, playerController, opponentController),
                 );
                 return;
             case "exit_button":
@@ -120,6 +155,16 @@ export class MainMenuState extends MenuState {
                 this.difficulty = 2;
                 this.highlightedDifficultyButton = object;
                 break;
+            case "select_opponent_vehicle":
+                this.stateManager.pushState(
+                    new OpponentVehicleSelectionState(this.game),
+                );
+                return;
+            case "select_player_vehicle":
+                this.stateManager.pushState(
+                    new PlayerVehicleSelectionState(this.game),
+                );
+                return;
         }
 
         if (this.highlightedDifficultyButton) {

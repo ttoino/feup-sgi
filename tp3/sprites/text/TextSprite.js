@@ -56,8 +56,6 @@ export class TextSprite extends THREE.Object3D {
 
             if (!material) continue;
 
-            console.log(charData);
-
             const sprite = new Sprite(
                 new THREE.Box2(
                     new THREE.Vector2(

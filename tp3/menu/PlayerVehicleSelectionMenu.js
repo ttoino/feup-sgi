@@ -4,15 +4,13 @@ import { UI, VEHICLE_SELECTION_MENU } from "../renderer/Layers.js";
 import { Game } from "../game/Game.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
-export class VehicleSelectionMenu extends Menu {
+export class PlayerVehicleSelectionMenu extends Menu {
     /**
      *
      * @param {Game} game
      */
     constructor(game) {
-        super();
-
-        this.game = game;
+        super(game);
 
         this.#init();
     }
@@ -24,7 +22,7 @@ export class VehicleSelectionMenu extends Menu {
                 const vehicleSelectionMenu = new THREE.Group();
 
                 const infoTextGeom = new TextGeometry(
-                    "Pick your and\nyour opponent's\nvehicles",
+                    "P i c k  y o u r\np r e f e r r e d  v e h i c l e",
                     {
                         font: gameFont,
                         size: 1,
@@ -48,8 +46,8 @@ export class VehicleSelectionMenu extends Menu {
                 infoText.name = "info_text";
                 infoText.layers.enable(UI);
 
-                infoText.position.x = -4.3;
-                infoText.position.y = 4.5;
+                infoText.position.x = -8;
+                infoText.position.y = 10;
                 infoText.position.z = -1;
                 infoText.rotation.x = -0.4;
                 infoText.scale.multiplyScalar(0.5);
@@ -58,19 +56,12 @@ export class VehicleSelectionMenu extends Menu {
 
                 this.add(vehicleSelectionMenu);
 
-                const baseX = -1;
-                for (let i = 0; i < this.game.contents.vehicles.length; i++) {
-                    const vehicle = this.game.contents.vehicles[i];
+                this.add(this.game.contents.vehiclePark);
 
-                    vehicle.position.x = baseX + i * 3;
-                    vehicle.position.y = 0;
-                    vehicle.position.z = 0;
-                    vehicle.rotation.x = 0;
-                    vehicle.rotation.y = 0;
-                    vehicle.rotation.z = 0;
-                    vehicle.scale.x = vehicle.scale.y = vehicle.scale.z = 1;
+                for (const vehicle of this.game.contents.vehicles) {
                     vehicle.layers.enable(VEHICLE_SELECTION_MENU);
-                    this.add(vehicle);
+
+                    this.game.contents.vehiclePark.addToSpot(vehicle);
                 }
             });
     }

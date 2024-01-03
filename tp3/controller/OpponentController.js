@@ -46,8 +46,6 @@ export default class OpponentController {
         const nextWaypoint =
             this.game.contents.track.opponentRoute[this.nextWaypoint];
 
-        console.log(nextWaypoint.name);
-
         const waypointPosition = nextWaypoint.getWorldPosition(
             new THREE.Vector3()
         );
@@ -69,8 +67,6 @@ export default class OpponentController {
                 : signedAngleTo(vehicleDirection, directionToWaypoint);
 
         if (angleToWaypoint > Math.PI) angleToWaypoint -= Math.PI * 2;
-
-        console.log(angleToWaypoint);
 
         if (
             distanceToWaypoint < 0.5 ||

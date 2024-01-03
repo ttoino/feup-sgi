@@ -184,9 +184,9 @@ export class MainMenu extends Menu {
                     const easyButton = new THREE.Mesh(
                         easyButtonGeom,
                         new THREE.MeshStandardMaterial({
-                            color: 0xf4af2d,
-                            emissive: 0xf4af2d,
-                            emissiveIntensity: 2,
+                            color: 0x2f8ca3,
+                            emissive: 0x2f8ca3,
+                            emissiveIntensity: 5,
                         })
                     );
                     easyButton.name = "easy_button";
@@ -209,9 +209,9 @@ export class MainMenu extends Menu {
                     const hardButton = new THREE.Mesh(
                         hardButtonGeom,
                         new THREE.MeshStandardMaterial({
-                            color: 0xf4af2d,
-                            emissive: 0xf4af2d,
-                            emissiveIntensity: 2,
+                            color: 0x2f8ca3,
+                            emissive: 0x2f8ca3,
+                            emissiveIntensity: 5,
                         })
                     );
                     hardButton.name = "hard_button";
@@ -409,9 +409,9 @@ export class MainMenu extends Menu {
         const nameValue = new THREE.Mesh(
             nameValueGeom,
             new THREE.MeshStandardMaterial({
-                color: 0xf4af2d,
-                emissive: 0xf4af2d,
-                emissiveIntensity: 2,
+                color: 0x2f8ca3,
+                emissive: 0x2f8ca3,
+                emissiveIntensity: 5,
             })
         );
 

@@ -17,7 +17,6 @@ export default class BoxCollider extends Collider {
         super(game, object, handler);
 
         this.aabb = new THREE.Box3().setFromObject(object.clone());
-        console.log(this.aabb);
 
         object.updateMatrixWorld();
         this.collider = new OBB()

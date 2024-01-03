@@ -4,7 +4,7 @@ import { HELPERS } from "../renderer/Layers.js";
 import { MainMenu } from "../menu/MainMenu.js";
 import { PauseMenu } from "../menu/PauseMenu.js";
 import { Game } from "./Game.js";
-import { VehicleSelectionMenu } from "../menu/VehicleSelectionMenu.js";
+import { PlayerVehicleSelectionMenu } from "../menu/PlayerVehicleSelectionMenu.js";
 import { LightCycle } from "../vehicles/LightCycle.js";
 import { LightCar } from "../vehicles/LightCar.js";
 import Vehicle from "../vehicles/Vehicle.js";
@@ -19,6 +19,7 @@ import { VehiclePark } from "../park/VehiclePark.js";
 import { OpponentPark } from "../park/OpponentPark.js";
 import { ObstaclePark } from "../park/ObstaclePark.js";
 import ControlReverseObstacle from "../track/items/obstacle/ControlReverseObstacle.js";
+import { OpponentVehicleSelectionMenu } from "../menu/OpponentVehicleSelectionMenu.js";
 
 /**
  *  This class contains the contents of our application
@@ -64,12 +65,8 @@ export class SceneContents {
 
         // Parks
         this.vehiclePark = new VehiclePark(this.game);
-        this.vehiclePark.position.z = -30;
-        this.game.scene.add(this.vehiclePark);
 
         this.opponentPark = new OpponentPark(this.game);
-        this.opponentPark.position.z = 30;
-        this.game.scene.add(this.opponentPark);
 
         this.obstaclePark = new ObstaclePark(this.game);
         this.game.scene.add(this.obstaclePark);
@@ -128,13 +125,19 @@ export class SceneContents {
         this.pauseMenu.rotateY(Math.PI);
         this.game.scene.add(this.pauseMenu);
 
-        // Vehicle Selection Menu
-        this.vehicleSelectionMenu = new VehicleSelectionMenu(this.game);
-        this.vehicleSelectionMenu.position.z = 150;
-        this.vehicleSelectionMenu.position.x = -7;
-        this.vehicleSelectionMenu.position.y = 1;
-        this.vehicleSelectionMenu.rotateY(Math.PI);
-        this.game.scene.add(this.vehicleSelectionMenu);
+        // Player Vehicle Selection Menu
+        this.playerVehicleSelectionMenu = new PlayerVehicleSelectionMenu(this.game);
+        this.playerVehicleSelectionMenu.position.z = 150;
+        this.playerVehicleSelectionMenu.position.x = -10;
+        this.playerVehicleSelectionMenu.rotateY(Math.PI);
+        this.game.scene.add(this.playerVehicleSelectionMenu);
+
+        // Opponent Vehicle Selection Menu
+        this.opponentVehicleSelectionMenu = new OpponentVehicleSelectionMenu(this.game);
+        this.opponentVehicleSelectionMenu.position.z = 140;
+        this.opponentVehicleSelectionMenu.position.x = 60;
+        this.opponentVehicleSelectionMenu.rotateY(Math.PI);
+        this.game.scene.add(this.opponentVehicleSelectionMenu);
 
         // Obstacle Selection Menu
         this.obstacleSelectionMenu = new ObstacleSelectionMenu(this.game);
