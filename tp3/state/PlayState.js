@@ -1,9 +1,9 @@
 import { GameState } from "./GameState.js";
 import { PauseState } from "./PauseState.js";
 import { Game } from "../game/Game.js";
-import Vehicle from "../vehicles/Vehicle.js";
 import PlayerController from "../controller/PlayerController.js";
 import OpponentController from "../controller/OpponentController.js";
+import { WINNER_TO_GLOW } from "../track/Track.js";
 
 export class PlayState extends GameState {
     /**
@@ -26,6 +26,26 @@ export class PlayState extends GameState {
         this.inverseCamera = false;
     }
 
+    get winner() {
+        if (
+            this.playerController.trackPosition.lap === this.opponentController.trackPosition.lap &&
+            this.playerController.trackPosition.nextWaypoint === this.opponentController.trackPosition.nextWaypoint
+        )
+            return "tie";
+        else if (
+            this.playerController.trackPosition.lap > this.opponentController.trackPosition.lap ||
+            (
+                this.playerController.trackPosition.lap === this.opponentController.trackPosition.lap &&
+                (
+                    this.playerController.trackPosition.nextWaypoint > this.opponentController.trackPosition.nextWaypoint ||
+                    this.playerController.trackPosition.nextWaypoint === 0 // this takes into account the moment when the player is winning and crosses the last waypoint.
+                )
+            )
+        )
+            return "player";
+        else return "opponent";
+    }
+
     /**
      * 
      * @param {number} delta 
@@ -39,12 +59,13 @@ export class PlayState extends GameState {
         this.opponentController.update(delta);
         this.playerController.update(delta);
 
-        if (this.playerController.vehicle instanceof Vehicle) {
-            if (this.inverseCamera || this.playerController.vehicle.forwardSpeed < 0) {
-                this.game.gameplayControls.targetRotation = 0;
-            } else {
-                this.game.gameplayControls.targetRotation = Math.PI;
-            }
+        const material = WINNER_TO_GLOW[this.winner];
+        this.game.materials.changeGlow(this.game.contents.track.glow, material);
+
+        if (this.inverseCamera || this.playerController.vehicle.forwardSpeed < 0) {
+            this.game.gameplayControls.targetRotation = 0;
+        } else {
+            this.game.gameplayControls.targetRotation = Math.PI;
         }
     }
 

@@ -2,7 +2,24 @@ import * as THREE from "three";
 import { OBB } from "three/addons/math/OBB.js";
 import { Game } from "../game/Game.js";
 import { TRACK } from "../renderer/Layers.js";
-import TrackWaypoint, { WINNER_TO_GLOW } from "./TrackWaypoint.js";
+import TrackWaypoint from "./TrackWaypoint.js";
+
+export const WINNER_TO_GLOW = {
+    player: "glow_blue",
+    opponent: "glow_red",
+    tie: "glow_yellow",
+};
+
+export class TrackPosition {
+    /**
+     * @param {number} lap
+     * @param {number} nextWaypoint
+     */
+    constructor(lap = -1, nextWaypoint = 0) {
+        this.lap = lap;
+        this.nextWaypoint = nextWaypoint;
+    }
+}
 
 export class Track extends THREE.Object3D {
     /**
@@ -36,7 +53,6 @@ export class Track extends THREE.Object3D {
 
         game.modelManager.load("models/track.glb").then((model) => {
             this.add(model);
-
 
             model.traverse((child) => {
                 if (child.name.includes("glow")) this.glow = child;
@@ -95,50 +111,28 @@ export class Track extends THREE.Object3D {
 
     /**
      * @param {OBB} collider
+     * @param {TrackPosition} position
      */
-    checkWaypoint(collider, opponent = false) {
-        const scope = this;
-        const proxy = {
-            get nextWaypoint() {
-                return opponent
-                    ? scope.nextOpponentWaypoint
-                    : scope.nextPlayerWaypoint;
-            },
-            set nextWaypoint(value) {
-                if (opponent) scope.nextOpponentWaypoint = value;
-                else scope.nextPlayerWaypoint = value;
-            },
-            get lap() {
-                return opponent ? scope.opponentLap : scope.playerLap;
-            },
-            set lap(value) {
-                if (opponent) scope.opponentLap = value;
-                else scope.playerLap = value;
-            },
-        };
-
-        const nextWaypoint = this.waypoints[proxy.nextWaypoint];
+    checkWaypoint(collider, position, opponent = false) {
+        const nextWaypoint = this.waypoints[position.nextWaypoint];
 
         if (
             collider.intersectsOBB(nextWaypoint.collider)
         ) {
-            if (proxy.nextWaypoint === 0) {
-                proxy.lap++;
+            if (position.nextWaypoint === 0) {
+                position.lap++;
             }
 
-            if (proxy.lap >= 3) return;
+            if (position.lap >= 3) return;
 
-            proxy.nextWaypoint =
-                (proxy.nextWaypoint + 1) % this.waypoints.length;
-
-            const material = WINNER_TO_GLOW[this.winner];
-            this.game.materials.changeGlow(this.glow, material);
+            position.nextWaypoint =
+                (position.nextWaypoint + 1) % this.waypoints.length;
 
             nextWaypoint.changeLightColor(
                 opponent
                     ? "glow_red"
                     : "glow_blue",
-                proxy.lap)
+                position.lap)
         }
     }
 }

@@ -3,30 +3,29 @@ import { Game } from "../game/Game.js";
 import BoxCollider from "../collision/BoxCollider.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import { signedAngleTo } from "../MathUtils.js";
+import { TrackPosition } from "../track/Track.js";
 
 export const EFFECT_DURATION = 5000;
 
 export default class OpponentController {
     /**
      * @param {Game} game
-     * @param {Vehicle} opponentVehicle
+     * @param {Vehicle} vehicle
      */
-    constructor(game, opponentVehicle) {
+    constructor(game, vehicle) {
         this.game = game;
 
-        this.opponentVehicle = opponentVehicle;
+        this.vehicle = vehicle;
 
         this.collider = new BoxCollider(
             this.game,
-            this.opponentVehicle.model ?? this.opponentVehicle,
+            this.vehicle.model ?? this.vehicle,
             this.#onPlayerCollision.bind(this)
         );
 
-        this.nextWaypoint = 1;
-    }
+        this.nextRouteWaypoint = 1;
 
-    get vehicle() {
-        return this.opponentVehicle;
+        this.trackPosition = new TrackPosition();
     }
 
     /**
@@ -35,10 +34,10 @@ export default class OpponentController {
     update(delta) {
         this.animate();
 
-        this.opponentVehicle.update(delta);
+        this.vehicle.update(delta);
         this.collider.update(delta);
 
-        this.game.contents.track.checkWaypoint(this.collider.collider, true);
+        this.game.contents.track.checkWaypoint(this.collider.collider, this.trackPosition, true);
     }
 
     /**
@@ -46,7 +45,7 @@ export default class OpponentController {
      */
     animate() {
         const nextWaypoint =
-            this.game.contents.track.opponentRoute[this.nextWaypoint];
+            this.game.contents.track.opponentRoute[this.nextRouteWaypoint];
 
         const waypointPosition = nextWaypoint.getWorldPosition(
             new THREE.Vector3()
@@ -74,8 +73,8 @@ export default class OpponentController {
             distanceToWaypoint < 0.5 ||
             Math.abs(angleToWaypoint) > Math.PI / 2
         ) {
-            this.nextWaypoint =
-                (this.nextWaypoint + 1) %
+            this.nextRouteWaypoint =
+                (this.nextRouteWaypoint + 1) %
                 this.game.contents.track.opponentRoute.length;
             return this.animate();
         }

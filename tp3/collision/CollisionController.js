@@ -56,7 +56,5 @@ export default class CollisionController {
                 break;
             }
         }
-
-        this.game.contents.track.checkWaypoint(this.collider.collider);
     }
 }

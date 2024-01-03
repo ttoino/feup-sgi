@@ -2,13 +2,7 @@ import * as THREE from 'three';
 import { Game } from '../game/Game.js';
 import { HELPERS } from '../renderer/Layers.js';
 import { OBB } from 'three/addons/math/OBB.js';
-
-export const WINNER_TO_GLOW = {
-    player: "glow_blue",
-    opponent: "glow_red",
-    tie: "glow_yellow",
-};
-
+import { WINNER_TO_GLOW } from './Track.js';
 export class WaypointLight extends THREE.Object3D {
 
     /**

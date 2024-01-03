@@ -1,6 +1,7 @@
 import { Game } from "../game/Game.js";
 import CollisionController from "../collision/CollisionController.js";
 import VehicleController from "../vehicles/VehicleController.js";
+import { TrackPosition } from "../track/Track.js";
 
 export default class PlayerController {
     /**
@@ -12,6 +13,8 @@ export default class PlayerController {
         this.game = game;
         this.vehicleController = vehicleController;
         this.collisionController = collisionController;
+
+        this.trackPosition = new TrackPosition();
     }
 
     get vehicle() {
@@ -32,5 +35,7 @@ export default class PlayerController {
     update(delta) {
         this.vehicleController.update(delta);
         this.collisionController.update(delta);
+
+        this.game.contents.track.checkWaypoint(this.collisionController.collider.collider, this.trackPosition);
     }
 }
