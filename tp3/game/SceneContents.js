@@ -112,5 +112,8 @@ export class SceneContents {
         this.obstacleSelectionMenu.position.y = 1;
         this.obstacleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.obstacleSelectionMenu);
+
+        this.fireworks = new Fireworks(this.game);
+        this.game.scene.add(this.fireworks);
     }
 }

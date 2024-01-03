@@ -26,7 +26,7 @@ export class Track extends THREE.Object3D {
         this.lap = -1;
         this.nextWaypoint = 0;
 
-        game.modelManager.loadModel("models/track.glb", (model) => {
+        game.modelManager.load("models/track.glb").then((model) => {
             this.add(model);
 
             /** @type {THREE.Object3D[]} */

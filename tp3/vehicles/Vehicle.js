@@ -33,7 +33,7 @@ export default class Vehicle extends THREE.Object3D {
         /** @type {THREE.Object3D[]} */
         this.wheels = [];
 
-        this.game.modelManager.loadModel(`models/${model}.glb`, (gltf) => {
+        this.game.modelManager.load(`models/${model}.glb`).then((gltf) => {
             this.model = gltf;
             this.add(gltf);
 

@@ -226,6 +226,7 @@ export class Renderer {
 
     updateCamera() {
         this.renderPass.camera = this.game.activeCamera;
+        this.ssaaRenderPass.camera = this.game.activeCamera;
         this.outlinePass.renderCamera = this.game.activeCamera;
         this.ssrPass.camera = this.game.activeCamera;
     }

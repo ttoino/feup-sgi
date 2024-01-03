@@ -1,52 +1,34 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { AssetManager } from "../AssetManager.js";
 
-export class ModelManager {
-    /**
-     * @param {unknown | undefined} options
-     */
-    constructor(options = {}) {
-        this.options = options;
-
-        /** @type {Record<string, THREE.Object3D>} */
-        this.models = {};
+/**
+ * @extends {AssetManager<THREE.Object3D>}
+ */
+export class ModelManager extends AssetManager {
+    constructor() {
+        super();
 
         this.gltfLoader = new GLTFLoader();
         this.objLoader = new OBJLoader();
     }
 
     /**
+     * @protected
+     * @override
+     *
      * @param {string} modelPath
      * @param {(model: THREE.Object3D) => void} onModelLoaded
+     * @param {(progress: ProgressEvent) => void} onProgress
+     * @param {(error: unknown) => void} onError
      */
-    loadModel(modelPath, onModelLoaded) {
-        if (this.models[modelPath]) {
-            onModelLoaded(this.models[modelPath]);
-            return;
-        }
-
-        /** @param {THREE.Object3D} model */
-        const onLoad = (model) => {
-            console.info(`Loaded model at ${modelPath}`);
-            this.models[modelPath] = model;
-            onModelLoaded(model);
-        };
-
-        /** @param {ProgressEvent} e */
-        const onProgress = (e) =>
-            console.log(`${modelPath}: ${(e.loaded / e.total) * 100}% loaded`);
-
-        /** @param {unknown} e */
-        const onError = (e) =>
-            console.error(`An error happened while loading ${modelPath}: ${e}`);
-
+    loadNoCache(modelPath, onModelLoaded, onProgress, onError) {
         if (modelPath.match(/\.gl(b|tf)$/))
             this.gltfLoader.load(
                 modelPath,
-
-                (model) => {
-                    model.scene.traverse((child) => {
+                (gltf) => {
+                    gltf.scene.traverse((child) => {
                         if (child instanceof THREE.Mesh) {
                             // Blender exports models with double-sided materials
                             if (child.material instanceof THREE.Material)
@@ -63,14 +45,13 @@ export class ModelManager {
                         }
                     });
 
-                    onLoad(model.scene);
+                    onModelLoaded(gltf.scene);
                 },
-
                 onProgress,
                 onError
             );
         else if (modelPath.match(/\.obj$/))
-            this.objLoader.load(modelPath, onLoad, onProgress, onError);
+            this.objLoader.load(modelPath, onModelLoaded, onProgress, onError);
         else console.error(`Unsupported format for model ${modelPath}`);
     }
 }

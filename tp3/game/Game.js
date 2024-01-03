@@ -12,6 +12,8 @@ import { FontManager } from "../fonts/FontManager.js";
 import { ModelManager } from "../models/ModelManager.js";
 import { HELPERS } from "../renderer/Layers.js";
 import GameInfo from "./GameInfo.js";
+import { TextureManager } from "../textures/TextureManager.js";
+import { FontSpriteSheetManager } from "../sprites/text/FontSpriteSheetManager.js";
 
 export class Game {
     /**
@@ -88,6 +90,8 @@ export class Game {
 
         this.fontManager = new FontManager();
         this.modelManager = new ModelManager();
+        this.textureManager = new TextureManager();
+        this.fontSpriteSheetManager = new FontSpriteSheetManager();
 
         // Init contents
         this.contents = new SceneContents(this);
@@ -170,7 +174,7 @@ export class Game {
         this.gameplayControls.update(delta);
         this.noclipControls.update(delta);
 
-        // this.contents.particles.update(delta);
+        this.contents.fireworks.update(delta);
 
         this.renderer.render(delta);
 
