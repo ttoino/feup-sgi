@@ -24,6 +24,8 @@ export class Track extends THREE.Object3D {
         this.waypointLights = [];
         /** @type {THREE.Object3D[]} */
         this.itemSpots = [];
+        /** @type {THREE.Object3D[]} */
+        this.opponentRoute = [];
 
         this.lap = -1;
         this.nextWaypoint = 0;
@@ -46,7 +48,15 @@ export class Track extends THREE.Object3D {
                 if (child.name.match(/waypoint_\d+$/)) waypoints.push(child);
 
                 if (child.name.match(/item_\d+$/)) this.itemSpots.push(child);
+
+                if (child.name.match(/opponent_route_\d+$/))
+                    this.opponentRoute.push(child);
             });
+
+            this.opponentRoute.sort((a, b) =>
+                a.name.localeCompare(b.name, ["en"])
+            );
+            this.opponentRoute.unshift(this.opponentStart);
 
             this.waypointLights = waypoints.map((waypoint) =>
                 /** @type {const} */ ([1, 2, 3]).map((i) => {

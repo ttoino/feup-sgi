@@ -1,20 +1,16 @@
 import * as THREE from "three";
-import { Game } from "../../Game.js";
 import { FontSpriteSheet } from "./FontSpriteSheet.js";
 import { Sprite } from "../Sprite.js";
 
 export class TextSprite extends THREE.Object3D {
     /**
-     * @param {Game} game
      * @param {string} text
      * @param {FontSpriteSheet} font
      * @param {number} size
      * @param {THREE.Material & { map: THREE.Texture | null }} material
      */
-    constructor(game, text, font, size, material) {
+    constructor(text, font, size, material) {
         super();
-
-        this.game = game;
 
         this.text = text;
         this.font = font;

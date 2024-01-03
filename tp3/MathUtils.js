@@ -39,3 +39,12 @@ export const clerp = (c1, c2, t, at = t) => {
  * @returns {number}
  */
 export const randRange = (min, max) => Math.random() * (max - min) + min;
+
+/**
+ * @param {THREE.Vector3} a
+ * @param {THREE.Vector3} b
+ *
+ * @returns {number}
+ */
+export const signedAngleTo = (a, b) =>
+    Math.atan2(a.clone().cross(b).dot(new THREE.Vector3(0, 1, 0)), a.dot(b));
