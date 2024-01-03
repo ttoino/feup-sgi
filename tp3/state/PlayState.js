@@ -17,7 +17,7 @@ export class PlayState extends GameState {
         this.playerController = playerController;
         this.opponentController = opponentController;
 
-        this.updaters.push(...this.game.contents.powerups);
+        this.updaters.push(...this.game.contents.powerUps);
         this.updaters.push(...this.game.contents.obstacles);
 
         this.boundOnKeyDown = this.#onKeyDown.bind(this);

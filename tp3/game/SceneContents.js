@@ -75,15 +75,17 @@ export class SceneContents {
         this.track = new Track(this.game);
         this.game.scene.add(this.track);
 
-        // Powerups
-        this.powerups = [];
-        const powerup = new MaxSpeedPowerup(this.game);
-        powerup.position.x = 50;
-        powerup.position.z = 50;
-        this.powerups.push(powerup);
-        this.powerups.forEach((powerup) => {
-            powerup.position.y = 1.5;
-            this.game.scene.add(powerup);
+        // PowerUps
+        this.powerUps = [];
+
+        const powerUp = new MaxSpeedPowerup(this.game);
+        powerUp.position.x = 50;
+        powerUp.position.z = 50;
+        this.powerUps.push(powerUp);
+
+        this.powerUps.forEach((powerUp) => {
+            powerUp.position.y = 1.5;
+            this.game.scene.add(powerUp);
         });
 
         // Obstacles
@@ -97,11 +99,10 @@ export class SceneContents {
         maxSpeedObstacle.position.z = 53;
         this.obstacles.push(maxSpeedObstacle);
 
-        const reverseControllObstacle = new ControlReverseObstacle(this.game);
+        const reverseControlObstacle = new ControlReverseObstacle(this.game);
         maxSpeedObstacle.position.x = 53;
         maxSpeedObstacle.position.z = 53;
-        this.obstacles.push(reverseControllObstacle);
-
+        this.obstacles.push(reverseControlObstacle);
 
         this.obstacles.forEach((obstacle) => {
             obstacle.position.y = 1.5;
