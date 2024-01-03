@@ -34,10 +34,12 @@ export default class Vehicle extends THREE.Object3D {
         this.wheels = [];
 
         this.game.modelManager.load(`models/${model}.glb`).then((gltf) => {
-            this.model = gltf;
-            this.add(gltf);
+            const model = gltf.clone()
 
-            gltf.traverse((child) => {
+            this.model = model;
+            this.add(model);
+
+            model.traverse((child) => {
                 if (child.name.includes("steer")) {
                     this.steers.push(child);
                 } else if (child.name.includes("wheel")) {

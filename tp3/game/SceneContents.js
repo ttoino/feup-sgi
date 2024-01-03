@@ -15,6 +15,9 @@ import { Fireworks } from "../particles/Fireworks.js";
 import { Track } from "../track/Track.js";
 import { ObstacleSelectionMenu } from "../menu/ObstacleSelectionMenu.js";
 import Obstacle from "../track/items/obstacle/Obstacle.js";
+import { VehiclePark } from "../park/VehiclePark.js";
+import { OpponentPark } from "../park/OpponentPark.js";
+import { ObstaclePark } from "../park/ObstaclePark.js";
 
 /**
  *  This class contains the contents of our application
@@ -40,18 +43,37 @@ export class SceneContents {
         this.background = new Background(this.game);
         this.game.scene.add(this.background);
 
-        // Mario kart
         this.cycle = new LightCycle(this.game);
-        // this.game.scene.add(this.cycle);
+        this.game.scene.add(this.cycle);
+
+        this.cycleRed = new LightCycle(this.game);
+        this.game.scene.add(this.cycleRed);
 
         this.car = new LightCar(this.game);
-        // this.game.scene.add(this.car);
+        this.game.scene.add(this.car);
 
-        /**
-         * @type {Vehicle[]}
-         */
+        this.carRed = new LightCar(this.game);
+        this.game.scene.add(this.carRed);
+
+        /** @type {Vehicle[]} */
         this.vehicles = [this.cycle, this.car];
 
+        /** @type {Vehicle[]} */
+        this.opponentVehicles = [this.cycleRed, this.carRed];
+
+        // Parks
+        this.vehiclePark = new VehiclePark(this.game);
+        this.vehiclePark.position.z = -30;
+        this.game.scene.add(this.vehiclePark);
+
+        this.opponentPark = new OpponentPark(this.game);
+        this.opponentPark.position.z = 30;
+        this.game.scene.add(this.opponentPark);
+
+        this.obstaclePark = new ObstaclePark(this.game);
+        this.game.scene.add(this.obstaclePark);
+
+        // Track
         this.track = new Track(this.game);
         this.game.scene.add(this.track);
 
@@ -115,5 +137,10 @@ export class SceneContents {
 
         this.fireworks = new Fireworks(this.game);
         this.game.scene.add(this.fireworks);
+    }
+
+    onLoaded() {
+        this.game.materials.changeGlow(this.cycleRed, "glow_red");
+        this.game.materials.changeGlow(this.carRed, "glow_red");
     }
 }

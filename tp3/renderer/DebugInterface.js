@@ -50,6 +50,18 @@ export class DebugInterface {
         graphicsFolder
             .add(this.game.renderer.ssrPass, "enabled")
             .name("Screen space reflections");
+        graphicsFolder
+            .add({ glassType: "simple" }, "glassType", {
+                Alpha: "simple",
+                Transmission: "complex",
+            })
+            .name("Glass material")
+            .onChange((value) => {
+                this.game.materials.changeGlass(
+                    this.contents.car,
+                    `glass_${value}`
+                );
+            });
 
         // CAMERAS /////////////////////////////////////////////////
         const cameraFolder = this.gui.addFolder("Camera");

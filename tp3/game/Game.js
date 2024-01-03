@@ -14,6 +14,7 @@ import { HELPERS } from "../renderer/Layers.js";
 import GameInfo from "./GameInfo.js";
 import { TextureManager } from "../textures/TextureManager.js";
 import { FontSpriteSheetManager } from "../sprites/text/FontSpriteSheetManager.js";
+import { Materials } from "../models/Materials.js";
 
 export class Game {
     /**
@@ -27,6 +28,8 @@ export class Game {
             const loadingScreen = document.querySelector("#loading");
 
             if (loadingScreen) loadingScreen.classList.add("loaded");
+
+            this.contents.onLoaded();
         };
 
         // Create an empty scene
@@ -92,6 +95,8 @@ export class Game {
         this.modelManager = new ModelManager();
         this.textureManager = new TextureManager();
         this.fontSpriteSheetManager = new FontSpriteSheetManager();
+
+        this.materials = new Materials(this);
 
         // Init contents
         this.contents = new SceneContents(this);

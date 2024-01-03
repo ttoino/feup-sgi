@@ -22,6 +22,8 @@ export class Track extends THREE.Object3D {
          * @type {WaypointLight[][]}
          */
         this.waypointLights = [];
+        /** @type {THREE.Object3D[]} */
+        this.itemSpots = [];
 
         this.lap = -1;
         this.nextWaypoint = 0;
@@ -42,24 +44,26 @@ export class Track extends THREE.Object3D {
                     this.opponentStart = child;
 
                 if (child.name.match(/waypoint_\d+$/)) waypoints.push(child);
+
+                if (child.name.match(/item_\d+$/)) this.itemSpots.push(child);
             });
 
             this.waypointLights = waypoints.map((waypoint) =>
-                /** @type {const} */([1, 2, 3]).map((i) => {
-                const light = {
-                    on: waypoint.getObjectByName(
-                        `${waypoint.name}_${i}_on`
-                    ),
-                    off: waypoint.getObjectByName(
-                        `${waypoint.name}_${i}_off`
-                    ),
-                };
+                /** @type {const} */ ([1, 2, 3]).map((i) => {
+                    const light = {
+                        on: waypoint.getObjectByName(
+                            `${waypoint.name}_${i}_on`
+                        ),
+                        off: waypoint.getObjectByName(
+                            `${waypoint.name}_${i}_off`
+                        ),
+                    };
 
-                if (light.on) light.on.visible = false;
-                if (light.off) light.off.visible = true;
+                    if (light.on) light.on.visible = false;
+                    if (light.off) light.off.visible = true;
 
-                return light;
-            })
+                    return light;
+                })
             );
 
             this.waypointColliders = waypoints
@@ -82,12 +86,18 @@ export class Track extends THREE.Object3D {
                         new THREE.Vector3(),
                         new THREE.Vector3(12, 0.1, 12)
                     ).applyMatrix4(waypoint.matrixWorld);
-                    // new THREE.Plane().setFromNormalAndCoplanarPoint(
-                    //     waypoint.localToWorld(new THREE.Vector3(0, 1, 0)),
-                    //     waypoint.getWorldPosition(new THREE.Vector3())
-                    // )
                 });
         });
+    }
+
+    reset() {
+        this.lap = -1;
+        this.nextWaypoint = 0;
+
+        for (const light of this.waypointLights.flat()) {
+            if (light.on) light.on.visible = false;
+            if (light.off) light.off.visible = true;
+        }
     }
 
     /**
