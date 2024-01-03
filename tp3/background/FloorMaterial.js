@@ -40,9 +40,6 @@ export class FloorMaterial extends THREE.MeshStandardMaterial {
      * @param {THREE.ShaderLibShader} shader
      */
     onBeforeCompile(shader) {
-        // console.log(shader);
-        // console.log(shader.vertexShader);
-
         shader.uniforms.time = this.uniforms.time;
         shader.uniforms.noiseScale = { value: this.noiseScale };
         shader.uniforms.noiseMap = {

@@ -9,7 +9,9 @@ export default class Powerup extends TrackItem {
     constructor(game) {
         super(game);
 
-        game.modelManager.load("models/powerup.glb").then((model) => {
+        game.modelManager.load("models/powerup.glb").then((gltf) => {
+            const model = gltf.clone();
+
             this.add(model);
 
             model.traverse((child) => {

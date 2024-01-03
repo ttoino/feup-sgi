@@ -158,5 +158,9 @@ export class SceneContents {
      */
     update(delta) {
         this.background.update(delta);
+
+        this.obstacles.forEach((obstacle) => {
+            obstacle.update(delta);
+        });
     }
 }
