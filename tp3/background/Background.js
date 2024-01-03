@@ -14,4 +14,11 @@ export class Background extends THREE.Object3D {
         this.floor = new Floor(game);
         this.add(this.floor);
     }
+
+    /**
+     * @param {number} delta
+     */
+    update(delta) {
+        this.floor.update(delta);
+    }
 }

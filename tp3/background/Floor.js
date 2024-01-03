@@ -48,4 +48,11 @@ export class Floor extends THREE.Mesh {
         this.reflector.material.depthWrite = false;
         this.reflector.layers.set(HELPERS);
     }
+
+    /**
+     * @param {number} delta
+     */
+    update(delta) {
+        this.material.uniforms.time.value += delta;
+    }
 }

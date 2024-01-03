@@ -37,6 +37,8 @@ export default class OpponentController {
 
         this.opponentVehicle.update(delta);
         this.collider.update(delta);
+
+        this.game.contents.track.checkWaypoint(this.collider.collider, true);
     }
 
     /**

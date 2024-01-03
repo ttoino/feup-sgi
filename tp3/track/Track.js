@@ -3,12 +3,20 @@ import { OBB } from "three/addons/math/OBB.js";
 import { Game } from "../game/Game.js";
 import { HELPERS, TRACK } from "../renderer/Layers.js";
 
+const WINNER_TO_GLOW = {
+    player: "glow_blue",
+    opponent: "glow_red",
+    tie: "glow_yellow",
+};
+
 export class Track extends THREE.Object3D {
     /**
      * @param {Game} game
      */
     constructor(game) {
         super();
+
+        this.game = game;
 
         this.playerStart = new THREE.Object3D();
         this.opponentStart = new THREE.Object3D();
@@ -26,9 +34,14 @@ export class Track extends THREE.Object3D {
         this.itemSpots = [];
         /** @type {THREE.Object3D[]} */
         this.opponentRoute = [];
+        /** @type {THREE.Object3D} */
+        this.glow = new THREE.Object3D();
 
-        this.lap = -1;
-        this.nextWaypoint = 0;
+        this.playerLap = -1;
+        this.nextPlayerWaypoint = 0;
+
+        this.opponentLap = -1;
+        this.nextOpponentWaypoint = 0;
 
         game.modelManager.load("models/track.glb").then((model) => {
             this.add(model);
@@ -37,6 +50,8 @@ export class Track extends THREE.Object3D {
             const waypoints = [];
 
             model.traverse((child) => {
+                if (child.name.includes("glow")) this.glow = child;
+
                 if (child.name.includes("collider")) child.layers.set(TRACK);
 
                 if (child.name.includes("start_player"))
@@ -100,6 +115,21 @@ export class Track extends THREE.Object3D {
         });
     }
 
+    get winner() {
+        if (
+            this.playerLap === this.opponentLap &&
+            this.nextPlayerWaypoint === this.nextOpponentWaypoint
+        )
+            return "tie";
+        else if (
+            this.playerLap > this.opponentLap ||
+            (this.playerLap === this.opponentLap &&
+                this.nextPlayerWaypoint > this.nextOpponentWaypoint)
+        )
+            return "player";
+        else return "opponent";
+    }
+
     reset() {
         this.lap = -1;
         this.nextWaypoint = 0;
@@ -108,24 +138,64 @@ export class Track extends THREE.Object3D {
             if (light.on) light.on.visible = false;
             if (light.off) light.off.visible = true;
         }
+
+        this.game.materials.changeGlow(this);
     }
 
     /**
      * @param {OBB} collider
      */
-    checkWaypoint(collider) {
-        if (collider.intersectsOBB(this.waypointColliders[this.nextWaypoint])) {
-            if (this.nextWaypoint === 0) this.lap++;
+    checkWaypoint(collider, opponent = false) {
+        const scope = this;
+        const proxy = {
+            get nextWaypoint() {
+                return opponent
+                    ? scope.nextOpponentWaypoint
+                    : scope.nextPlayerWaypoint;
+            },
+            set nextWaypoint(value) {
+                if (opponent) scope.nextOpponentWaypoint = value;
+                else scope.nextPlayerWaypoint = value;
+            },
+            get lap() {
+                return opponent ? scope.opponentLap : scope.playerLap;
+            },
+            set lap(value) {
+                if (opponent) scope.opponentLap = value;
+                else scope.playerLap = value;
+            },
+        };
 
-            if (this.lap >= 3) return;
+        if (
+            collider.intersectsOBB(this.waypointColliders[proxy.nextWaypoint])
+        ) {
+            if (proxy.nextWaypoint === 0) {
+                proxy.lap++;
+            }
 
-            const light = this.waypointLights[this.nextWaypoint][this.lap];
+            if (proxy.lap >= 3) return;
 
-            if (light.on) light.on.visible = true;
-            if (light.off) light.off.visible = false;
+            const light = this.waypointLights[proxy.nextWaypoint][proxy.lap];
 
-            this.nextWaypoint =
-                (this.nextWaypoint + 1) % this.waypointColliders.length;
+            proxy.nextWaypoint =
+                (proxy.nextWaypoint + 1) % this.waypointColliders.length;
+
+            const material = WINNER_TO_GLOW[this.winner];
+            this.game.materials.changeGlow(this.glow, material);
+
+            if (light.on) {
+                const material = light.on.visible
+                    ? "glow_yellow"
+                    : opponent
+                    ? "glow_red"
+                    : "glow_blue";
+
+                light.on.visible = true;
+                this.game.materials.changeGlow(light.on, material);
+            }
+            if (light.off) {
+                light.off.visible = false;
+            }
         }
     }
 }

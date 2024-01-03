@@ -179,7 +179,7 @@ export class Game {
         this.gameplayControls.update(delta);
         this.noclipControls.update(delta);
 
-        this.contents.fireworks.update(delta);
+        this.contents.update(delta);
 
         this.renderer.render(delta);
 

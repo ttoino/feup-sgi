@@ -146,13 +146,17 @@ export class SceneContents {
         this.obstacleSelectionMenu.position.y = 1;
         this.obstacleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.obstacleSelectionMenu);
-
-        this.fireworks = new Fireworks(this.game);
-        this.game.scene.add(this.fireworks);
     }
 
     onLoaded() {
         this.game.materials.changeGlow(this.cycleRed, "glow_red");
         this.game.materials.changeGlow(this.carRed, "glow_red");
+    }
+
+    /**
+     * @param {number} delta
+     */
+    update(delta) {
+        this.background.update(delta);
     }
 }

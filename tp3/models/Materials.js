@@ -22,10 +22,12 @@ export class Materials {
     }
 
     /**
-     * @param {THREE.Object3D} object
+     * @param {THREE.Object3D} [object]
      * @param {THREE.Material | string} [material]
      */
     changeGlass(object, material) {
+        if (!object) return;
+
         if (!material) material = this.map.get("glass_simple");
         else if (typeof material === "string")
             material = this.map.get(material);
@@ -41,10 +43,12 @@ export class Materials {
     }
 
     /**
-     * @param {THREE.Object3D} object
+     * @param {THREE.Object3D} [object]
      * @param {THREE.Material | string} [material]
      */
     changeGlow(object, material) {
+        if (!object) return;
+
         if (!material) material = this.map.get("glow_blue");
         else if (typeof material === "string")
             material = this.map.get(material);

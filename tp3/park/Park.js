@@ -47,5 +47,6 @@ export class Park extends THREE.Object3D {
 
         const spot = this.spots[this.nextSpot++];
         object.position.copy(spot.getWorldPosition(new THREE.Vector3()));
+        object.quaternion.copy(spot.getWorldQuaternion(new THREE.Quaternion()));
     }
 }

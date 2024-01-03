@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export class FloorMaterial extends THREE.MeshPhysicalMaterial {
+export class FloorMaterial extends THREE.MeshStandardMaterial {
     constructor({ divisions = 1 }) {
         super();
 
@@ -29,6 +29,10 @@ export class FloorMaterial extends THREE.MeshPhysicalMaterial {
         this.noiseScale = 2;
         this.metalness = 1;
 
+        this.uniforms = {
+            time: { value: 0 },
+        };
+
         this.customProgramCacheKey = () => Math.random().toString();
     }
 
@@ -39,7 +43,7 @@ export class FloorMaterial extends THREE.MeshPhysicalMaterial {
         // console.log(shader);
         // console.log(shader.vertexShader);
 
-        shader.uniforms.time = { value: 0 };
+        shader.uniforms.time = this.uniforms.time;
         shader.uniforms.noiseScale = { value: this.noiseScale };
         shader.uniforms.noiseMap = {
             value: this.noiseMap,
@@ -63,7 +67,7 @@ uniform sampler2D noiseMap;
 
     transformed += normalize(objectNormal) * (
         texture2D(displacementMap, vUv).x *
-        texture2D(noiseMap, vUv * noiseScale).x *
+        texture2D(noiseMap, (vUv + vec2(time, time) * 0.0025) * noiseScale).x *
         displacementScale +
         displacementBias
     );
