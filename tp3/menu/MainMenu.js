@@ -26,7 +26,32 @@ export class MainMenu extends Menu {
                 this.gameFont = gameFont;
                 const mainMenu = new THREE.Group();
 
-                const playButtonGeom = new TextGeometry("Play Game", {
+                {
+                    const mainMenuLabelGeom = new TextGeometry("F E U P e r  W a v e", {
+                        font: gameFont,
+                        size: this.textSize,
+                        height: this.textSize / 4,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 1,
+                    });
+                    mainMenuLabelGeom.computeBoundingBox();
+                    const mainMenuLabel = new THREE.Mesh(
+                        mainMenuLabelGeom,
+                        new THREE.MeshStandardMaterial({
+                            color: 0x2f8ca3,
+                            emissive: 0x2f8ca3,
+                            emissiveIntensity: 5,
+                        })
+                    );
+                    mainMenuLabel.position.y = 5;
+                    mainMenuLabel.position.x = -8.5;
+                    mainMenu.add(mainMenuLabel);
+                }
+
+                const playButtonGeom = new TextGeometry("P l a y  G a m e", {
                     font: gameFont,
                     size: this.textSize,
                     height: this.textSize / 4,
@@ -52,7 +77,7 @@ export class MainMenu extends Menu {
                 playButton.position.x = -1.15;
                 playButton.position.y = -4;
 
-                const exitButtonGeom = new TextGeometry("Exit", {
+                const exitButtonGeom = new TextGeometry("E x i t", {
                     font: gameFont,
                     size: this.textSize,
                     height: this.textSize / 4,
@@ -81,7 +106,7 @@ export class MainMenu extends Menu {
                 {
                     this.playerName = new THREE.Group();
 
-                    const playerNameLabelGeom = new TextGeometry("Name :", {
+                    const playerNameLabelGeom = new TextGeometry("N a m e  :", {
                         font: gameFont,
                         size: this.textSize,
                         height: this.textSize / 4,
@@ -119,7 +144,7 @@ export class MainMenu extends Menu {
                     this.difficulty = new THREE.Group();
 
                     const difficultyLabelGeom = new TextGeometry(
-                        "Difficulty :",
+                        "D i f f i c u l t y  :",
                         {
                             font: gameFont,
                             size: this.textSize,
@@ -143,7 +168,7 @@ export class MainMenu extends Menu {
 
                     this.difficulty.add(difficultyLabel);
 
-                    const easyButtonGeom = new TextGeometry("Easy", {
+                    const easyButtonGeom = new TextGeometry("E a s y", {
                         font: gameFont,
                         size: this.textSize,
                         height: this.textSize / 4,
@@ -166,9 +191,9 @@ export class MainMenu extends Menu {
                     easyButton.layers.enable(UI);
                     easyButton.layers.enable(MAIN_MENU);
 
-                    easyButton.position.x = 12;
+                    easyButton.position.x = 18;
 
-                    const hardButtonGeom = new TextGeometry("Hard", {
+                    const hardButtonGeom = new TextGeometry("H a r d", {
                         font: gameFont,
                         size: this.textSize,
                         height: this.textSize / 4,
@@ -191,7 +216,7 @@ export class MainMenu extends Menu {
                     hardButton.layers.enable(UI);
                     hardButton.layers.enable(MAIN_MENU);
 
-                    hardButton.position.x = 17;
+                    hardButton.position.x = 25;
 
                     this.difficulty.add(easyButton);
                     this.difficulty.add(hardButton);
@@ -200,6 +225,67 @@ export class MainMenu extends Menu {
                     this.difficulty.position.y = -3;
 
                     this.add(this.difficulty);
+                }
+
+                {
+                    this.authors = new THREE.Group();
+
+                    const perasLabelGeom = new TextGeometry(
+                        "N u n o  P e r e i r a,  U P 2 0 2 0 0 7 8 6 5",
+                        {
+                            font: gameFont,
+                            size: this.textSize / 2,
+                            height: this.textSize / 4,
+                            bevelEnabled: true,
+                            bevelThickness: 0.1,
+                            bevelSize: 0.1,
+                            bevelOffset: 0,
+                            bevelSegments: 1,
+                        }
+                    );
+                    perasLabelGeom.computeBoundingBox();
+                    const perasLabel = new THREE.Mesh(
+                        perasLabelGeom,
+                        new THREE.MeshStandardMaterial({
+                            color: 0xf4af2d,
+                            emissive: 0xf4af2d,
+                            emissiveIntensity: 2,
+                        })
+                    );
+
+                    perasLabel.position.x = -12
+
+                    this.authors.add(perasLabel);
+
+                    const toinoLabelGeometry = new TextGeometry("J o a o  P e r e i r a, U P 2 0 2 0 0 7 1 4 5", {
+                        font: gameFont,
+                        size: this.textSize / 2,
+                        height: this.textSize / 4,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 1,
+                    });
+                    toinoLabelGeometry.computeBoundingBox();
+                    const toinoLabel = new THREE.Mesh(
+                        toinoLabelGeometry,
+                        new THREE.MeshStandardMaterial({
+                            color: 0xf4af2d,
+                            emissive: 0xf4af2d,
+                            emissiveIntensity: 2,
+                        })
+                    );
+
+                    toinoLabel.position.x = -12;
+                    toinoLabel.position.y = -2;
+
+                    this.authors.add(toinoLabel);
+
+                    this.authors.position.x = -22;
+                    this.authors.position.y = -11;
+
+                    this.add(this.authors);
                 }
 
                 const xScale = 4;

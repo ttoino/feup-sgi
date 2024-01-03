@@ -36,6 +36,12 @@ export class MainMenuState extends MenuState {
         );
 
         this.game.renderer.gameOutlinePass.selectedObjects = [];
+
+        this.lookerInterval = setInterval(() => {
+            if (this.menuObject instanceof MainMenu) {
+                this.menuObject.authors?.lookAt(this.game.activeCamera.position);
+            }
+        }, 10)
     }
 
     destroy() {
@@ -54,6 +60,8 @@ export class MainMenuState extends MenuState {
         );
 
         this.game.renderer.gameOutlinePass.selectedObjects = [];
+
+        clearInterval(this.lookerInterval);
     }
 
     /**
