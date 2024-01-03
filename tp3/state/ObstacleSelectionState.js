@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { Game } from "../game/Game.js";
 import { MenuState } from "./MenuState.js";
 import { OBSTACLE_SELECTION_MENU } from "../renderer/Layers.js";
@@ -15,18 +16,30 @@ export default class ObstacleSelectionState extends MenuState {
         super(game, game.contents.obstacleSelectionMenu, OBSTACLE_SELECTION_MENU);
 
         this.boundOnKeyDown = this.#onKeyDown.bind(this);
+
+        this.initialTarget = new THREE.Vector3();
     }
 
     init() {
         super.init();
 
         document.addEventListener("keydown", this.boundOnKeyDown);
+
+        this.initialTarget.copy(new THREE.Vector3(0, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight));
+
+        this.game.gameplayControls.targetRotation = 0;
+        this.game.gameplayControls.targetDistance = 15;
+        this.game.gameplayControls.targetHeight = 15;
     }
 
     destroy() {
         super.destroy();
 
         document.removeEventListener("keydown", this.boundOnKeyDown);
+
+        this.game.gameplayControls.targetRotation = this.initialTarget.x;
+        this.game.gameplayControls.targetDistance = this.initialTarget.y;
+        this.game.gameplayControls.targetHeight = this.initialTarget.z;
     }
 
     /**

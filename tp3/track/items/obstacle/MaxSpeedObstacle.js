@@ -48,6 +48,7 @@ export default class MaxSpeedObstacle extends Obstacle {
         clone.scale.copy(this.scale);
 
         clone.pickedUp = this.pickedUp;
+
         return clone;
     }
 }

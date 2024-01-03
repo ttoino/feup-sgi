@@ -118,31 +118,7 @@ export class MainMenuState extends MenuState {
                 this.game.info.playerName = this.name;
                 this.game.info.difficulty = this.difficulty;
 
-
-
-
-                const opponentController = new OpponentController(
-                    this.game,
-                    this.game.info.opponentCar
-                );
-
-                const playerController = new PlayerController(
-                    this.game,
-                    new VehicleController(this.game, this.game.info.playerCar),
-                    new CollisionController(
-                        this.game,
-                        this.game.info.playerCar,
-                        opponentController
-                    )
-                );
-
-
-
-                console.log("Game Info:", this.game.info);
-
-                this.stateManager.pushState(
-                    new PlayState(this.game, playerController, opponentController),
-                );
+                this.stateManager.pushState(new PlayState(this.game));
                 return;
             case "exit_button":
                 window.close();

@@ -10,21 +10,17 @@ export class ObstacleSelectionMenu extends Menu {
      * @param {Game} game
      */
     constructor(game) {
-        super();
+        super(game);
 
         this.game = game;
 
-        this.#init();
-    }
-
-    #init() {
         this.game.fontManager
             .load("fonts/tron_typeface.json")
             .then((gameFont) => {
                 const vehicleSelectionMenu = new THREE.Group();
 
                 const infoTextGeom = new TextGeometry(
-                    "Pick an obstacle to place on the track",
+                    "P i c k  a n  o b s t a c l e  t o \np l a c e  o n  t h e  t r a c k",
                     {
                         font: gameFont,
                         size: 1,
@@ -48,29 +44,25 @@ export class ObstacleSelectionMenu extends Menu {
                 infoText.name = "info_text";
                 infoText.layers.enable(UI);
 
-                infoText.position.x = -4.3;
-                infoText.position.y = 4.5;
-                infoText.position.z = -1;
-                infoText.rotation.x = -0.4;
+                infoText.position.x = 10;
+                infoText.position.y = 10;
+                infoText.position.z = 1;
+
+                infoText.rotateX(0.4);
+                infoText.rotateY(Math.PI);
+
                 infoText.scale.multiplyScalar(0.5);
 
                 vehicleSelectionMenu.add(infoText);
 
                 this.add(vehicleSelectionMenu);
 
-                const baseX = -1;
-                for (let i = 0; i < this.game.contents.obstacles.length; i++) {
-                    const obstacle = this.game.contents.obstacles[i];
+                this.add(this.game.contents.obstaclePark);
 
-                    obstacle.position.x = baseX + i * 3;
-                    obstacle.position.y = 0;
-                    obstacle.position.z = 0;
-                    obstacle.rotation.x = 0;
-                    obstacle.rotation.y = 0;
-                    obstacle.rotation.z = 0;
-                    obstacle.scale.x = obstacle.scale.y = obstacle.scale.z = 1;
+                for (const obstacle of this.game.contents.obstacles) {
                     obstacle.layers.enable(OBSTACLE_SELECTION_MENU);
-                    this.add(obstacle);
+
+                    this.game.contents.obstaclePark.addToSpot(obstacle);
                 }
             });
     }

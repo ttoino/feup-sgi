@@ -69,7 +69,6 @@ export class SceneContents {
         this.opponentPark = new OpponentPark(this.game);
 
         this.obstaclePark = new ObstaclePark(this.game);
-        this.game.scene.add(this.obstaclePark);
 
         // Track
         this.track = new Track(this.game);
@@ -143,8 +142,7 @@ export class SceneContents {
         // Obstacle Selection Menu
         this.obstacleSelectionMenu = new ObstacleSelectionMenu(this.game);
         this.obstacleSelectionMenu.position.z = -150;
-        this.obstacleSelectionMenu.position.x = -7;
-        this.obstacleSelectionMenu.position.y = 1;
+        this.obstacleSelectionMenu.position.x = -10;
         this.obstacleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.obstacleSelectionMenu);
     }

@@ -7,9 +7,12 @@ export const PICKUP_INTERVAL = 5000;
 export default class Obstacle extends TrackItem {
     /**
      * @param {Game} game
+     * @param {Parameters<typeof this.game.materials.changeGlow>[1] | undefined} glow
      */
-    constructor(game) {
+    constructor(game, glow = undefined) {
         super(game);
+
+        this.glow = glow;
 
         /** @type {ObstacleMaterial[]} */
         this.materials = [];
@@ -27,6 +30,9 @@ export default class Obstacle extends TrackItem {
                     this.materials.push(child.material);
                 }
             });
+
+            if (this.glow)
+                this.game.materials.changeGlow(this, glow);
         });
     }
 
@@ -42,7 +48,7 @@ export default class Obstacle extends TrackItem {
      * @returns {Obstacle}
      */
     makeClone() {
-        const clone = new Obstacle(this.game);
+        const clone = new Obstacle(this.game, this.glow);
 
         clone.position.copy(this.position);
         clone.rotation.copy(this.rotation);
@@ -59,8 +65,8 @@ export default class Obstacle extends TrackItem {
 
         this.materials.forEach(
             (material) =>
-                (material.uniforms.time.value =
-                    (material.uniforms.time.value + delta) % 1)
+            (material.uniforms.time.value =
+                (material.uniforms.time.value + delta) % 1)
         );
     }
 }

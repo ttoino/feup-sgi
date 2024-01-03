@@ -9,7 +9,7 @@ export default class ControlReverseObstacle extends Obstacle {
      * @param {Game} game
      */
     constructor(game) {
-        super(game);
+        super(game, "glow_yellow");
 
         this.pickedUp = false;
     }

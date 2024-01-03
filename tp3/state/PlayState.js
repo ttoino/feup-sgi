@@ -4,18 +4,34 @@ import { Game } from "../game/Game.js";
 import PlayerController from "../controller/PlayerController.js";
 import OpponentController from "../controller/OpponentController.js";
 import { WINNER_TO_GLOW } from "../track/Track.js";
+import { MainMenuState } from "./MainMenuState.js";
+import VehicleController from "../vehicles/VehicleController.js";
+import CollisionController from "../collision/CollisionController.js";
 
 export class PlayState extends GameState {
     /**
      * @param {Game} game
-     * @param {PlayerController} playerController
-     * @param {OpponentController} opponentController
      */
-    constructor(game, playerController, opponentController) {
+    constructor(game) {
         super(game);
 
-        this.playerController = playerController;
-        this.opponentController = opponentController;
+        this.opponentController = new OpponentController(
+            this.game,
+            // @ts-ignore
+            this.game.info.opponentCar
+        );
+
+        this.playerController = new PlayerController(
+            this.game,
+            // @ts-ignore
+            new VehicleController(this.game, this.game.info.playerCar),
+            new CollisionController(
+                this.game,
+                // @ts-ignore
+                this.game.info.playerCar,
+                this.opponentController
+            )
+        );
 
         this.updaters.push(...this.game.contents.powerUps);
         this.updaters.push(...this.game.contents.obstacles);
@@ -26,7 +42,7 @@ export class PlayState extends GameState {
         this.inverseCamera = false;
     }
 
-    get winner() {
+    get currentWinner() {
         if (
             this.playerController.trackPosition.lap === this.opponentController.trackPosition.lap &&
             this.playerController.trackPosition.nextWaypoint === this.opponentController.trackPosition.nextWaypoint
@@ -46,6 +62,13 @@ export class PlayState extends GameState {
         else return "opponent";
     }
 
+    get isGameOver() {
+        return this.currentWinner !== "tie" && (
+            this.playerController.trackPosition.lap === 3 ||
+            this.opponentController.trackPosition.lap === 3
+        );
+    }
+
     /**
      * 
      * @param {number} delta 
@@ -59,7 +82,12 @@ export class PlayState extends GameState {
         this.opponentController.update(delta);
         this.playerController.update(delta);
 
-        const material = WINNER_TO_GLOW[this.winner];
+        if (this.isGameOver) {
+            this.stateManager.pushState(new MainMenuState(this.game));
+            return;
+        }
+
+        const material = WINNER_TO_GLOW[this.currentWinner];
         this.game.materials.changeGlow(this.game.contents.track.glow, material);
 
         if (this.inverseCamera || this.playerController.vehicle.forwardSpeed < 0) {
