@@ -8,6 +8,14 @@ export default class Powerup extends TrackItem {
      */
     constructor(game) {
         super(game);
+
+        game.modelManager.load("models/powerup.glb").then((model) => {
+            this.add(model);
+
+            model.traverse((child) => {
+                if (child.name.includes("view")) this.view = child;
+            });
+        });
     }
 
     /**

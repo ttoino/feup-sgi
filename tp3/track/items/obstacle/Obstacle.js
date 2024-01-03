@@ -9,7 +9,13 @@ export default class Obstacle extends TrackItem {
     constructor(game) {
         super(game);
 
-        this.name = "boas" + Math.random();
+        game.modelManager.load("models/obstacle.glb").then((model) => {
+            this.add(model);
+
+            model.traverse((child) => {
+                if (child.name.includes("view")) this.view = child;
+            });
+        });
     }
 
     /**
@@ -20,7 +26,7 @@ export default class Obstacle extends TrackItem {
     }
 
     /**
-     * 
+     *
      * @returns {Obstacle}
      */
     makeClone() {

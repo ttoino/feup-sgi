@@ -17,7 +17,7 @@ export default class SphereCollider extends Collider {
         new THREE.Box3().setFromObject(object).getBoundingSphere(this.collider);
 
         this.sphereWireframe = new THREE.Mesh(
-            new THREE.SphereGeometry(this.collider.radius, 10, 10),
+            new THREE.SphereGeometry(this.collider.radius, 8, 4),
             new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
         );
         this.sphereWireframe.layers.set(HELPERS);

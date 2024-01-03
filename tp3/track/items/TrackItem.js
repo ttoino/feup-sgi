@@ -13,7 +13,7 @@ export default class TrackItem extends THREE.Object3D {
 
         this.game = game;
 
-        this.time = 0;
+        this.view = new THREE.Object3D();
 
         /**
          * @type {HTMLDivElement}
@@ -31,23 +31,6 @@ export default class TrackItem extends THREE.Object3D {
          * @type {((delta: number) => boolean)[]}
          */
         this.effects = [];
-
-        this.#init();
-    }
-
-    #init() {
-        const powerUp = new THREE.Group();
-
-        const geometry = new THREE.CylinderGeometry(1, 1, 0.5);
-        geometry.computeBoundingBox();
-        const material = new THREE.MeshPhongMaterial({ color: 0x00ffff });
-        this.mesh = new THREE.Mesh(geometry, material);
-
-        this.mesh.rotation.x = Math.PI / 2;
-
-        powerUp.add(this.mesh);
-
-        this.add(powerUp);
 
         this.collider = new SphereCollider(
             this.game,
@@ -101,10 +84,7 @@ export default class TrackItem extends THREE.Object3D {
      * @param {number} delta
      */
     update(delta) {
-        this.time += delta;
-
-        this.position.y += Math.sin(this.time * 2) * 0.125 * 0.25;
-        this.rotateOnAxis(new THREE.Vector3(0, 1, 0), delta * 0.5);
+        this.view.rotateY(delta * 0.5);
 
         this.collider?.update(delta);
 
