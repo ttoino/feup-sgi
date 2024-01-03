@@ -63,6 +63,9 @@ export default class Vehicle extends THREE.Object3D {
             new THREE.Vector3(0, 0, 1)
         );
         this.directionHelper.layers.set(HELPERS);
+        this.directionHelper.traverse((child) => {
+            child.layers.set(HELPERS);
+        });
         this.add(this.directionHelper);
 
         this.cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128, {
