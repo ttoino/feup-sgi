@@ -22,6 +22,9 @@ export default class Vehicle extends THREE.Object3D {
         this.acceleration = 0;
         this.maxSpeed = MAX_SPEED;
 
+        // HACK: this is only used by a single obstacle, it should be done differently but there are still other things to do
+        this.controlReverse = false;
+
         /** @type {THREE.Object3D | undefined} */
         this.center = undefined;
 
@@ -101,13 +104,13 @@ export default class Vehicle extends THREE.Object3D {
         );
 
         this.rotateY(
-            (this.rotationRad * delta * this.forwardSpeed) / this.maxSpeed
+            ((this.rotationRad * delta * this.forwardSpeed) / this.maxSpeed) * (this.controlReverse ? -1 : 1)
         );
 
         // TODO: Max speed, maybe using drag
         this.position.addScaledVector(
             this.getWorldDirection(new THREE.Vector3()),
-            this.forwardSpeed * delta
+            (this.forwardSpeed * delta) * (this.controlReverse ? -1 : 1)
         );
 
         this.directionHelper.setLength(this.forwardSpeed);

@@ -18,6 +18,7 @@ import Obstacle from "../track/items/obstacle/Obstacle.js";
 import { VehiclePark } from "../park/VehiclePark.js";
 import { OpponentPark } from "../park/OpponentPark.js";
 import { ObstaclePark } from "../park/ObstaclePark.js";
+import ControlReverseObstacle from "../track/items/obstacle/ControlReverseObstacle.js";
 
 /**
  *  This class contains the contents of our application
@@ -93,10 +94,18 @@ export class SceneContents {
          * @type {Obstacle[]}
          */
         this.obstacles = [];
-        const obstacle = new MaxSpeedObstacle(this.game);
-        obstacle.position.x = 53;
-        obstacle.position.z = 53;
-        this.obstacles.push(obstacle);
+
+        const maxSpeedObstacle = new MaxSpeedObstacle(this.game);
+        maxSpeedObstacle.position.x = 53;
+        maxSpeedObstacle.position.z = 53;
+        this.obstacles.push(maxSpeedObstacle);
+
+        const reverseControllObstacle = new ControlReverseObstacle(this.game);
+        maxSpeedObstacle.position.x = 53;
+        maxSpeedObstacle.position.z = 53;
+        this.obstacles.push(reverseControllObstacle);
+
+
         this.obstacles.forEach((obstacle) => {
             obstacle.position.y = 1.5;
             this.game.scene.add(obstacle);
