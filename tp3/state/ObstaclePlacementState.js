@@ -3,6 +3,7 @@ import { Game } from "../game/Game.js";
 import Obstacle from "../track/items/obstacle/Obstacle.js";
 import { GameState } from "./GameState.js";
 import { PlayState } from "./PlayState.js";
+import { PauseState } from "./PauseState.js";
 
 export default class ObstaclePlacementState extends GameState {
 
@@ -25,10 +26,13 @@ export default class ObstaclePlacementState extends GameState {
         this.placementPosition = null;
 
         this.boundOnPointerMove = this.onPointerMove.bind(this);
+        this.boundOnKeyDown = this.#onKeyDown.bind(this);
     }
 
     init() {
         document.addEventListener("pointermove", this.boundOnPointerMove);
+        document.addEventListener("keydown", this.boundOnKeyDown);
+
         this.game.gameplayControls.target = this.game.contents.track;
 
         const initialTarget = new THREE.Vector3(Math.PI, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight);
@@ -57,6 +61,16 @@ export default class ObstaclePlacementState extends GameState {
 
     destroy() {
         document.removeEventListener("pointermove", this.boundOnPointerMove);
+        document.removeEventListener("keydown", this.boundOnKeyDown);
+    }
+
+    /**
+     * @param {KeyboardEvent} event
+     */
+    #onKeyDown(event) {
+        if (event.key === "p" || event.key === "P") {
+            this.stateManager.pushState(new PauseState(this.game));
+        }
     }
 
     /**
@@ -76,7 +90,6 @@ export default class ObstaclePlacementState extends GameState {
             document.addEventListener("click", clickListener);
         });
     }
-
 
     /**
      * @override

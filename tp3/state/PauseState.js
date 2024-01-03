@@ -2,7 +2,6 @@ import { Game } from "../game/Game.js";
 import { PAUSE_MENU } from "../renderer/Layers.js";
 import { MainMenuState } from "./MainMenuState.js";
 import { MenuState } from "./MenuState.js";
-import { PlayState } from "./PlayState.js";
 
 export class PauseState extends MenuState {
     /**
@@ -18,7 +17,7 @@ export class PauseState extends MenuState {
     onPick(object) {
         switch (object.name) {
             case "resume_button":
-                this.stateManager.popUntil(PlayState);
+                this.stateManager.popState();
                 break;
             case "main_menu_button":
                 this.stateManager.popUntil(MainMenuState);
