@@ -8,6 +8,8 @@ import Vehicle from "../vehicles/Vehicle.js";
 import PlayerController from "../controller/PlayerController.js";
 import CollisionController from "../collision/CollisionController.js";
 import OpponentController from "../controller/OpponentController.js";
+import { MainMenuState } from "./MainMenuState.js";
+import { MainMenu } from "../menu/MainMenu.js";
 
 export default class OpponentVehicleSelectionState extends MenuState {
     /**
@@ -21,6 +23,8 @@ export default class OpponentVehicleSelectionState extends MenuState {
 
     init() {
         super.init();
+
+        this.game.contents.opponentPark.addObjects();
 
         this.initialTarget.copy(new THREE.Vector3(Math.PI, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight));
 
@@ -63,6 +67,12 @@ export default class OpponentVehicleSelectionState extends MenuState {
 
         console.log("Opponent car selected:", object.name);
 
-        this.game.stateManager.popState();
+        this.game.stateManager.popUntil(MainMenuState);
+
+        if (this.game.stateManager.current instanceof MainMenuState) {
+            if (this.game.stateManager.current.menuObject instanceof MainMenu) {
+                this.game.stateManager.current.menuObject.updateOpponentVehicleName(object.name);
+            }
+        }
     }
 }

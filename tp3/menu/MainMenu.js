@@ -17,6 +17,9 @@ export class MainMenu extends Menu {
 
         this.nameValueXPos = 8.5;
         this.textSize = 0.75;
+
+        this.xTextScale = 4;
+        this.yTextScale = 2;
     }
 
     #init() {
@@ -25,9 +28,6 @@ export class MainMenu extends Menu {
             .then((gameFont) => {
                 this.gameFont = gameFont;
                 const mainMenu = new THREE.Group();
-
-                const xTextScale = 4;
-                const yTextScale = 2;
 
                 {
                     const mainMenuLabelGeom = new TextGeometry("F E U P e r  W a v e", {
@@ -51,6 +51,9 @@ export class MainMenu extends Menu {
                     );
                     mainMenuLabel.position.y = 5;
                     mainMenuLabel.position.x = -8.5;
+
+                    mainMenuLabel.scale.y = 2;
+
                     mainMenu.add(mainMenuLabel);
                 }
 
@@ -291,77 +294,51 @@ export class MainMenu extends Menu {
                 }
 
                 {
-                    const selectPlayerVehicleButtonGeom = new TextGeometry("S e l e c t  P l a y e r  V e h i c l e", {
-                        font: gameFont,
-                        size: this.textSize,
-                        height: this.textSize / 4,
-                        bevelEnabled: true,
-                        bevelThickness: 0.1,
-                        bevelSize: 0.1,
-                        bevelOffset: 0,
-                        bevelSegments: 1,
-                    });
-                    selectPlayerVehicleButtonGeom.computeBoundingBox();
-                    const selectPlayerVehicleButton = new THREE.Mesh(
-                        selectPlayerVehicleButtonGeom,
-                        new THREE.MeshStandardMaterial({
-                            color: 0x2f8ca3,
-                            emissive: 0x2f8ca3,
-                            emissiveIntensity: 5,
-                        })
-                    );
-                    selectPlayerVehicleButton.name = "select_player_vehicle";
-                    selectPlayerVehicleButton.layers.enable(UI);
-                    selectPlayerVehicleButton.layers.enable(MAIN_MENU);
+                    this.selectPlayerVehicle = new THREE.Group();
 
-                    selectPlayerVehicleButton.scale.x = 1 / xTextScale;
-                    selectPlayerVehicleButton.scale.y = 1 / yTextScale;
+                    this.selectPlayerVehicleButton = this.#createPlayerVehicleButton(null, gameFont, this.textSize);
 
-                    mainMenu.add(selectPlayerVehicleButton);
+                    this.selectPlayerVehicle.name = "select_player_vehicle";
+                    this.selectPlayerVehicle.layers.enable(UI);
+                    this.selectPlayerVehicle.layers.enable(MAIN_MENU);
+
+                    this.selectPlayerVehicleButton.scale.x = 1 / this.xTextScale;
+                    this.selectPlayerVehicleButton.scale.y = 1 / this.yTextScale;
+
+                    this.selectPlayerVehicle.add(this.selectPlayerVehicleButton);
+
+                    mainMenu.add(this.selectPlayerVehicle);
                 }
 
                 {
-                    const selectOpponentVehicleButtonGeom = new TextGeometry("S e l e c t  O p p o n e n t  V e h i c l e", {
-                        font: gameFont,
-                        size: this.textSize,
-                        height: this.textSize / 4,
-                        bevelEnabled: true,
-                        bevelThickness: 0.1,
-                        bevelSize: 0.1,
-                        bevelOffset: 0,
-                        bevelSegments: 1,
-                    });
-                    selectOpponentVehicleButtonGeom.computeBoundingBox();
-                    const selectOpponentVehicleButton = new THREE.Mesh(
-                        selectOpponentVehicleButtonGeom,
-                        new THREE.MeshStandardMaterial({
-                            color: 0xf4af2d,
-                            emissive: 0xf4af2d,
-                            emissiveIntensity: 2,
-                        })
-                    );
-                    selectOpponentVehicleButton.name = "select_opponent_vehicle";
-                    selectOpponentVehicleButton.layers.enable(UI);
-                    selectOpponentVehicleButton.layers.enable(MAIN_MENU);
+                    this.selectOpponentVehicle = new THREE.Group();
 
-                    selectOpponentVehicleButton.position.y = -1.5;
+                    this.selectOpponentVehicleButton = this.#createOpponentVehicleButton(null, gameFont, this.textSize);
 
-                    selectOpponentVehicleButton.scale.x = 1 / xTextScale;
-                    selectOpponentVehicleButton.scale.y = 1 / yTextScale;
+                    this.selectOpponentVehicle.name = "select_opponent_vehicle";
+                    this.selectOpponentVehicle.layers.enable(UI);
+                    this.selectOpponentVehicle.layers.enable(MAIN_MENU);
 
-                    mainMenu.add(selectOpponentVehicleButton);
+                    this.selectOpponentVehicleButton.scale.x = 1 / this.xTextScale;
+                    this.selectOpponentVehicleButton.scale.y = 1 / this.yTextScale;
+
+                    this.selectOpponentVehicle.add(this.selectOpponentVehicleButton);
+
+                    this.selectOpponentVehicle.position.y = -1.5;
+
+                    mainMenu.add(this.selectOpponentVehicle);
                 }
 
                 mainMenu.add(playButton);
                 mainMenu.add(exitButton);
 
-                mainMenu.scale.x = xTextScale;
-                playButton.scale.x = 1 / xTextScale;
-                exitButton.scale.x = 1 / xTextScale;
+                mainMenu.scale.x = this.xTextScale;
+                playButton.scale.x = 1 / this.xTextScale;
+                exitButton.scale.x = 1 / this.xTextScale;
 
-                mainMenu.scale.y = yTextScale;
-                playButton.scale.y = 1 / yTextScale;
-                exitButton.scale.y = 1 / yTextScale;
+                mainMenu.scale.y = this.yTextScale;
+                playButton.scale.y = 1 / this.yTextScale;
+                exitButton.scale.y = 1 / this.yTextScale;
 
                 this.add(mainMenu);
             });
@@ -416,5 +393,164 @@ export class MainMenu extends Menu {
         );
 
         return nameValue;
+    }
+
+    /**
+     * 
+     * @param {string} newName 
+     */
+    updateOpponentVehicleName(newName) {
+        if (this.selectOpponentVehicleButton && this.gameFont && this.selectOpponentVehicle) {
+
+            if (!this.selectOpponentVehicleLabel) {
+                const selectOpponentVehicleLabelGeom = new TextGeometry("O p p o n e n t  V e h i c l e :", {
+                    font: this.gameFont,
+                    size: this.textSize,
+                    height: this.textSize / 4,
+                    bevelEnabled: true,
+                    bevelThickness: 0.1,
+                    bevelSize: 0.1,
+                    bevelOffset: 0,
+                    bevelSegments: 1,
+                });
+                selectOpponentVehicleLabelGeom.computeBoundingBox();
+                this.selectOpponentVehicleLabel = new THREE.Mesh(
+                    selectOpponentVehicleLabelGeom,
+                    new THREE.MeshStandardMaterial({
+                        color: 0xf4af2d,
+                        emissive: 0xf4af2d,
+                        emissiveIntensity: 2,
+                    })
+                );
+
+                this.selectOpponentVehicleLabel.scale.x = 1 / this.xTextScale;
+                this.selectOpponentVehicleLabel.scale.y = 1 / this.yTextScale;
+
+                this.selectOpponentVehicle.add(this.selectOpponentVehicleLabel);
+            }
+
+            this.selectOpponentVehicle.remove(this.selectOpponentVehicleButton);
+
+            this.selectOpponentVehicleButton = this.#createOpponentVehicleButton(newName, this.gameFont, this.textSize);
+
+            this.selectOpponentVehicleButton.position.x = 6.5;
+
+            this.selectOpponentVehicleButton.scale.x = 1 / this.xTextScale;
+            this.selectOpponentVehicleButton.scale.y = 1 / this.yTextScale;
+
+            this.selectOpponentVehicle.add(this.selectOpponentVehicleButton);
+        }
+    }
+
+    /**
+     * 
+     * @param {string | null} text 
+     * @param {Font} gameFont 
+     * @param {number} textSize 
+     * @returns 
+     */
+    #createOpponentVehicleButton(text, gameFont, textSize) {
+        const labelText = text ?? "S e l e c t  O p p o n e n t  V e h i c l e";
+
+        const selectOpponentVehicleButtonGeom = new TextGeometry(labelText, {
+            font: gameFont,
+            size: textSize,
+            height: textSize / 4,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 1,
+        });
+        selectOpponentVehicleButtonGeom.computeBoundingBox();
+        const selectOpponentVehicleButton = new THREE.Mesh(
+            selectOpponentVehicleButtonGeom,
+            new THREE.MeshStandardMaterial({
+                color: 0xf4af2d,
+                emissive: 0xf4af2d,
+                emissiveIntensity: 2,
+            })
+        );
+
+        return selectOpponentVehicleButton
+    }
+
+    /**
+     * 
+     * @param {string} newName 
+     */
+    updatePlayerVehicleName(newName) {
+        if (this.selectPlayerVehicleButton && this.gameFont && this.selectPlayerVehicle) {
+            if (!this.selectPlayerVehicleLabel) {
+                const selectOpponentVehicleLabelGeom = new TextGeometry("P l a y e r  V e h i c l e :", {
+                    font: this.gameFont,
+                    size: this.textSize,
+                    height: this.textSize / 4,
+                    bevelEnabled: true,
+                    bevelThickness: 0.1,
+                    bevelSize: 0.1,
+                    bevelOffset: 0,
+                    bevelSegments: 1,
+                });
+                selectOpponentVehicleLabelGeom.computeBoundingBox();
+                this.selectPlayerVehicleLabel = new THREE.Mesh(
+                    selectOpponentVehicleLabelGeom,
+                    new THREE.MeshStandardMaterial({
+                        color: 0x2f8ca3,
+                        emissive: 0x2f8ca3,
+                        emissiveIntensity: 5,
+                    })
+                );
+
+                this.selectPlayerVehicleLabel.scale.x = 1 / this.xTextScale;
+                this.selectPlayerVehicleLabel.scale.y = 1 / this.yTextScale;
+
+                this.selectPlayerVehicle.add(this.selectPlayerVehicleLabel);
+            }
+
+            this.selectPlayerVehicle.remove(this.selectPlayerVehicleButton);
+
+            this.selectPlayerVehicleButton = this.#createPlayerVehicleButton(newName, this.gameFont, this.textSize);
+
+            this.selectPlayerVehicleButton.position.x = 6.5;
+
+            this.selectPlayerVehicleButton.scale.x = 1 / this.xTextScale;
+            this.selectPlayerVehicleButton.scale.y = 1 / this.yTextScale;
+
+            this.selectPlayerVehicle.add(this.selectPlayerVehicleButton);
+        }
+    }
+
+    /**
+     * 
+     * @param {string | null} text 
+     * @param {Font} gameFont 
+     * @param {number} textSize 
+     * @returns 
+     */
+    #createPlayerVehicleButton(text, gameFont, textSize) {
+        const labelText = text ?? "S e l e c t  P l a y e r  V e h i c l e";
+
+        const selectPlayerVehicleButtonGeom = new TextGeometry(labelText, {
+            font: gameFont,
+            size: textSize,
+            height: textSize / 4,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 1,
+        });
+        selectPlayerVehicleButtonGeom.computeBoundingBox();
+        const selectPlayerVehicleButton = new THREE.Mesh(
+            selectPlayerVehicleButtonGeom,
+            new THREE.MeshStandardMaterial({
+                color: 0x2f8ca3,
+                emissive: 0x2f8ca3,
+                emissiveIntensity: 5,
+            })
+        );
+
+        return selectPlayerVehicleButton
     }
 }

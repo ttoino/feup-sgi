@@ -3,6 +3,8 @@ import { Game } from "../game/Game.js";
 import { MenuState } from "./MenuState.js";
 import { VEHICLE_SELECTION_MENU } from "../renderer/Layers.js";
 import Vehicle from "../vehicles/Vehicle.js";
+import { MainMenuState } from "./MainMenuState.js";
+import { MainMenu } from "../menu/MainMenu.js";
 
 export default class PlayerVehicleSelectionState extends MenuState {
     /**
@@ -17,6 +19,8 @@ export default class PlayerVehicleSelectionState extends MenuState {
     init() {
         super.init();
 
+        this.game.contents.vehiclePark.addObjects();
+
         this.initialTarget.copy(new THREE.Vector3(Math.PI, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight));
 
         this.game.gameplayControls.targetRotation = 0;
@@ -25,11 +29,9 @@ export default class PlayerVehicleSelectionState extends MenuState {
     }
 
     destroy() {
-
         this.game.gameplayControls.targetRotation = this.initialTarget.x;
         this.game.gameplayControls.targetDistance = this.initialTarget.y;
         this.game.gameplayControls.targetHeight = this.initialTarget.z;
-
     }
 
     /**
@@ -59,5 +61,13 @@ export default class PlayerVehicleSelectionState extends MenuState {
         console.log("Player car selected:", object.name);
 
         this.game.stateManager.popState();
+
+        this.game.stateManager.popUntil(MainMenuState);
+
+        if (this.game.stateManager.current instanceof MainMenuState) {
+            if (this.game.stateManager.current.menuObject instanceof MainMenu) {
+                this.game.stateManager.current.menuObject.updatePlayerVehicleName(object.name);
+            }
+        }
     }
 }
