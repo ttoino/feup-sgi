@@ -102,14 +102,14 @@ export class Game {
         this.contents = new SceneContents(this);
 
         // Init game info
-        this.info = new GameInfo(this, "", null, null, "");
+        this.info = new GameInfo(this, "", null, null, 1);
+
+        // Init renderer
+        this.renderer = new Renderer(this);
 
         // Init state manager
         this.stateManager = new GameStateManager();
         this.stateManager.pushState(new MainMenuState(this));
-
-        // Init renderer
-        this.renderer = new Renderer(this);
 
         // Initialize it here, as it needs the renderer
         this.noclipControls = new OrbitControls(

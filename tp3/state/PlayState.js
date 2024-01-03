@@ -22,6 +22,8 @@ export class PlayState extends GameState {
 
         this.boundOnKeyDown = this.#onKeyDown.bind(this);
         this.boundOnKeyUp = this.#onKeyUp.bind(this);
+
+        this.inverseCamera = false;
     }
 
     /**
@@ -36,6 +38,14 @@ export class PlayState extends GameState {
 
         this.opponentController.update(delta);
         this.playerController.update(delta);
+
+        if (this.playerController.vehicle instanceof Vehicle) {
+            if (this.inverseCamera || this.playerController.vehicle.forwardSpeed < 0) {
+                this.game.gameplayControls.targetRotation = 0;
+            } else {
+                this.game.gameplayControls.targetRotation = Math.PI;
+            }
+        }
     }
 
     init() {
@@ -64,7 +74,7 @@ export class PlayState extends GameState {
         if (event.key === "p" || event.key === "P") {
             this.stateManager.pushState(new PauseState(this.game));
         } else if (event.key === "Shift") {
-            this.game.gameplayControls.targetRotation = 0;
+            this.inverseCamera = true;
         }
     }
 
@@ -73,7 +83,7 @@ export class PlayState extends GameState {
      */
     #onKeyUp(event) {
         if (event.key === "Shift") {
-            this.game.gameplayControls.targetRotation = Math.PI;
+            this.inverseCamera = false;
         }
     }
 }

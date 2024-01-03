@@ -31,7 +31,7 @@ export class Picker {
 
     finishPicking() {
         this.picking = false;
-        this.game.renderer.outlinePass.selectedObjects = [];
+        this.game.renderer.pickerOutlinePass.selectedObjects = [];
     }
 
     pick() {
@@ -110,7 +110,9 @@ export class Picker {
         if (this.picking) {
             this.pick();
 
-            this.game.renderer.outlinePass.selectedObjects = this.picked
+            this.game.renderer.pickerOutlinePass;
+
+            this.game.renderer.pickerOutlinePass.selectedObjects = this.picked
                 ? [this.picked]
                 : [];
         }

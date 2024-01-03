@@ -99,12 +99,19 @@ export class Renderer {
         this.ssrPass.enabled = false;
         this.composer.addPass(this.ssrPass);
 
-        this.outlinePass = new OutlinePass(
+        this.pickerOutlinePass = new OutlinePass(
             this.renderer.getSize(new THREE.Vector2()),
             this.game.scene,
             this.game.activeCamera
         );
-        this.composer.addPass(this.outlinePass);
+        this.composer.addPass(this.pickerOutlinePass);
+
+        this.gameOutlinePass = new OutlinePass(
+            this.renderer.getSize(new THREE.Vector2()),
+            this.game.scene,
+            this.game.activeCamera
+        );
+        this.composer.addPass(this.gameOutlinePass)
 
         this.unrealBloomPass = new UnrealBloomPass(
             this.renderer.getSize(new THREE.Vector2()),
@@ -227,7 +234,8 @@ export class Renderer {
     updateCamera() {
         this.renderPass.camera = this.game.activeCamera;
         this.ssaaRenderPass.camera = this.game.activeCamera;
-        this.outlinePass.renderCamera = this.game.activeCamera;
+        this.pickerOutlinePass.renderCamera = this.game.activeCamera;
+        this.gameOutlinePass.renderCamera = this.game.activeCamera;
         this.ssrPass.camera = this.game.activeCamera;
     }
 

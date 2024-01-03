@@ -11,9 +11,7 @@ export class MainMenu extends Menu {
      * @param {Game} game
      */
     constructor(game) {
-        super();
-
-        this.game = game;
+        super(game);
 
         this.#init();
 
@@ -27,13 +25,6 @@ export class MainMenu extends Menu {
             .then((gameFont) => {
                 this.gameFont = gameFont;
                 const mainMenu = new THREE.Group();
-
-                const mainMenuFrameGeometry = new THREE.TorusGeometry(
-                    7,
-                    1,
-                    4,
-                    4
-                );
 
                 const playButtonGeom = new TextGeometry("Play Game", {
                     font: gameFont,
@@ -58,7 +49,8 @@ export class MainMenu extends Menu {
                 playButton.layers.enable(UI);
                 playButton.layers.enable(MAIN_MENU);
 
-                playButton.position.x = -4;
+                playButton.position.x = -1.15;
+                playButton.position.y = -4;
 
                 const exitButtonGeom = new TextGeometry("Exit", {
                     font: gameFont,
@@ -83,62 +75,146 @@ export class MainMenu extends Menu {
                 exitButton.layers.enable(UI);
                 exitButton.layers.enable(MAIN_MENU);
 
-                exitButton.position.y = -3;
-                exitButton.position.x = -4;
+                exitButton.position.y = -5;
+                exitButton.position.x = -.3;
 
-                this.playerName = new THREE.Group();
+                {
+                    this.playerName = new THREE.Group();
 
-                const playerNameLabelGeom = new TextGeometry("Name :", {
-                    font: gameFont,
-                    size: this.textSize,
-                    height: this.textSize / 4,
-                    bevelEnabled: true,
-                    bevelThickness: 0.1,
-                    bevelSize: 0.1,
-                    bevelOffset: 0,
-                    bevelSegments: 1,
-                });
-                playerNameLabelGeom.computeBoundingBox();
-                const playerNameLabel = new THREE.Mesh(
-                    playerNameLabelGeom,
-                    new THREE.MeshStandardMaterial({
-                        color: 0xf4af2d,
-                        emissive: 0xf4af2d,
-                        emissiveIntensity: 2,
-                    })
-                );
-                this.playerName.add(playerNameLabel);
+                    const playerNameLabelGeom = new TextGeometry("Name :", {
+                        font: gameFont,
+                        size: this.textSize,
+                        height: this.textSize / 4,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 1,
+                    });
+                    playerNameLabelGeom.computeBoundingBox();
+                    const playerNameLabel = new THREE.Mesh(
+                        playerNameLabelGeom,
+                        new THREE.MeshStandardMaterial({
+                            color: 0xf4af2d,
+                            emissive: 0xf4af2d,
+                            emissiveIntensity: 2,
+                        })
+                    );
+                    this.playerName.add(playerNameLabel);
 
-                this.playerNameValue = this.#createTextGeometryForName(
-                    "",
-                    gameFont,
-                    this.textSize
-                );
-                this.playerNameValue.position.x = this.nameValueXPos;
-                this.playerName.add(this.playerNameValue);
+                    this.playerNameValue = this.#createTextGeometryForName(
+                        "",
+                        gameFont,
+                        this.textSize
+                    );
+                    this.playerNameValue.position.x = this.nameValueXPos;
+                    this.playerName.add(this.playerNameValue);
 
-                this.add(this.playerName);
+                    this.playerName.position.x = -15;
 
-                const frame = new THREE.Mesh(
-                    mainMenuFrameGeometry,
-                    new THREE.MeshStandardMaterial({ color: 0xffff00 })
-                );
+                    this.add(this.playerName);
+                }
 
-                frame.name = "main_menu_frame";
+                {
+                    this.difficulty = new THREE.Group();
 
-                frame.position.y = -1.5;
-                frame.rotation.z = Math.PI / 4;
+                    const difficultyLabelGeom = new TextGeometry(
+                        "Difficulty :",
+                        {
+                            font: gameFont,
+                            size: this.textSize,
+                            height: this.textSize / 4,
+                            bevelEnabled: true,
+                            bevelThickness: 0.1,
+                            bevelSize: 0.1,
+                            bevelOffset: 0,
+                            bevelSegments: 1,
+                        }
+                    );
+                    difficultyLabelGeom.computeBoundingBox();
+                    const difficultyLabel = new THREE.Mesh(
+                        difficultyLabelGeom,
+                        new THREE.MeshStandardMaterial({
+                            color: 0xf4af2d,
+                            emissive: 0xf4af2d,
+                            emissiveIntensity: 2,
+                        })
+                    );
 
-                const scale = 3;
+                    this.difficulty.add(difficultyLabel);
 
-                mainMenu.add(frame);
+                    const easyButtonGeom = new TextGeometry("Easy", {
+                        font: gameFont,
+                        size: this.textSize,
+                        height: this.textSize / 4,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 1,
+                    });
+                    easyButtonGeom.computeBoundingBox();
+                    const easyButton = new THREE.Mesh(
+                        easyButtonGeom,
+                        new THREE.MeshStandardMaterial({
+                            color: 0xf4af2d,
+                            emissive: 0xf4af2d,
+                            emissiveIntensity: 2,
+                        })
+                    );
+                    easyButton.name = "easy_button";
+                    easyButton.layers.enable(UI);
+                    easyButton.layers.enable(MAIN_MENU);
+
+                    easyButton.position.x = 12;
+
+                    const hardButtonGeom = new TextGeometry("Hard", {
+                        font: gameFont,
+                        size: this.textSize,
+                        height: this.textSize / 4,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 1,
+                    });
+                    hardButtonGeom.computeBoundingBox();
+                    const hardButton = new THREE.Mesh(
+                        hardButtonGeom,
+                        new THREE.MeshStandardMaterial({
+                            color: 0xf4af2d,
+                            emissive: 0xf4af2d,
+                            emissiveIntensity: 2,
+                        })
+                    );
+                    hardButton.name = "hard_button";
+                    hardButton.layers.enable(UI);
+                    hardButton.layers.enable(MAIN_MENU);
+
+                    hardButton.position.x = 17;
+
+                    this.difficulty.add(easyButton);
+                    this.difficulty.add(hardButton);
+
+                    this.difficulty.position.x = -15;
+                    this.difficulty.position.y = -3;
+
+                    this.add(this.difficulty);
+                }
+
+                const xScale = 4;
+                const yScale = 2;
 
                 mainMenu.add(playButton);
                 mainMenu.add(exitButton);
 
-                mainMenu.scale.x = scale;
-                playButton.scale.x = 1 / scale;
-                exitButton.scale.x = 1 / scale;
+                mainMenu.scale.x = xScale;
+                playButton.scale.x = 1 / xScale;
+                exitButton.scale.x = 1 / xScale;
+
+                mainMenu.scale.y = yScale;
+                playButton.scale.y = 1 / yScale;
+                exitButton.scale.y = 1 / yScale;
 
                 this.add(mainMenu);
             });

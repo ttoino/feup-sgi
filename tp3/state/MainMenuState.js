@@ -15,7 +15,11 @@ export class MainMenuState extends MenuState {
         this.boundKeyDownController = this.#onKeyDown.bind(this);
 
         this.name = "";
-        this.difficulty = "easy";
+
+        /** @type {number | null} */
+        this.difficulty = null;
+        /** @type {THREE.Object3D | null} */
+        this.highlightedDifficultyButton = null;
     }
 
     init() {
@@ -24,12 +28,14 @@ export class MainMenuState extends MenuState {
         this.initialTarget = new THREE.Vector3(Math.PI, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight);
 
         this.game.gameplayControls.targetRotation = 0;
-        this.game.gameplayControls.targetDistance = 20;
+        this.game.gameplayControls.targetDistance = 30;
 
         document.addEventListener(
             "keydown",
             this.boundKeyDownController
         );
+
+        this.game.renderer.gameOutlinePass.selectedObjects = [];
     }
 
     destroy() {
@@ -46,6 +52,8 @@ export class MainMenuState extends MenuState {
             "keydown",
             this.boundKeyDownController
         );
+
+        this.game.renderer.gameOutlinePass.selectedObjects = [];
     }
 
     /**
@@ -84,6 +92,8 @@ export class MainMenuState extends MenuState {
         switch (object.name) {
             case "play_button":
 
+                if (this.name.length === 0 || !this.difficulty) return;
+
                 this.game.info.playerName = this.name;
                 this.game.info.difficulty = this.difficulty;
 
@@ -94,6 +104,20 @@ export class MainMenuState extends MenuState {
             case "exit_button":
                 window.close();
                 return;
+            case "easy_button":
+                this.difficulty = 1;
+                this.highlightedDifficultyButton = object;
+                break;
+            case "hard_button":
+                this.difficulty = 2;
+                this.highlightedDifficultyButton = object;
+                break;
+        }
+
+        if (this.highlightedDifficultyButton) {
+            this.game.renderer.gameOutlinePass.selectedObjects.splice(this.game.renderer.gameOutlinePass.selectedObjects.indexOf(this.highlightedDifficultyButton), 1)
+
+            this.game.renderer.gameOutlinePass.selectedObjects.push(this.highlightedDifficultyButton);
         }
     }
 }
