@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Game } from "../game/Game.js";
 import Outdoor from "./Outdoor.js";
+import { SceneOutdoorMaterial } from "./SceneOutdoorMaterial.js";
 
 export class SceneOutdoor extends Outdoor {
     /**
@@ -22,9 +23,9 @@ export class SceneOutdoor extends Outdoor {
             }
         );
         this.renderTarget.texture.flipY = true;
-        this.material = new THREE.MeshStandardMaterial({
-            map: this.renderTarget.texture,
-        });
+        this.material = new SceneOutdoorMaterial();
+        this.material.uniforms.cameraNear.value = this.game.activeCamera.near;
+        this.material.uniforms.cameraFar.value = this.game.activeCamera.far;
     }
 
     onLoad() {
@@ -32,12 +33,10 @@ export class SceneOutdoor extends Outdoor {
             this.screen instanceof THREE.Mesh &&
             this.screen.material instanceof THREE.MeshStandardMaterial
         ) {
-            this.material = this.screen.material;
-            // this.material.emissiveMap = this.renderTarget.texture;
-            // this.material.displacementMap = this.renderTarget.depthTexture;
-            this.material.emissiveIntensity = 0;
-            this.material.color.set("#ffffff");
-            this.material.map = this.renderTarget.depthTexture;
+            this.material.copy(this.screen.material);
+            this.screen.material = this.material;
+            this.material.emissiveMap = this.renderTarget.texture;
+            this.material.displacementMap = this.renderTarget.depthTexture;
         }
 
         this.time = 50;
@@ -49,8 +48,8 @@ export class SceneOutdoor extends Outdoor {
     update(delta) {
         this.time += delta;
 
-        if (this.time > 60) {
-            this.time %= 60;
+        if (this.time > 5) {
+            this.time %= 5;
 
             this.game.renderer.renderPass.render(
                 this.game.renderer.renderer,
