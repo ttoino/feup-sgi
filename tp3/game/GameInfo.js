@@ -12,9 +12,10 @@ export default class GameInfo {
      * @param {number} playerTime
      * @param {number} opponentTime
      * @param {Vehicle | null} winner
-     * @param {Vehicle | null} loser 
+     * @param {Vehicle | null} loser
+     * @param {boolean} paused
      */
-    constructor(game, playerName, playerCar, opponentCar, difficulty, elapsedTime, playerTime, opponentTime, winner, loser) {
+    constructor(game, playerName, playerCar, opponentCar, difficulty, elapsedTime, playerTime, opponentTime, winner, loser, paused) {
         this.game = game;
 
         this.playerName = playerName;
@@ -30,6 +31,8 @@ export default class GameInfo {
 
         this.winner = winner;
         this.loser = loser;
+
+        this.paused = paused;
     }
 
     reset() {
@@ -46,5 +49,7 @@ export default class GameInfo {
 
         this.winner = null;
         this.loser = null;
+
+        this.paused = false;
     }
 }

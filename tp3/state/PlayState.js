@@ -40,6 +40,32 @@ export class PlayState extends GameState {
 
         this.inverseCamera = false;
 
+        // FIXME: better way for this
+        this.playTimeoutDisplay = document.querySelector("#play-timeout");
+        if (this.playTimeoutDisplay) {
+            this.playTimeoutDisplay.innerHTML = "3";
+
+            this.setTimeout(() => {
+                if (this.playTimeoutDisplay)
+                    this.playTimeoutDisplay.innerHTML = "2";
+            }, 1100);
+
+            this.setTimeout(() => {
+                if (this.playTimeoutDisplay)
+                    this.playTimeoutDisplay.innerHTML = "1";
+            }, 2100);
+
+            this.setTimeout(() => {
+                if (this.playTimeoutDisplay)
+                    this.playTimeoutDisplay.innerHTML = "GO!";
+            }, 3100);
+
+            this.setTimeout(() => {
+                if (this.playTimeoutDisplay)
+                    this.playTimeoutDisplay.innerHTML = "";
+            }, 3600);
+        }
+
         this.updateVehicles = false;
         this.setTimeout(() => {
             this.updateVehicles = true;

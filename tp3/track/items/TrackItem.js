@@ -49,7 +49,7 @@ export default class TrackItem extends THREE.Object3D {
         effectElement.classList.add("effect");
 
         const timeLabel = document.createElement("span");
-        timeLabel.classList.add("time");
+        timeLabel.classList.add("time", "neon");
 
         const timeLabelValue = document.createElement("span");
         timeLabelValue.classList.add("value");
