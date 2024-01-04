@@ -24,35 +24,35 @@ export class GameInfoDisplay extends THREE.Object3D {
         this.game.fontSpriteSheetManager
             .load("sprites/text/tron.fnt")
             .then((font) => {
-                this.timeText = new TextSprite("0s", font, 0.1, textMaterial);
-                this.timeText.position.set(0.5, 0.5, 0);
+                this.timeText = new TextSprite("0s", font, 1, textMaterial);
+                this.timeText.position.set(0.5, 2.5, 0);
                 this.add(this.timeText);
 
                 this.lapsText = new TextSprite(
-                    "1st lap",
+                    "1'st lap",
                     font,
-                    0.1,
+                    1,
                     textMaterial
                 );
-                this.lapsText.position.set(0.5, 0.4, 0);
+                this.lapsText.position.set(0.5, 1.5, 0);
                 this.add(this.lapsText);
 
                 this.speedText = new TextSprite(
-                    "0km/h",
+                    "Cur: 0 km/h",
                     font,
-                    0.1,
+                    1,
                     textMaterial
                 );
-                this.speedText.position.set(0.5, 0.3, 0);
+                this.speedText.position.set(0.5, 0.5, 0);
                 this.add(this.speedText);
 
                 this.maxSpeedText = new TextSprite(
-                    "0km/h",
+                    "Max: 0 km/h",
                     font,
-                    0.1,
+                    1,
                     textMaterial
                 );
-                this.maxSpeedText.position.set(0.5, 0.2, 0);
+                this.maxSpeedText.position.set(0.5, -0.5, 0);
                 this.add(this.maxSpeedText);
             });
     }
@@ -72,19 +72,19 @@ export class GameInfoDisplay extends THREE.Object3D {
                 1
             );
             const suffix = ["st", "nd", "rd"][lap - 1] || "th";
-            this.lapsText.text = `${lap}${suffix} lap`;
+            this.lapsText.text = `${lap}'${suffix} lap`;
             this.lapsText.create();
         }
 
         if (this.speedText) {
-            this.speedText.text = `${Math.floor(
+            this.speedText.text = `Cur: ${Math.floor(
                 (this.game.info.playerCar?.forwardSpeed ?? 0) * 3.6
             )}km/h`;
             this.speedText.create();
         }
 
         if (this.maxSpeedText) {
-            this.maxSpeedText.text = `${Math.floor(
+            this.maxSpeedText.text = `Max: ${Math.floor(
                 (this.game.info.playerCar?.maxSpeed ?? 0) * 3.6
             )}km/h`;
             this.maxSpeedText.create();

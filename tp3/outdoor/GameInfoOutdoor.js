@@ -12,6 +12,7 @@ export class GameInfoOutdoor extends THREE.Object3D {
         this.game = game;
 
         this.display = new GameInfoDisplay(this.game);
+        this.display.position.set(-3, 4.7, 1);
         this.add(this.display);
 
         game.modelManager.load("models/hud_outdoor.glb").then((gltf) => {
