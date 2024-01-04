@@ -151,6 +151,9 @@ export class SceneContents {
         this.obstacleSelectionMenu.position.x = -10;
         this.obstacleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.obstacleSelectionMenu);
+
+        this.fireworks = new Fireworks(this.game);
+        this.game.scene.add(this.fireworks);
     }
 
     onLoaded() {
@@ -164,6 +167,7 @@ export class SceneContents {
     update(delta) {
         this.background.update(delta);
         this.sceneOutdoor.update(delta);
+        this.fireworks.update(delta);
 
         this.obstacles.forEach((obstacle) => {
             obstacle.update(delta);
