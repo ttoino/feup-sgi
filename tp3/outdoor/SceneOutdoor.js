@@ -1,14 +1,15 @@
 import * as THREE from "three";
 import { Game } from "../game/Game.js";
-import Outdoor from "./Outdoor.js";
 import { SceneOutdoorMaterial } from "./SceneOutdoorMaterial.js";
 
-export class SceneOutdoor extends Outdoor {
+export class SceneOutdoor extends THREE.Object3D {
     /**
      * @param {Game} game
      */
     constructor(game) {
-        super(game);
+        super();
+
+        this.game = game;
 
         this.time = 0;
         this.renderTarget = new THREE.WebGLRenderTarget(
@@ -24,22 +25,29 @@ export class SceneOutdoor extends Outdoor {
         );
         this.renderTarget.texture.flipY = true;
         this.material = new SceneOutdoorMaterial();
+
         this.material.uniforms.cameraNear.value = this.game.activeCamera.near;
         this.material.uniforms.cameraFar.value = this.game.activeCamera.far;
-    }
 
-    onLoad() {
-        if (
-            this.screen instanceof THREE.Mesh &&
-            this.screen.material instanceof THREE.MeshStandardMaterial
-        ) {
-            this.material.copy(this.screen.material);
-            this.screen.material = this.material;
-            this.material.emissiveMap = this.renderTarget.texture;
-            this.material.displacementMap = this.renderTarget.depthTexture;
-        }
+        game.modelManager.load("models/scene_outdoor.glb").then((gltf) => {
+            const model = gltf.clone();
 
-        this.time = 50;
+            this.add(model);
+
+            model.traverse((child) => {
+                if (child.name.includes("screen")) {
+                    this.screen = child;
+
+                    if (!(this.screen instanceof THREE.Mesh)) return;
+
+                    this.material.copy(this.screen.material);
+                    this.screen.material = this.material;
+                    this.material.emissiveMap = this.renderTarget.texture;
+                    this.material.displacementMap =
+                        this.renderTarget.depthTexture;
+                }
+            });
+        });
     }
 
     /**
