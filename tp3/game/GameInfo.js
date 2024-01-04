@@ -29,4 +29,19 @@ export default class GameInfo {
         this.winner = winner;
         this.loser = loser;
     }
+
+    reset() {
+        this.playerName = "";
+
+        this.playerCar = null;
+        this.opponentCar = null;
+
+        this.difficulty = 1;
+
+        this.playerTime = 0;
+        this.opponentTime = 0;
+
+        this.winner = null;
+        this.loser = null;
+    }
 }

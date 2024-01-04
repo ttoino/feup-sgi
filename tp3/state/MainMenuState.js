@@ -72,6 +72,21 @@ export class MainMenuState extends MenuState {
         clearInterval(this.lookerInterval);
     }
 
+    reset() {
+        this.difficulty = null;
+        this.highlightedDifficultyButton = null;
+
+        if (this.menuObject instanceof MainMenu) {
+            // it should be but types
+
+            this.menuObject.updateNameValue("");
+            this.name = ""
+
+            this.menuObject.updateOpponentVehicleName(null);
+            this.menuObject.updatePlayerVehicleName(null);
+        }
+    }
+
     /**
      *
      * @param {KeyboardEvent} e

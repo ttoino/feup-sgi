@@ -12,6 +12,10 @@ export class StartGameState extends GameState {
 
     init() {
         this.game.contents.track.reset();
+
+        if (this.game.info.playerCar) this.game.info.playerCar.reset();
+        if (this.game.info.opponentCar) this.game.info.opponentCar.reset();
+
         this.stateManager.pushState(new PlayState(this.game));
     }
 }

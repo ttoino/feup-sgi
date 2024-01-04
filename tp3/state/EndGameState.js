@@ -51,9 +51,11 @@ export default class EndGameState extends MenuState {
 
             if (this.game.info.winner === this.game.info.playerCar) {
                 this.game.contents.fireworks.color = 0x009fff;
+                // @ts-ignore
                 this.game.contents.fireworks.material.emissive.set(0x009fff);
             } else {
                 this.game.contents.fireworks.color = 0xff0007;
+                // @ts-ignore
                 this.game.contents.fireworks.material.emissive.set(0xff0007);
             }
         }
@@ -92,6 +94,11 @@ export default class EndGameState extends MenuState {
                 break;
             case "main_menu_button":
                 this.stateManager.popUntil(MainMenuState);
+
+                if (this.stateManager.current instanceof MainMenuState) {
+                    this.stateManager.current.reset();
+                }
+
                 break;
             default:
                 break;

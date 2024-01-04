@@ -34,8 +34,13 @@ export class GameStateManager {
      * @param {{new(...params: any[]): GameState}} type
      */
     popUntil(type) {
-        while (!(this.current instanceof type) && this.stateStack.length > 1)
-            this.popState();
+        this.current?.destroy();
+
+        while (!(this.current instanceof type) && this.stateStack.length > 1) {
+            this.stateStack.pop();
+        }
+
+        this.current?.init();
     }
 
     popAll() {

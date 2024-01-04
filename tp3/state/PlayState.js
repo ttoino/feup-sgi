@@ -39,19 +39,24 @@ export class PlayState extends GameState {
         this.boundOnKeyUp = this.#onKeyUp.bind(this);
 
         this.inverseCamera = false;
+
+        this.updateVehicles = false;
+        this.setTimeout(() => {
+            this.updateVehicles = true;
+        }, 3000);
     }
 
     get currentWinner() {
         if (
             this.playerController.trackPosition.lap ===
-                this.opponentController.trackPosition.lap &&
+            this.opponentController.trackPosition.lap &&
             this.playerController.trackPosition.nextWaypoint ===
-                this.opponentController.trackPosition.nextWaypoint
+            this.opponentController.trackPosition.nextWaypoint
         )
             return "tie";
         else if (
             this.playerController.trackPosition.lap >
-                this.opponentController.trackPosition.lap ||
+            this.opponentController.trackPosition.lap ||
             (this.playerController.trackPosition.lap ===
                 this.opponentController.trackPosition.lap &&
                 (this.playerController.trackPosition.nextWaypoint >
@@ -81,8 +86,10 @@ export class PlayState extends GameState {
         // The order in which this state's updaters are first updated matters,
         // so just explicitly update the controllers last here.
 
-        this.opponentController.update(delta);
-        this.playerController.update(delta);
+        if (this.updateVehicles) {
+            this.opponentController.update(delta);
+            this.playerController.update(delta);
+        }
 
         if (this.isGameOver) {
             this.stateManager.pushState(new EndGameState(this.game));

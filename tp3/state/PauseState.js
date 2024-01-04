@@ -21,6 +21,11 @@ export class PauseState extends MenuState {
                 break;
             case "main_menu_button":
                 this.stateManager.popUntil(MainMenuState);
+
+                if (this.stateManager.current instanceof MainMenuState) {
+                    this.stateManager.current.reset();
+                }
+
                 break;
         }
     }

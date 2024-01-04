@@ -397,12 +397,17 @@ export class MainMenu extends Menu {
 
     /**
      * 
-     * @param {string} newName 
+     * @param {string | null} newName 
      */
     updateOpponentVehicleName(newName) {
         if (this.selectOpponentVehicleButton && this.gameFont && this.selectOpponentVehicle) {
 
-            if (!this.selectOpponentVehicleLabel) {
+            if (!newName) {
+                if (this.selectOpponentVehicleLabel) {
+                    this.selectOpponentVehicle.remove(this.selectOpponentVehicleLabel);
+                    delete this.selectOpponentVehicleLabel;
+                }
+            } else if (!this.selectOpponentVehicleLabel) {
                 const selectOpponentVehicleLabelGeom = new TextGeometry("O p p o n e n t  V e h i c l e :", {
                     font: this.gameFont,
                     size: this.textSize,
@@ -433,7 +438,10 @@ export class MainMenu extends Menu {
 
             this.selectOpponentVehicleButton = this.#createOpponentVehicleButton(newName, this.gameFont, this.textSize);
 
-            this.selectOpponentVehicleButton.position.x = 6.5;
+            if (newName)
+                this.selectOpponentVehicleButton.position.x = 6.5;
+            else
+                this.selectOpponentVehicleButton.position.x = 0;
 
             this.selectOpponentVehicleButton.scale.x = 1 / this.xTextScale;
             this.selectOpponentVehicleButton.scale.y = 1 / this.yTextScale;
@@ -477,11 +485,17 @@ export class MainMenu extends Menu {
 
     /**
      * 
-     * @param {string} newName 
+     * @param {string | null} newName 
      */
     updatePlayerVehicleName(newName) {
         if (this.selectPlayerVehicleButton && this.gameFont && this.selectPlayerVehicle) {
-            if (!this.selectPlayerVehicleLabel) {
+
+            if (!newName) {
+                if (this.selectPlayerVehicleLabel) {
+                    this.selectPlayerVehicle.remove(this.selectPlayerVehicleLabel);
+                    delete this.selectPlayerVehicleLabel;
+                }
+            } else if (!this.selectPlayerVehicleLabel) {
                 const selectOpponentVehicleLabelGeom = new TextGeometry("P l a y e r  V e h i c l e :", {
                     font: this.gameFont,
                     size: this.textSize,
@@ -512,7 +526,10 @@ export class MainMenu extends Menu {
 
             this.selectPlayerVehicleButton = this.#createPlayerVehicleButton(newName, this.gameFont, this.textSize);
 
-            this.selectPlayerVehicleButton.position.x = 6.5;
+            if (newName)
+                this.selectPlayerVehicleButton.position.x = 6.5;
+            else
+                this.selectPlayerVehicleButton.position.x = 0;
 
             this.selectPlayerVehicleButton.scale.x = 1 / this.xTextScale;
             this.selectPlayerVehicleButton.scale.y = 1 / this.yTextScale;

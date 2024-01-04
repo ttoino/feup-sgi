@@ -115,8 +115,6 @@ export class Track extends THREE.Object3D {
         this.game.contents.items.length = 0;
 
         this.itemSpots.forEach((spot) => {
-            console.log(spot);
-
             if (Math.random() < 0.2) {
                 const item =
                     items[Math.floor(Math.random() * items.length)].makeClone();
@@ -135,6 +133,7 @@ export class Track extends THREE.Object3D {
     checkWaypoint(collider, position, opponent = false) {
         const nextWaypoint = this.waypoints[position.nextWaypoint];
 
+        // FIXME: use better semantics
         if (collider.intersectsOBB(nextWaypoint.collider)) {
             if (position.nextWaypoint === 0) {
                 position.lap++;

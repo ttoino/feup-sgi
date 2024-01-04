@@ -21,6 +21,7 @@ export default class Vehicle extends THREE.Object3D {
         this.rotationRad = 0;
         this.acceleration = 0;
         this.maxSpeed = MAX_SPEED;
+        this.reset();
 
         // HACK: this is only used by a single obstacle, it should be done differently but there are still other things to do
         this.controlReverse = false;
@@ -91,6 +92,13 @@ export default class Vehicle extends THREE.Object3D {
      */
     applyEffect(effect) {
         effect(this);
+    }
+
+    reset() {
+        this.forwardSpeed = 0;
+        this.rotationRad = 0;
+        this.acceleration = 0;
+        this.maxSpeed = MAX_SPEED;
     }
 
     /**

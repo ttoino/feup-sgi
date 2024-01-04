@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>SGI Hello world TP3</title>
 
-        <link rel="shortcut icon" href="image/favicon/3d.png" />
-        <link rel="stylesheet" href="styles.css" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SGI Hello world TP3</title>
 
-        <script
-            async
-            src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"
-        ></script>
-        <script type="importmap">
+    <link rel="shortcut icon" href="image/favicon/3d.png" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+    <script type="importmap">
             {
                 "imports": {
                     "lil-gui": "https://unpkg.com/lil-gui@0.19/dist/lil-gui.esm.js",
@@ -21,15 +19,17 @@
                 }
             }
         </script>
-    </head>
+</head>
 
-    <body>
-        <div id="canvas" class="fullscreen"></div>
-        <div id="camera" class="neon"></div>
-        <div id="effect-display"></div>
-        <div id="loading" class="fullscreen neon">
-            Loading...
-        </div>
-        <script type="module" src="main.js"></script>
-    </body>
+<body>
+    <div id="canvas" class="fullscreen"></div>
+    <div id="camera" class="neon"></div>
+    <div id="effect-display"></div>
+    <div id="loading" class="fullscreen neon">
+        Loading...
+    </div>
+    <div id="play_timeout"></div>
+    <script type="module" src="main.js"></script>
+</body>
+
 </html>
