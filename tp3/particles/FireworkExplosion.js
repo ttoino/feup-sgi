@@ -6,16 +6,17 @@ import { randRange } from "../MathUtils.js";
 export class FireworkExplosion extends Particles {
     /**
      * @param {Game} game
+     * @param {THREE.ColorRepresentation} color
      */
-    constructor(game) {
+    constructor(game, color) {
         super(game, {
             geometry: new THREE.IcosahedronGeometry(0.05),
             material: new THREE.MeshLambertMaterial({
-                emissive: 0x009fff,
+                emissive: color,
                 emissiveIntensity: 10,
                 transparent: true,
             }),
-            count: 100,
+            count: 200,
             gravity: 1,
             velocity: () =>
                 new THREE.Vector3().setFromSpherical(

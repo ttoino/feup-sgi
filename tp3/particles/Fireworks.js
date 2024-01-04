@@ -7,12 +7,13 @@ import { FireworkExplosion } from "./FireworkExplosion.js";
 export class Fireworks extends Particles {
     /**
      * @param {Game} game
+     * @param {THREE.ColorRepresentation} color
      */
-    constructor(game) {
+    constructor(game, color) {
         super(game, {
             geometry: new THREE.IcosahedronGeometry(0.1),
             material: new THREE.MeshLambertMaterial({
-                emissive: 0x009fff,
+                emissive: color,
                 emissiveIntensity: 10,
             }),
             count: 10,
@@ -35,6 +36,7 @@ export class Fireworks extends Particles {
         });
 
         this.game = game;
+        this.color = color;
 
         /** @type {Set<FireworkExplosion>} */
         this.explosions = new Set();
@@ -45,7 +47,7 @@ export class Fireworks extends Particles {
      */
     reset(i) {
         if (i in this.positions) {
-            const explosion = new FireworkExplosion(this.game);
+            const explosion = new FireworkExplosion(this.game, this.color);
             explosion.position.copy(this.positions[i]);
             this.add(explosion);
             this.explosions.add(explosion);

@@ -10,8 +10,6 @@ import { LightCar } from "../vehicles/LightCar.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import MaxSpeedPowerup from "../track/items/powerup/MaxSpeedPowerup.js";
 import MaxSpeedObstacle from "../track/items/obstacle/MaxSpeedObstacle.js";
-import { Particles } from "../particles/Particles.js";
-import { Fireworks } from "../particles/Fireworks.js";
 import { Track } from "../track/Track.js";
 import { ObstacleSelectionMenu } from "../menu/ObstacleSelectionMenu.js";
 import Obstacle from "../track/items/obstacle/Obstacle.js";
@@ -151,9 +149,6 @@ export class SceneContents {
         this.obstacleSelectionMenu.position.x = -10;
         this.obstacleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.obstacleSelectionMenu);
-
-        this.fireworks = new Fireworks(this.game);
-        this.game.scene.add(this.fireworks);
     }
 
     onLoaded() {
@@ -167,7 +162,6 @@ export class SceneContents {
     update(delta) {
         this.background.update(delta);
         this.sceneOutdoor.update(delta);
-        this.fireworks.update(delta);
 
         this.obstacles.forEach((obstacle) => {
             obstacle.update(delta);
