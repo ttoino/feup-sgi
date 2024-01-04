@@ -4,6 +4,7 @@ import BoxCollider from "../collision/BoxCollider.js";
 import Vehicle from "../vehicles/Vehicle.js";
 import { signedAngleTo } from "../MathUtils.js";
 import { TrackPosition } from "../track/Track.js";
+import { LAPS } from "../state/PlayState.js";
 
 export const EFFECT_DURATION = 5000;
 
@@ -38,6 +39,9 @@ export default class OpponentController {
         this.collider.update(delta);
 
         this.game.contents.track.checkWaypoint(this.collider.collider, this.trackPosition, true);
+
+        if (this.trackPosition.lap < LAPS)
+            this.game.info.opponentTime += delta;
     }
 
     /**

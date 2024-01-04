@@ -8,7 +8,7 @@ import VehicleController from "../vehicles/VehicleController.js";
 import CollisionController from "../collision/CollisionController.js";
 import EndGameState from "./EndGameState.js";
 
-const LAPS = 1;
+export const LAPS = 1;
 
 export class PlayState extends GameState {
     /**

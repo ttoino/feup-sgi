@@ -3,6 +3,7 @@ import { Game } from "../game/Game.js";
 import { EndGameMenu } from "../menu/EndGameMenu.js";
 import { END_GAME_MENU } from "../renderer/Layers.js";
 import { MenuState } from "./MenuState.js";
+import { MainMenuState } from './MainMenuState.js';
 
 export default class EndGameState extends MenuState {
     /**
@@ -76,5 +77,24 @@ export default class EndGameState extends MenuState {
         this.game.gameplayControls.targetRotation = this.initialTarget.x;
         this.game.gameplayControls.targetDistance = this.initialTarget.y;
         this.game.gameplayControls.targetHeight = this.initialTarget.z;
+    }
+
+    /**
+     * @override
+     *
+     * @param {THREE.Object3D} object
+     */
+    onPick(object) {
+        switch (object.name) {
+            case "play_again_button":
+                // TODO: Reset game
+
+                break;
+            case "main_menu_button":
+                this.stateManager.popUntil(MainMenuState);
+                break;
+            default:
+                break;
+        }
     }
 }

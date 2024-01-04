@@ -88,7 +88,7 @@ export class EndGameMenu extends Menu {
         this.game.fontSpriteSheetManager.load("sprites/text/tron.fnt").then((spriteFont) => {
             this.winner = new TextSprite("WINNER: N/A", spriteFont, 3, textMaterial);
             this.winner.position.y = 15;
-            this.winner.position.x = -25;
+            this.winner.position.x = -45;
 
             this.add(this.winner);
 
@@ -96,10 +96,10 @@ export class EndGameMenu extends Menu {
             this.opponentInfo = new TextSprite("Opponent: N/A", spriteFont, 3, textMaterial);
 
             this.playerInfo.position.y = 12;
-            this.playerInfo.position.x = -25;
+            this.playerInfo.position.x = -45;
 
             this.opponentInfo.position.y = 9;
-            this.opponentInfo.position.x = -25;
+            this.opponentInfo.position.x = -45;
 
             this.add(this.playerInfo);
             this.add(this.opponentInfo);
@@ -107,7 +107,7 @@ export class EndGameMenu extends Menu {
             this.difficulty = new TextSprite("Difficulty: N/A", spriteFont, 3, textMaterial);
 
             this.difficulty.position.y = 6;
-            this.difficulty.position.x = -25;
+            this.difficulty.position.x = -45;
 
             this.add(this.difficulty);
         });
@@ -135,10 +135,10 @@ export class EndGameMenu extends Menu {
     }
 
     refresh() {
-        this.winner.text = `WINNER: ${this.game.info.winner === this.game.info.playerCar ? this.game.info.playerName : "Opponent"}`;
+        this.winner.text = `WINNER: ${this.game.info.winner === this.game.info.playerCar ? this.game.info.playerName : "Autonomous Opponent"}`;
 
-        this.playerInfo.text = `Player: car=${this.game.info.playerName} time=${this.game.info.playerTime / 1000}s`;
-        this.opponentInfo.text = `Opponent: car=Autonomous Opponent time=${this.game.info.opponentTime / 1000}s`;
+        this.playerInfo.text = `Player: car=${this.game.info.playerName} time=${this.game.info.playerTime.toFixed(2)}s`;
+        this.opponentInfo.text = `Opponent: car=Autonomous Opponent time=${this.game.info.opponentTime.toFixed(2)}s`;
 
         this.difficulty.text = `Difficulty: ${this.game.info.difficulty === 1 ? "Easy" : this.game.info.difficulty === 2 ? "Hard" : "N/A"}`;
 

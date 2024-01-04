@@ -2,6 +2,7 @@ import { Game } from "../game/Game.js";
 import CollisionController from "../collision/CollisionController.js";
 import VehicleController from "../vehicles/VehicleController.js";
 import { TrackPosition } from "../track/Track.js";
+import { LAPS } from "../state/PlayState.js";
 
 export default class PlayerController {
     /**
@@ -37,5 +38,8 @@ export default class PlayerController {
         this.collisionController.update(delta);
 
         this.game.contents.track.checkWaypoint(this.collisionController.collider.collider, this.trackPosition);
+
+        if (this.trackPosition.lap < LAPS)
+            this.game.info.playerTime += delta;
     }
 }
