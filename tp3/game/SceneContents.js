@@ -115,6 +115,8 @@ export class SceneContents {
         this.gameInfoOutdoor.rotation.y = Math.PI;
         this.game.scene.add(this.gameInfoOutdoor);
 
+        this.fireworks = new Fireworks(this.game, 0x009fff);
+
         // Main menu UI
         this.mainMenu = new MainMenu(this.game);
         this.mainMenu.position.z = 170;
@@ -175,6 +177,7 @@ export class SceneContents {
     update(delta) {
         this.background.update(delta);
         this.sceneOutdoor.update(delta);
+        this.fireworks.update(delta);
         this.gameInfoOutdoor.update(delta);
 
         this.obstacles.forEach((obstacle) => {

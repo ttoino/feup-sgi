@@ -76,6 +76,8 @@ export default class EndGameState extends MenuState {
     destroy() {
         super.destroy();
 
+        this.menuObject.remove(this.game.contents.fireworks);
+
         this.game.gameplayControls.targetRotation = this.initialTarget.x;
         this.game.gameplayControls.targetDistance = this.initialTarget.y;
         this.game.gameplayControls.targetHeight = this.initialTarget.z;

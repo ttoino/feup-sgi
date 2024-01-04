@@ -55,34 +55,6 @@ export class EndGameMenu extends Menu {
             mainMenuButton.position.x = -12;
 
             this.add(mainMenuButton);
-
-            const playAgainButtonGeom = new TextGeometry("P l a y  A g a i n", {
-                font: font,
-                size: textSize,
-                height: textSize / 4,
-                bevelEnabled: true,
-                bevelThickness: 0.1,
-                bevelSize: 0.1,
-                bevelOffset: 0,
-                bevelSegments: 1,
-            });
-            playAgainButtonGeom.computeBoundingBox();
-            const playAgainButton = new THREE.Mesh(
-                playAgainButtonGeom,
-                new THREE.MeshStandardMaterial({
-                    color: 0xf4af2d,
-                    emissive: 0xf4af2d,
-                    emissiveIntensity: 2,
-                })
-            );
-            playAgainButton.name = "play_again_button";
-            playAgainButton.layers.enable(UI);
-            playAgainButton.layers.enable(END_GAME_MENU);
-
-            playAgainButton.position.y = 18;
-            playAgainButton.position.x = -12;
-
-            this.add(playAgainButton);
         });
 
         this.game.fontSpriteSheetManager.load("sprites/text/tron.fnt").then((spriteFont) => {
