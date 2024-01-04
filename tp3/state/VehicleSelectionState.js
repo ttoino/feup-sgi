@@ -74,9 +74,8 @@ export default class VehicleSelectionState extends MenuState {
 
         this.selectVehicle(object);
 
-        this.game.stateManager.popState();
-
         this.game.stateManager.popUntil(MainMenuState);
+
         if (this.game.stateManager.current instanceof MainMenuState) {
             if (this.game.stateManager.current.menuObject instanceof MainMenu) {
 

@@ -22,6 +22,7 @@ import { EndGameMenu } from "../menu/EndGameMenu.js";
 import { Fireworks } from "../particles/Fireworks.js";
 import { SceneOutdoor } from "../outdoor/SceneOutdoor.js";
 import TrackItem from "../track/items/TrackItem.js";
+import { GameInfoOutdoor } from "../outdoor/GameInfoOutdoor.js";
 
 /**
  *  This class contains the contents of our application
@@ -105,6 +106,11 @@ export class SceneContents {
         this.sceneOutdoor.position.z = -100;
         this.game.scene.add(this.sceneOutdoor);
 
+        this.gameInfoOutdoor = new GameInfoOutdoor(this.game);
+        this.gameInfoOutdoor.position.z = 100;
+        this.gameInfoOutdoor.rotation.y = Math.PI;
+        this.game.scene.add(this.gameInfoOutdoor);
+
         // Main menu UI
         this.mainMenu = new MainMenu(this.game);
         this.mainMenu.position.z = 170;
@@ -147,8 +153,6 @@ export class SceneContents {
         this.obstacleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.obstacleSelectionMenu);
 
-        this.fireworks = new Fireworks(this.game, 0x009ffff);
-
         // End Game Menu
         this.endGameMenu = new EndGameMenu(this.game);
         this.endGameMenu.position.x = 150;
@@ -167,7 +171,7 @@ export class SceneContents {
     update(delta) {
         this.background.update(delta);
         this.sceneOutdoor.update(delta);
-        this.fireworks.update(delta);
+        this.gameInfoOutdoor.update(delta);
 
         this.obstacles.forEach((obstacle) => {
             obstacle.update(delta);
