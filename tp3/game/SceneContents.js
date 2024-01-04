@@ -23,6 +23,7 @@ import { Fireworks } from "../particles/Fireworks.js";
 import { SceneOutdoor } from "../outdoor/SceneOutdoor.js";
 import TrackItem from "../track/items/TrackItem.js";
 import { GameInfoOutdoor } from "../outdoor/GameInfoOutdoor.js";
+import TimeReducerPowerup from "../track/items/powerup/TimeReducerPowerup.js";
 
 /**
  *  This class contains the contents of our application
@@ -80,8 +81,11 @@ export class SceneContents {
         // PowerUps
         this.powerUps = [];
 
-        const powerUp = new MaxSpeedPowerup(this.game);
-        this.powerUps.push(powerUp);
+        const maxSpeedPowerUp = new MaxSpeedPowerup(this.game);
+        const timeReducerPowerUp = new TimeReducerPowerup(this.game);
+
+        this.powerUps.push(maxSpeedPowerUp);
+        this.powerUps.push(timeReducerPowerUp);
 
         // Obstacles
         /**

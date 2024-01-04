@@ -3,6 +3,7 @@ import { OBB } from "three/addons/math/OBB.js";
 import { Game } from "../game/Game.js";
 import { TRACK } from "../renderer/Layers.js";
 import TrackWaypoint from "./TrackWaypoint.js";
+import Powerup from "./items/powerup/Powerup.js";
 
 export const WINNER_TO_GLOW = {
     player: "glow_blue",
@@ -83,21 +84,6 @@ export class Track extends THREE.Object3D {
         });
     }
 
-    get winner() {
-        if (
-            this.playerLap === this.opponentLap &&
-            this.nextPlayerWaypoint === this.nextOpponentWaypoint
-        )
-            return "tie";
-        else if (
-            this.playerLap > this.opponentLap ||
-            (this.playerLap === this.opponentLap &&
-                this.nextPlayerWaypoint > this.nextOpponentWaypoint)
-        )
-            return "player";
-        else return "opponent";
-    }
-
     reset() {
         this.playerLap = -1;
         this.opponentLap = -1;
@@ -117,11 +103,15 @@ export class Track extends THREE.Object3D {
         this.itemSpots.forEach((spot) => {
             if (Math.random() < 0.2) {
                 const item =
-                    items[Math.floor(Math.random() * items.length)].makeClone();
+                    items[Math.floor(Math.random() * items.length)]
 
-                item.position.copy(spot.getWorldPosition(new THREE.Vector3()));
-                this.game.contents.items.push(item);
-                this.game.scene.add(item);
+                if (this.game.info.difficulty === 2 && item instanceof Powerup && Math.random() < 0.55) return
+
+                const newItem = item.makeClone();
+
+                newItem.position.copy(spot.getWorldPosition(new THREE.Vector3()));
+                this.game.contents.items.push(newItem);
+                this.game.scene.add(newItem);
             }
         });
     }

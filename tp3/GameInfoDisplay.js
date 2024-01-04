@@ -62,7 +62,7 @@ export class GameInfoDisplay extends THREE.Object3D {
      */
     update(delta) {
         if (this.timeText) {
-            this.timeText.text = `${Math.floor(this.game.info.time)}s`;
+            this.timeText.text = `${Math.floor(this.game.info.elapsedTime)}s`;
             this.timeText.create();
         }
 

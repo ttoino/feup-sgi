@@ -7,13 +7,14 @@ export default class GameInfo {
      * @param {string} playerName 
      * @param {Vehicle | null} playerCar 
      * @param {Vehicle | null} opponentCar 
-     * @param {number} difficulty 
+     * @param {number} difficulty
+     * @param {number} elapsedTime
      * @param {number} playerTime
      * @param {number} opponentTime
      * @param {Vehicle | null} winner
      * @param {Vehicle | null} loser 
      */
-    constructor(game, playerName, playerCar, opponentCar, difficulty, playerTime, opponentTime, winner, loser) {
+    constructor(game, playerName, playerCar, opponentCar, difficulty, elapsedTime, playerTime, opponentTime, winner, loser) {
         this.game = game;
 
         this.playerName = playerName;
@@ -23,6 +24,7 @@ export default class GameInfo {
 
         this.difficulty = difficulty;
 
+        this.elapsedTime = elapsedTime;
         this.playerTime = playerTime;
         this.opponentTime = opponentTime;
 
@@ -38,6 +40,7 @@ export default class GameInfo {
 
         this.difficulty = 1;
 
+        this.elapsedTime = 0;
         this.playerTime = 0;
         this.opponentTime = 0;
 

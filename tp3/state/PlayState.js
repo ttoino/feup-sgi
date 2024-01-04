@@ -8,7 +8,7 @@ import VehicleController from "../vehicles/VehicleController.js";
 import CollisionController from "../collision/CollisionController.js";
 import EndGameState from "./EndGameState.js";
 
-export const LAPS = 1;
+export const LAPS = 3;
 
 export class PlayState extends GameState {
     /**
@@ -87,6 +87,7 @@ export class PlayState extends GameState {
         // so just explicitly update the controllers last here.
 
         if (this.updateVehicles) {
+            this.game.info.elapsedTime += delta;
             this.opponentController.update(delta);
             this.playerController.update(delta);
         }

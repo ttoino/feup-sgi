@@ -3,14 +3,14 @@ import ObstacleSelectionState from "../../../state/ObstacleSelectionState.js";
 import Vehicle from "../../../vehicles/Vehicle.js";
 import Powerup, { PICKUP_INTERVAL } from "./Powerup.js";
 
-const POWERUP_DURATION = 5000;
+const TIME_REDUCTION = 1;
 
-export default class MaxSpeedPowerup extends Powerup {
+export default class TimeReducerPowerup extends Powerup {
     /**
      * @param {Game} game
      */
     constructor(game) {
-        super(game, "glow_blue");
+        super(game, "glow_red");
 
         this.pickedUp = false;
     }
@@ -26,23 +26,12 @@ export default class MaxSpeedPowerup extends Powerup {
             this.pickedUp = false
         }, PICKUP_INTERVAL);
 
-        this.game.stateManager.current.setTimeout(() => {
-            this.displayEffectTime(POWERUP_DURATION);
-        }, 0);
-
-        vehicle.applyEffect((vehicle) => {
-            const currentMaxSpeed = vehicle.maxSpeed;
-            vehicle.maxSpeed *= 1.5;
-
-            this.game.stateManager.current.setTimeout(() => {
-                vehicle.maxSpeed = currentMaxSpeed;
-            }, POWERUP_DURATION);
-        });
+        this.game.info.playerTime -= TIME_REDUCTION;
 
         this.game.stateManager.pushState(new ObstacleSelectionState(this.game))
     }
 
     makeClone() {
-        return new MaxSpeedPowerup(this.game);
+        return new TimeReducerPowerup(this.game);
     }
 }
