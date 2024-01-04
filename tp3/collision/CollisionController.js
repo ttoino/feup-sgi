@@ -31,11 +31,7 @@ export default class CollisionController {
     }
 
     get otherColliders() {
-        return [
-            ...this.game.contents.powerUps,
-            ...this.game.contents.obstacles,
-            this.opponentController,
-        ];
+        return [...this.game.contents.items, this.opponentController];
     }
 
     /**

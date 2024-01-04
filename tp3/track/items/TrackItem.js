@@ -37,6 +37,8 @@ export default class TrackItem extends THREE.Object3D {
             this,
             this.onCollision.bind(this)
         );
+
+        this.rotateX(Math.PI / 6);
     }
 
     /**

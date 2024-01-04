@@ -10,6 +10,7 @@ export class VehiclePark extends Park {
     }
 
     addObjects() {
+        this.nextSpot = 0;
         this.addToSpot(this.game.contents.cycle);
         this.addToSpot(this.game.contents.car);
     }

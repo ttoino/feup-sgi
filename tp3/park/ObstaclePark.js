@@ -10,8 +10,12 @@ export class ObstaclePark extends Park {
     }
 
     addObjects() {
+        this.nextSpot = 0;
+
         this.game.materials.changeGlow(this, "glow_yellow");
 
-        // TODO
+        this.game.contents.obstacles.forEach((obstacle) => {
+            this.addToSpot(obstacle);
+        });
     }
 }

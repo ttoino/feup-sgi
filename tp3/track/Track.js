@@ -65,7 +65,8 @@ export class Track extends THREE.Object3D {
                 if (child.name.includes("start_opponent"))
                     this.opponentStart = child;
 
-                if (child.name.match(/waypoint_\d+$/)) this.waypoints.push(new TrackWaypoint(this.game, child));
+                if (child.name.match(/waypoint_\d+$/))
+                    this.waypoints.push(new TrackWaypoint(this.game, child));
 
                 if (child.name.match(/item_\d+$/)) this.itemSpots.push(child);
 
@@ -78,9 +79,7 @@ export class Track extends THREE.Object3D {
             );
             this.opponentRoute.unshift(this.opponentStart);
 
-            this.waypoints.sort((a, b) =>
-                a.name.localeCompare(b.name, ["en"])
-            );
+            this.waypoints.sort((a, b) => a.name.localeCompare(b.name, ["en"]));
         });
     }
 
@@ -107,6 +106,26 @@ export class Track extends THREE.Object3D {
         this.waypoints.forEach((waypoint) => waypoint.reset());
 
         this.game.materials.changeGlow(this);
+
+        const items = [
+            ...this.game.contents.obstacles,
+            ...this.game.contents.powerUps,
+        ];
+
+        this.game.contents.items.length = 0;
+
+        this.itemSpots.forEach((spot) => {
+            console.log(spot);
+
+            if (Math.random() < 0.2) {
+                const item =
+                    items[Math.floor(Math.random() * items.length)].makeClone();
+
+                item.position.copy(spot.getWorldPosition(new THREE.Vector3()));
+                this.game.contents.items.push(item);
+                this.game.scene.add(item);
+            }
+        });
     }
 
     /**
@@ -116,9 +135,7 @@ export class Track extends THREE.Object3D {
     checkWaypoint(collider, position, opponent = false) {
         const nextWaypoint = this.waypoints[position.nextWaypoint];
 
-        if (
-            collider.intersectsOBB(nextWaypoint.collider)
-        ) {
+        if (collider.intersectsOBB(nextWaypoint.collider)) {
             if (position.nextWaypoint === 0) {
                 position.lap++;
             }
@@ -129,10 +146,9 @@ export class Track extends THREE.Object3D {
                 (position.nextWaypoint + 1) % this.waypoints.length;
 
             nextWaypoint.changeLightColor(
-                opponent
-                    ? "glow_red"
-                    : "glow_blue",
-                position.lap)
+                opponent ? "glow_red" : "glow_blue",
+                position.lap
+            );
         }
     }
 }

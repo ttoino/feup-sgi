@@ -35,9 +35,6 @@ export class PlayState extends GameState {
             )
         );
 
-        this.updaters.push(...this.game.contents.powerUps);
-        this.updaters.push(...this.game.contents.obstacles);
-
         this.boundOnKeyDown = this.#onKeyDown.bind(this);
         this.boundOnKeyUp = this.#onKeyUp.bind(this);
 
@@ -46,35 +43,40 @@ export class PlayState extends GameState {
 
     get currentWinner() {
         if (
-            this.playerController.trackPosition.lap === this.opponentController.trackPosition.lap &&
-            this.playerController.trackPosition.nextWaypoint === this.opponentController.trackPosition.nextWaypoint
+            this.playerController.trackPosition.lap ===
+                this.opponentController.trackPosition.lap &&
+            this.playerController.trackPosition.nextWaypoint ===
+                this.opponentController.trackPosition.nextWaypoint
         )
             return "tie";
         else if (
-            this.playerController.trackPosition.lap > this.opponentController.trackPosition.lap ||
-            (
-                this.playerController.trackPosition.lap === this.opponentController.trackPosition.lap &&
-                (
-                    this.playerController.trackPosition.nextWaypoint > this.opponentController.trackPosition.nextWaypoint ||
-                    this.playerController.trackPosition.nextWaypoint === 0 // this takes into account the moment when the player is winning and crosses the last waypoint.
-                )
-            )
+            this.playerController.trackPosition.lap >
+                this.opponentController.trackPosition.lap ||
+            (this.playerController.trackPosition.lap ===
+                this.opponentController.trackPosition.lap &&
+                (this.playerController.trackPosition.nextWaypoint >
+                    this.opponentController.trackPosition.nextWaypoint ||
+                    this.playerController.trackPosition.nextWaypoint === 0)) // this takes into account the moment when the player is winning and crosses the last waypoint.
         )
             return "player";
         else return "opponent";
     }
 
     get isGameOver() {
-        return this.playerController.trackPosition.lap >= LAPS &&
+        return (
+            this.playerController.trackPosition.lap >= LAPS &&
             this.opponentController.trackPosition.lap >= LAPS
+        );
     }
 
     /**
-     * 
-     * @param {number} delta 
+     *
+     * @param {number} delta
      */
     update(delta) {
         super.update(delta);
+
+        for (const item of this.game.contents.items) item.update(delta);
 
         // The order in which this state's updaters are first updated matters,
         // so just explicitly update the controllers last here.
@@ -98,7 +100,10 @@ export class PlayState extends GameState {
         const material = WINNER_TO_GLOW[this.currentWinner];
         this.game.materials.changeGlow(this.game.contents.track.glow, material);
 
-        if (this.inverseCamera || this.playerController.vehicle.forwardSpeed < 0) {
+        if (
+            this.inverseCamera ||
+            this.playerController.vehicle.forwardSpeed < 0
+        ) {
             this.game.gameplayControls.targetRotation = 0;
         } else {
             this.game.gameplayControls.targetRotation = Math.PI;

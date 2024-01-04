@@ -41,4 +41,8 @@ export default class MaxSpeedPowerup extends Powerup {
 
         this.game.stateManager.pushState(new ObstacleSelectionState(this.game))
     }
+    
+    makeClone() {
+        return new MaxSpeedPowerup(this.game);
+    }
 }

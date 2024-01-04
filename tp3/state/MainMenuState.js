@@ -10,6 +10,7 @@ import OpponentController from "../controller/OpponentController.js";
 import PlayerController from "../controller/PlayerController.js";
 import VehicleController from "../vehicles/VehicleController.js";
 import CollisionController from "../collision/CollisionController.js";
+import { StartGameState } from "./StartGameState.js";
 
 export class MainMenuState extends MenuState {
     /**
@@ -33,27 +34,29 @@ export class MainMenuState extends MenuState {
     init() {
         super.init();
 
-        this.initialTarget = new THREE.Vector3(Math.PI, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight);
+        this.initialTarget = new THREE.Vector3(
+            Math.PI,
+            this.game.gameplayControls.targetDistance,
+            this.game.gameplayControls.targetHeight
+        );
 
         this.game.gameplayControls.targetRotation = 0;
         this.game.gameplayControls.targetDistance = 30;
 
-        document.addEventListener(
-            "keydown",
-            this.boundKeyDownController
-        );
+        document.addEventListener("keydown", this.boundKeyDownController);
 
         this.game.renderer.gameOutlinePass.selectedObjects = [];
 
         this.lookerInterval = setInterval(() => {
             if (this.menuObject instanceof MainMenu) {
-                this.menuObject.authors?.lookAt(this.game.activeCamera.position);
+                this.menuObject.authors?.lookAt(
+                    this.game.activeCamera.position
+                );
             }
-        }, 10)
+        }, 10);
     }
 
     destroy() {
-
         super.destroy();
 
         if (this.initialTarget) {
@@ -62,10 +65,7 @@ export class MainMenuState extends MenuState {
             this.game.gameplayControls.targetHeight = this.initialTarget.z;
         }
 
-        document.removeEventListener(
-            "keydown",
-            this.boundKeyDownController
-        );
+        document.removeEventListener("keydown", this.boundKeyDownController);
 
         this.game.renderer.gameOutlinePass.selectedObjects = [];
 
@@ -73,29 +73,29 @@ export class MainMenuState extends MenuState {
     }
 
     /**
-     * 
-     * @param {KeyboardEvent} e 
+     *
+     * @param {KeyboardEvent} e
      */
     #onKeyDown(e) {
-
         switch (e.key) {
             case "Backspace": {
-                this.name = this.name.slice(0, -1)
+                this.name = this.name.slice(0, -1);
                 break;
             }
             default: {
-                if (e.key.length > 1 || this.name.length >= this.maxNameLength) return;
+                if (e.key.length > 1 || this.name.length >= this.maxNameLength)
+                    return;
 
-                this.name += e.key
+                this.name += e.key;
 
-                break
+                break;
             }
         }
 
         if (this.menuObject instanceof MainMenu) {
             // it should be but types
 
-            this.menuObject.updateNameValue(this.name)
+            this.menuObject.updateNameValue(this.name);
         }
     }
 
@@ -107,18 +107,18 @@ export class MainMenuState extends MenuState {
     onPick(object) {
         switch (object.name) {
             case "play_button":
-
                 if (
                     this.name.length === 0 ||
                     !this.difficulty ||
                     !this.game.info.playerCar ||
                     !this.game.info.opponentCar
-                ) return;
+                )
+                    return;
 
                 this.game.info.playerName = this.name;
                 this.game.info.difficulty = this.difficulty;
 
-                this.stateManager.pushState(new PlayState(this.game));
+                this.stateManager.pushState(new StartGameState(this.game));
                 return;
             case "exit_button":
                 window.close();
@@ -133,20 +133,27 @@ export class MainMenuState extends MenuState {
                 break;
             case "select_opponent_vehicle":
                 this.stateManager.pushState(
-                    new OpponentVehicleSelectionState(this.game),
+                    new OpponentVehicleSelectionState(this.game)
                 );
                 return;
             case "select_player_vehicle":
                 this.stateManager.pushState(
-                    new PlayerVehicleSelectionState(this.game),
+                    new PlayerVehicleSelectionState(this.game)
                 );
                 return;
         }
 
         if (this.highlightedDifficultyButton) {
-            this.game.renderer.gameOutlinePass.selectedObjects.splice(this.game.renderer.gameOutlinePass.selectedObjects.indexOf(this.highlightedDifficultyButton), 1)
+            this.game.renderer.gameOutlinePass.selectedObjects.splice(
+                this.game.renderer.gameOutlinePass.selectedObjects.indexOf(
+                    this.highlightedDifficultyButton
+                ),
+                1
+            );
 
-            this.game.renderer.gameOutlinePass.selectedObjects.push(this.highlightedDifficultyButton);
+            this.game.renderer.gameOutlinePass.selectedObjects.push(
+                this.highlightedDifficultyButton
+            );
         }
     }
 }

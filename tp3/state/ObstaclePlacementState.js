@@ -6,10 +6,9 @@ import { PlayState } from "./PlayState.js";
 import { PauseState } from "./PauseState.js";
 
 export default class ObstaclePlacementState extends GameState {
-
     /**
-     * 
-     * @param {Game} game 
+     *
+     * @param {Game} game
      * @param {Obstacle} obstacle
      */
     constructor(game, obstacle) {
@@ -35,23 +34,25 @@ export default class ObstaclePlacementState extends GameState {
 
         this.game.gameplayControls.target = this.game.contents.track;
 
-        const initialTarget = new THREE.Vector3(Math.PI, this.game.gameplayControls.targetDistance, this.game.gameplayControls.targetHeight);
+        const initialTarget = new THREE.Vector3(
+            Math.PI,
+            this.game.gameplayControls.targetDistance,
+            this.game.gameplayControls.targetHeight
+        );
 
         this.game.gameplayControls.targetRotation = 0;
         this.game.gameplayControls.targetDistance = 10;
         this.game.gameplayControls.targetHeight = 100;
 
         this.pickOnClick().then((position) => {
-
             const obstacle = this.obstacle.makeClone();
 
             obstacle.position.copy(position);
 
-            this.game.contents.obstacles.push(obstacle);
+            this.game.contents.items.push(obstacle);
             this.game.scene.add(obstacle);
 
-            this.game.stateManager.popUntil(PlayState)
-            this.game.stateManager.current.updaters.push(obstacle);
+            this.game.stateManager.popUntil(PlayState);
 
             this.game.gameplayControls.targetRotation = initialTarget.x;
             this.game.gameplayControls.targetDistance = initialTarget.y;
@@ -74,12 +75,11 @@ export default class ObstaclePlacementState extends GameState {
     }
 
     /**
-     * 
+     *
      * @returns {Promise<THREE.Vector3>}
      */
     pickOnClick() {
         return new Promise((resolve, reject) => {
-
             const clickListener = () => {
                 if (this.placementPosition) {
                     document.removeEventListener("click", clickListener);
@@ -109,7 +109,9 @@ export default class ObstaclePlacementState extends GameState {
 
         this.raycaster.setFromCamera(this.pointer, this.game.activeCamera);
 
-        const intersections = this.raycaster.intersectObject(this.game.contents.track);
+        const intersections = this.raycaster.intersectObject(
+            this.game.contents.track
+        );
 
         if (intersections.length > 0) {
             const intersection = intersections[0];

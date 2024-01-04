@@ -58,8 +58,6 @@ export class SceneOutdoor extends Outdoor {
                 0,
                 false
             );
-
-            console.log(this.material);
         }
     }
 }
