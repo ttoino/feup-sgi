@@ -15,6 +15,74 @@ export class GameInfoDisplay extends THREE.Object3D {
         this.lapsText = null;
         this.speedText = null;
 
+        const hud = document.querySelector("#hud") ?? (() => {
+            const hud = document.createElement("div");
+            hud.id = "hud";
+            document.body.appendChild(hud);
+            return hud;
+        })();
+
+        /** @type{HTMLSpanElement} */
+        this.hudTime = hud.querySelector("#time") ?? (() => {
+
+            const time = document.createElement("span");
+
+            time.id = "time";
+
+            hud.appendChild(time);
+
+            return time;
+        })();
+
+        /** @type{HTMLSpanElement} */
+        this.hudState = hud.querySelector("#state") ?? (() => {
+
+            const state = document.createElement("span");
+
+            state.id = "state";
+
+            hud.appendChild(state);
+
+            return state;
+        })();
+
+        /** @type{HTMLSpanElement} */
+        this.hudLaps = hud.querySelector("#laps") ?? (() => {
+
+            const laps = document.createElement("span");
+
+            laps.id = "lap";
+
+            hud.appendChild(laps);
+
+            return laps;
+        })();
+
+        /** @type{HTMLSpanElement} */
+        this.hudSpeed = hud.querySelector("#speed") ?? (() => {
+
+            const speed = document.createElement("span");
+
+            speed.id = "cur";
+
+            hud.appendChild(speed);
+
+            return speed;
+        })();
+
+        /** @type{HTMLSpanElement} */
+        this.hudMaxSpeed = hud.querySelector("#max-speed") ?? (() => {
+
+            const maxSpeed = document.createElement("span");
+
+            maxSpeed.id = "max";
+
+            hud.appendChild(maxSpeed);
+
+            return maxSpeed;
+        })();
+
+
         const textMaterial = new THREE.MeshLambertMaterial({
             emissive: 0x009fff,
             emissiveIntensity: 5,
@@ -64,7 +132,11 @@ export class GameInfoDisplay extends THREE.Object3D {
         if (this.timeText) {
             this.timeText.text = `${Math.floor(this.game.info.elapsedTime)}s`;
             this.timeText.create();
+
+            this.hudTime.innerText = `${Math.floor(this.game.info.elapsedTime)}s`;
         }
+
+        this.hudState.innerText = `State: ${this.game.info.paused ? "Paused" : "Running"}`;
 
         if (this.lapsText) {
             const lap = Math.max(
@@ -74,6 +146,8 @@ export class GameInfoDisplay extends THREE.Object3D {
             const suffix = ["st", "nd", "rd"][lap - 1] || "th";
             this.lapsText.text = `${lap}'${suffix} lap`;
             this.lapsText.create();
+
+            this.hudLaps.innerText = `Lap: ${lap}'${suffix}`;
         }
 
         if (this.speedText) {
@@ -81,6 +155,10 @@ export class GameInfoDisplay extends THREE.Object3D {
                 (this.game.info.playerCar?.forwardSpeed ?? 0) * 3.6
             )}km/h`;
             this.speedText.create();
+
+            this.hudSpeed.innerText = `Cur: ${Math.floor(
+                (this.game.info.playerCar?.forwardSpeed ?? 0) * 3.6
+            )}km/h`;
         }
 
         if (this.maxSpeedText) {
@@ -88,6 +166,10 @@ export class GameInfoDisplay extends THREE.Object3D {
                 (this.game.info.playerCar?.maxSpeed ?? 0) * 3.6
             )}km/h`;
             this.maxSpeedText.create();
+
+            this.hudMaxSpeed.innerText = `Max: ${Math.floor(
+                (this.game.info.playerCar?.maxSpeed ?? 0) * 3.6
+            )}km/h`;
         }
     }
 }

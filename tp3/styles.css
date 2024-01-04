@@ -21,6 +21,20 @@ body {
     font-family: "Tron", "Courier New", Courier, monospace;
 }
 
+#hud.hidden {
+    display: none;
+}
+
+#hud {
+    position: absolute;
+    left: 70px;
+    top: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: start;
+}
+
 #effect-display {
     width: 300px;
     position: absolute;

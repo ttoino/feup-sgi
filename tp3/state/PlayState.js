@@ -40,29 +40,33 @@ export class PlayState extends GameState {
 
         this.inverseCamera = false;
 
-        // FIXME: better way for this
-        this.playTimeoutDisplay = document.querySelector("#play-timeout");
-        if (this.playTimeoutDisplay) {
+        /** @type {HTMLDivElement | null} */
+        this.hud = document.querySelector("#hud.hidden")
+
+        {
+            // FIXME: better way for this
+            this.playTimeoutDisplay = document.querySelector("#play-timeout") ?? (() => {
+                const playTimeoutDisplay = document.createElement("div");
+                playTimeoutDisplay.id = "play-timeout";
+                document.body.appendChild(playTimeoutDisplay);
+                return playTimeoutDisplay;
+            })();
             this.playTimeoutDisplay.innerHTML = "3";
 
             this.setTimeout(() => {
-                if (this.playTimeoutDisplay)
-                    this.playTimeoutDisplay.innerHTML = "2";
+                this.playTimeoutDisplay.innerHTML = "2";
             }, 1100);
 
             this.setTimeout(() => {
-                if (this.playTimeoutDisplay)
-                    this.playTimeoutDisplay.innerHTML = "1";
+                this.playTimeoutDisplay.innerHTML = "1";
             }, 2100);
 
             this.setTimeout(() => {
-                if (this.playTimeoutDisplay)
-                    this.playTimeoutDisplay.innerHTML = "GO!";
+                this.playTimeoutDisplay.innerHTML = "GO!";
             }, 3100);
 
             this.setTimeout(() => {
-                if (this.playTimeoutDisplay)
-                    this.playTimeoutDisplay.innerHTML = "";
+                this.playTimeoutDisplay.innerHTML = "";
             }, 3600);
         }
 
@@ -145,6 +149,11 @@ export class PlayState extends GameState {
     }
 
     init() {
+
+        if (this.hud) {
+            this.hud.classList.remove("hidden");
+        }
+
         this.game.gameplayControls.target =
             this.playerController.vehicle.center ??
             this.playerController.vehicle;
@@ -157,6 +166,10 @@ export class PlayState extends GameState {
     }
 
     destroy() {
+        if (this.hud) {
+            this.hud.classList.add("hidden");
+        }
+
         this.playerController.remove();
 
         document.removeEventListener("keydown", this.boundOnKeyDown);
