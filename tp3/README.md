@@ -11,13 +11,20 @@
 
 ## Project information
 
-- (items describing main strong points)
-- Scene
-  - (Brief description of the created scene)
-  - (relative link to the scene)
+- Complex 3D models and geometry
+- Complex materials and textures
+- Feature-rich
+- Semi-realistic physics
 
 ----
 
 ## Issues/Problems
 
-- (items describing unimplemented features, bugs, problems, etc.)
+- Some of the colliders fail to trigger a collision event in certain occasions
+- Interpreting the requirements of the project was a bit confusing as they are vague in some parts
+- When completing a lap, the logic to update the track's color is a bit buggy
+- When moving to the next waypoint the autonomous car sometimes gets "confused": this seldom happens tho.
+
+## Screenshots
+
+Screenshots can be found [here](/tp3/screenshots/)

@@ -10,7 +10,7 @@ export class PauseMenu extends Menu {
      * @param {Game} game
      */
     constructor(game) {
-        super();
+        super(game);
 
         this.game = game;
 
@@ -22,13 +22,6 @@ export class PauseMenu extends Menu {
             .load("fonts/tron_typeface.json")
             .then((gameFont) => {
                 const pauseMenu = new THREE.Group();
-
-                const pauseMenuFrameGeometry = new THREE.TorusGeometry(
-                    7,
-                    1,
-                    4,
-                    4
-                );
 
                 const resumeButtonGeom = new TextGeometry("Resume", {
                     font: gameFont,
@@ -85,20 +78,8 @@ export class PauseMenu extends Menu {
                 mainMenuButton.position.y = -2;
                 mainMenuButton.position.x = -2.7;
 
-                const frame = new THREE.Mesh(
-                    pauseMenuFrameGeometry,
-                    new THREE.MeshStandardMaterial({ color: 0xffff00 })
-                );
-
-                frame.name = "pause_frame";
-
-                frame.position.y = -1.5;
-                frame.rotation.z = Math.PI / 4;
-
                 const xScale = 2;
                 const yScale = 1.2;
-
-                pauseMenu.add(frame);
 
                 pauseMenu.add(resumeButton);
                 pauseMenu.add(mainMenuButton);
