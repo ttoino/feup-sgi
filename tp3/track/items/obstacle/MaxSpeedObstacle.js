@@ -9,7 +9,7 @@ export default class MaxSpeedObstacle extends Obstacle {
      * @param {Game} game
      */
     constructor(game) {
-        super(game);
+        super(game, "glow_red");
 
         this.pickedUp = false;
     }

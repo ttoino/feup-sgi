@@ -22,6 +22,8 @@ export default class Obstacle extends TrackItem {
 
             this.add(model);
 
+            this.game.materials.changeGlow(this, glow);
+
             model.traverse((child) => {
                 if (child.name.includes("view")) this.view = child;
 
@@ -30,9 +32,6 @@ export default class Obstacle extends TrackItem {
                     this.materials.push(child.material);
                 }
             });
-
-            if (this.glow)
-                this.game.materials.changeGlow(this, glow);
         });
     }
 

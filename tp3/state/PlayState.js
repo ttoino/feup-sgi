@@ -4,9 +4,11 @@ import { Game } from "../game/Game.js";
 import PlayerController from "../controller/PlayerController.js";
 import OpponentController from "../controller/OpponentController.js";
 import { WINNER_TO_GLOW } from "../track/Track.js";
-import { MainMenuState } from "./MainMenuState.js";
 import VehicleController from "../vehicles/VehicleController.js";
 import CollisionController from "../collision/CollisionController.js";
+import EndGameState from "./EndGameState.js";
+
+const LAPS = 1;
 
 export class PlayState extends GameState {
     /**
@@ -63,10 +65,8 @@ export class PlayState extends GameState {
     }
 
     get isGameOver() {
-        return this.currentWinner !== "tie" && (
-            this.playerController.trackPosition.lap === 3 ||
-            this.opponentController.trackPosition.lap === 3
-        );
+        return this.playerController.trackPosition.lap >= LAPS &&
+            this.opponentController.trackPosition.lap >= LAPS
     }
 
     /**
@@ -83,8 +83,16 @@ export class PlayState extends GameState {
         this.playerController.update(delta);
 
         if (this.isGameOver) {
-            this.stateManager.pushState(new MainMenuState(this.game));
+            this.stateManager.pushState(new EndGameState(this.game));
             return;
+        } else {
+            if (this.playerController.trackPosition.lap >= LAPS) {
+                this.game.info.winner = this.game.info.playerCar;
+                this.game.info.loser = this.game.info.opponentCar;
+            } else if (this.opponentController.trackPosition.lap >= LAPS) {
+                this.game.info.winner = this.game.info.opponentCar;
+                this.game.info.loser = this.game.info.playerCar;
+            }
         }
 
         const material = WINNER_TO_GLOW[this.currentWinner];

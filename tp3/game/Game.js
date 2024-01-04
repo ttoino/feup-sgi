@@ -102,7 +102,7 @@ export class Game {
         this.contents = new SceneContents(this);
 
         // Init game info
-        this.info = new GameInfo(this, "", null, null, 1);
+        this.info = new GameInfo(this, "", null, null, 1, 0, 0, null, null);
 
         // Init renderer
         this.renderer = new Renderer(this);

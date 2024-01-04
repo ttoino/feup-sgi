@@ -18,6 +18,8 @@ import { OpponentPark } from "../park/OpponentPark.js";
 import { ObstaclePark } from "../park/ObstaclePark.js";
 import ControlReverseObstacle from "../track/items/obstacle/ControlReverseObstacle.js";
 import { OpponentVehicleSelectionMenu } from "../menu/OpponentVehicleSelectionMenu.js";
+import { EndGameMenu } from "../menu/EndGameMenu.js";
+import { Fireworks } from "../particles/Fireworks.js";
 import { SceneOutdoor } from "../outdoor/SceneOutdoor.js";
 
 /**
@@ -149,6 +151,14 @@ export class SceneContents {
         this.obstacleSelectionMenu.position.x = -10;
         this.obstacleSelectionMenu.rotateY(Math.PI);
         this.game.scene.add(this.obstacleSelectionMenu);
+
+        this.fireworks = new Fireworks(this.game, 0x009ffff);
+
+        // End Game Menu
+        this.endGameMenu = new EndGameMenu(this.game);
+        this.endGameMenu.position.x = 150;
+        this.endGameMenu.rotateY(-Math.PI / 2);
+        this.game.scene.add(this.endGameMenu);
     }
 
     onLoaded() {
@@ -162,6 +172,7 @@ export class SceneContents {
     update(delta) {
         this.background.update(delta);
         this.sceneOutdoor.update(delta);
+        this.fireworks.update(delta);
 
         this.obstacles.forEach((obstacle) => {
             obstacle.update(delta);
